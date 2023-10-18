@@ -1,5 +1,5 @@
-import { EuiAvatar } from "@elastic/eui"
-import Breadcrumbs from "./Breadcrumbs"
+import { EuiAvatar, EuiProgress } from "@elastic/eui"
+import Breadcrumbs from "./Header"
 import Search_Menu from "./Search_Menu"
 import Grid_test from "./grid_test"
 import { Link, Outlet } from "react-router-dom"
@@ -7,10 +7,10 @@ import { Link, Outlet } from "react-router-dom"
 function Layout() {
     return (
         <>
+                        <EuiProgress size="xs" color="accent" />
+
             <Breadcrumbs></Breadcrumbs>
-            <EuiAvatar name="Management" iconType="managementApp" />
             <Search_Menu></Search_Menu>
-            <Grid_test></Grid_test>
             <Link to="/" >Home</Link>
             <br></br>
             <Link to="/Blogs" >Blog</Link>
@@ -25,8 +25,11 @@ function Layout() {
             <br></br>
             <Link to="/Blogs" >Blog</Link>
             <br></br>
+            <Link to="/grid" >grid</Link>
+            <br></br>
             <Link to="/pages" >pages</Link>
             <Outlet/>
+
         </>
     )
 }

@@ -112,7 +112,7 @@ export default () => {
           <HeaderSpacesMenu />
         </EuiHeaderSectionItem>
       </EuiHeaderSection>
-      {renderBreadcrumbs()}
+      {/* {renderBreadcrumbs()} */}
       <EuiHeaderSection side="right">
         <EuiHeaderSectionItem>{search}</EuiHeaderSectionItem>
         <EuiHeaderSectionItem>
