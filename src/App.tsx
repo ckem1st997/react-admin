@@ -20,8 +20,8 @@ function App() {
       {/* <Layout></Layout> */}
       <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
+        <Route  element={<Layout />}>
+          <Route path="/" index element={<Home />} />
           <Route path="blogs" element={<Blogs />} />
         </Route>
       </Routes>
