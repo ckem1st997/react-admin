@@ -13,7 +13,7 @@ import Layout from './component/Layout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Blogs from './component/blog';
 import Home from './component/home';
-import { Pages } from './component/pages';
+import Pages from './component/pages';
 function App() {
   const [count, setCount] = useState(0)
   return (
