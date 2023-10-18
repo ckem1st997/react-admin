@@ -22,6 +22,7 @@ import {
     EuiModalHeaderTitle,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
+import { Link, Outlet } from 'react-router-dom';
 type User = {
     id: number;
     firstName: string | null | undefined;
@@ -343,7 +344,7 @@ export default () => {
                 responsive={isResponsive}
                 onChange={onTableChange}
             />
-             {modal}
+            {modal}
         </>
     );
 };

@@ -9,14 +9,23 @@ import contentCenterSvg from '../../images/content_center.svg';
 import Search_Menu from './component/Search_Menu';
 import { ThemeProvider, css } from '@emotion/react';
 import Grid_test from './component/grid_test';
+import Layout from './component/Layout';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Blogs from './component/blog';
+import Home from './component/home';
 function App() {
   const [count, setCount] = useState(0)
   return (
     <>
-
-      <EuiAvatar name="Management" iconType="managementApp" />
-      <Search_Menu></Search_Menu>
-      <Grid_test></Grid_test>
+      {/* <Layout></Layout> */}
+      <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="blogs" element={<Blogs />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
     </>
   )
 }
