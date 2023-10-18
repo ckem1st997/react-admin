@@ -17,6 +17,15 @@ function Layout() {
             <br></br>
             <Link to="/pages" >pages</Link>
             <br></br><br></br><br></br><br></br>
+            <Link to="/home" >Home d</Link>
+            <br></br>
+            <Link to="/home/home1" >Home 1</Link>
+            <br></br>
+            <Link to="/home/home2" >Home 2</Link>
+            <br></br>
+            <Link to="/Blogs" >Blog</Link>
+            <br></br>
+            <Link to="/pages" >pages</Link>
             <Outlet/>
         </>
     )

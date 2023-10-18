@@ -10,26 +10,22 @@ import Search_Menu from './component/Search_Menu';
 import { ThemeProvider, css } from '@emotion/react';
 import Grid_test from './component/grid_test';
 import Layout from './component/Layout';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, RouterProvider, useLocation } from 'react-router-dom';
 import Blogs from './component/blog';
 import Home from './component/home';
 import Pages from './component/pages';
+import router from './routes';
 function App() {
-  const [count, setCount] = useState(0)
-  return (
+  // const location = useLocation();
+    return (
     <>
-      {/* <Layout></Layout> */}
-      <BrowserRouter>
-      <Routes>
-        <Route  element={<Layout />}>
-          <Route path="/" index element={<Home />} />
-          <Route path="blogs" element={<Blogs />} />
-          <Route path="pages" element={<Pages />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+      {/* <RouterProvider  router={router} fallbackElement={<p>Loading...</p>} />; */}
+      
     </>
   )
 }
 
 export default App
+// if (import.meta.hot) {
+//   import.meta.hot.dispose(() => router.dispose());
+// }
