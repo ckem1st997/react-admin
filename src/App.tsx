@@ -18,9 +18,8 @@ function App() {
   const [count, setCount] = useState(0)
   return (
     <>
-    <Pages />
       {/* <Layout></Layout> */}
-      {/* <BrowserRouter>
+      <BrowserRouter>
       <Routes>
         <Route  element={<Layout />}>
           <Route path="/" index element={<Home />} />
@@ -28,7 +27,7 @@ function App() {
           <Route path="pages" element={<Pages />} />
         </Route>
       </Routes>
-    </BrowserRouter> */}
+    </BrowserRouter>
     </>
   )
 }
