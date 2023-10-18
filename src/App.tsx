@@ -13,19 +13,22 @@ import Layout from './component/Layout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Blogs from './component/blog';
 import Home from './component/home';
+import { Pages } from './component/pages';
 function App() {
   const [count, setCount] = useState(0)
   return (
     <>
+    <Pages />
       {/* <Layout></Layout> */}
-      <BrowserRouter>
+      {/* <BrowserRouter>
       <Routes>
         <Route  element={<Layout />}>
           <Route path="/" index element={<Home />} />
           <Route path="blogs" element={<Blogs />} />
+          <Route path="pages" element={<Pages />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter> */}
     </>
   )
 }
