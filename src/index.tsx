@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { EuiProgress, EuiProvider, euiStylisPrefixer } from '@elastic/eui';
+import { EuiEmptyPrompt, EuiErrorBoundary, EuiProgress, EuiProvider, euiStylisPrefixer } from '@elastic/eui';
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { RouterProvider } from 'react-router-dom';
 import router from './routes';
@@ -21,12 +21,30 @@ cache.compat = true;
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+const BadComponent = () => {
+  throw new Error(
+    "I'm here to kick butt and chew bubblegum. And I'm all out of gum."
+  );
+};
 root.render(
   <React.StrictMode >
     <RouterProvider router={router} />
     {/* <EuiProgress size="xs" color="accent" /> */}
     <EuiProvider colorMode="light" cache={cache}>
-      <App />
+      {/* <EuiEmptyPrompt
+        iconType="error"
+        color="danger"
+        title={<h2>Unable to load your dashboards</h2>}
+        body={
+          <p>
+            There was an error loading the Dashboard application. Contact your
+            administrator for help.
+          </p>
+        }
+      /> */}
+      <EuiErrorBoundary>
+        <App></App>
+      </EuiErrorBoundary>
     </EuiProvider>
   </React.StrictMode>
 );

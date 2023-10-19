@@ -19,14 +19,14 @@ import Breadcrumb from './Breadcrumb';
 import { text } from 'stream/consumers';
 
 export const Pages = () => {
-  const location = useLocation();
-  const [progress, setProgress] = useState(true);
-  // Sử dụng useEffect để theo dõi thay đổi trong location (URL)
-  useEffect(() => {
-    // setProgress(false);
-    console.log(location.pathname)
-  }, [location.pathname]);
-  console.log(progress)
+  // const location = useLocation();
+  // const [progress, setProgress] = useState(true);
+  // // Sử dụng useEffect để theo dõi thay đổi trong location (URL)
+  // useEffect(() => {
+  //   // setProgress(false);
+  //   console.log(location.pathname)
+  // }, [location.pathname]);
+  // console.log(progress)
 
 
   return (
@@ -39,7 +39,7 @@ export const Pages = () => {
         </EuiPageTemplate.Sidebar>
 
         <Link to="/" >Home</Link>
-        <Link to="/home" >Home d</Link>
+        <Link to="/home1" >Home 404</Link>
         <Link to="/home/home1" >Home 1</Link>
         <Link to="/home/home2" >Home 2</Link>
         <Link to="/Blogs" >Blog</Link>

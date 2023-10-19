@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { EuiIcon, EuiSideNav, slugify } from '@elastic/eui';
+import { useNavigate, useNavigation, useNavigationType } from 'react-router-dom';
 export default () => {
+  const navigate = useNavigate();
   const [isSideNavOpenOnMobile, setIsSideNavOpenOnMobile] = useState(false);
   const [selectedItemName, setSelectedItem] = useState('Time stuff');
   const toggleOpenOnMobile = () => {
     setIsSideNavOpenOnMobile(!isSideNavOpenOnMobile);
   };
-  const selectItem = (name:any) => {
+  const selectItem = (name: any) => {
     setSelectedItem(name);
   };
   const createItem = (name: string, data = {}) => {
@@ -20,17 +22,36 @@ export default () => {
     };
   };
   const sideNav = [
-    createItem('Elasticsearch', {
-      onClick: undefined,
+    createItem('Home', {
+      onClick: navigate("/"),
       icon: <EuiIcon type="logoElasticsearch" />,
       items: [
-        createItem('Data sources'),
-        createItem('Users'),
-        createItem('Roles'),
-        createItem('Watches'),
-        createItem(
-          'Extremely long title will become truncated when the browser is narrow enough'
-        ),
+        createItem('Home1', {
+          onClick: navigate("/home1"),
+          icon: <EuiIcon type="logoElasticsearch" />,
+          // items: [
+          //   createItem('Data sources'),
+          //   createItem('Users'),
+          //   createItem('Roles'),
+          //   createItem('Watches'),
+          //   createItem(
+          //     'Extremely long title will become truncated when the browser is narrow enough'
+          //   ),
+          // ],
+        }),
+        createItem('Home2', {
+          onClick: navigate("/home2"),
+          icon: <EuiIcon type="logoElasticsearch" />,
+          items: [
+            createItem('Data sources'),
+            createItem('Users'),
+            createItem('Roles'),
+            createItem('Watches'),
+            createItem(
+              'Extremely long title will become truncated when the browser is narrow enough'
+            ),
+          ],
+        }),
       ],
     }),
     createItem('Kibana', {

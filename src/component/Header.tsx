@@ -51,13 +51,8 @@ export default () => {
       }
       emptyMessage={
         <EuiSelectableMessage style={{ minHeight: 300 }}>
-          <p>
-            Please see the component page for{' '}
-            <Link to="/forms/selectable">
-              <strong>EuiSelectableTemplateSitewide</strong>
-            </Link>{' '}
-            on how to configure your sitewide search.
-          </p>
+          Danh sách kết quả tìm kiếm...
+          <Link to="/">Trang chủ</Link>
         </EuiSelectableMessage>
       }
     />

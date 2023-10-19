@@ -19,9 +19,9 @@ function App() {
   return (
     <>
       {/* <RouterProvider  router={router} fallbackElement={<p>Loading...</p>} />; */}
-      <div>
+      {/* <div>
         <EuiProgress size="xs" color="accent" />
-      </div>
+      </div> */}
     </>
   )
 }
