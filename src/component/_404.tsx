@@ -5,7 +5,7 @@ import {
     EuiButton,
     EuiButtonEmpty,
 } from '@elastic/eui';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 //import { ThemeContext } from '../../../components/with_theme';
 // import pageNotFoundDark from '../../../images/empty-prompt/pageNotFound--dark.png';
 // import pageNotFoundLight from '../../../images/empty-prompt/pageNotFound--light.png';
@@ -17,6 +17,7 @@ export default () => {
     const isDarkTheme = false;
     // const pageNotFound = isDarkTheme ? pageNotFoundDark : pageNotFoundLight;
     // const pageNotFound2x = isDarkTheme ? pageNotFoundDark2x : pageNotFoundLight2x;
+    const navigate = useNavigate();
     return (
         <EuiEmptyPrompt
             color="subdued"
@@ -37,11 +38,11 @@ export default () => {
                 </p>
             }
             actions={[
-                <EuiButton color="primary" fill>
-                    <Link to="/" >Home</Link>
+                <EuiButton color="primary" fill onClick={() => navigate("/")}>
+                    Home
                 </EuiButton>,
-                <EuiButtonEmpty iconType="arrowLeft" flush="both">
-                    Go back
+                <EuiButtonEmpty iconType="arrowLeft" flush="both" onClick={() => navigate(-1)}>
+                    Quay lại
                 </EuiButtonEmpty>,
             ]}
         />

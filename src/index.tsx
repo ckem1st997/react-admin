@@ -27,24 +27,9 @@ const BadComponent = () => {
 };
 root.render(
   <React.StrictMode >
-    <RouterProvider router={router}  fallbackElement={<EuiProgress size="xs" color="accent" />}/>
-    {/* <EuiProgress size="xs" color="accent" /> */}
-    <EuiProvider colorMode="light" >
-      {/* <EuiEmptyPrompt
-        iconType="error"
-        color="danger"
-        title={<h2>Unable to load your dashboards</h2>}
-        body={
-          <p>
-            There was an error loading the Dashboard application. Contact your
-            administrator for help.
-          </p>
-        }
-      /> */}
-      {/* <EuiErrorBoundary>
-        <App></App>
-      </EuiErrorBoundary> */}
-      <App/>
+    <RouterProvider router={router} fallbackElement={<EuiProgress size="xs" color="accent" />} />
+    <EuiProvider colorMode="light" cache={cache}>
+      <App />
     </EuiProvider>
   </React.StrictMode>
 );

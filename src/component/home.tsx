@@ -6,12 +6,11 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ text }) => {
-  const location = useLocation();
+  // const location = useLocation();
 
-  // Sử dụng useEffect để theo dõi thay đổi trong location (URL)
-  useEffect(() => {
-   console.log(location.pathname+text)
-  }, [location.pathname]);
+  // // Sử dụng useEffect để theo dõi thay đổi trong location (URL)
+  // useEffect(() => {
+  // }, [location.pathname]);
 
   return (
     <h1>Home {text}</h1>

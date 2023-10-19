@@ -3,7 +3,7 @@ import reactLogo from './logo.svg'
 import viteLogo from './logo.svg'
 import './App.css'
 import React from 'react';
-import { EuiPageTemplate, EuiPageSection, EuiImage, EuiAvatar, EuiSpacer, EuiTitle, EuiIcon, EuiProgress } from '@elastic/eui';
+import { EuiPageTemplate, EuiPageSection, EuiImage, EuiAvatar, EuiSpacer, EuiTitle, EuiIcon, EuiProgress, EuiProvider, euiStylisPrefixer } from '@elastic/eui';
 import singleSvg from '../../images/single.svg';
 import contentCenterSvg from '../../images/content_center.svg';
 import Search_Menu from './component/Search_Menu';
@@ -14,14 +14,29 @@ import { BrowserRouter, Routes, Route, RouterProvider, useLocation } from 'react
 import Blogs from './component/blog';
 import Home from './component/home';
 import router from './routes';
+import createCache from '@emotion/cache';
+
+
+const container = document.querySelector('meta[name="emotion-styles"]');
+const cache = createCache({
+  key: 'eui',
+  container: container || undefined,
+  stylisPlugins: [euiStylisPrefixer],
+
+});
+cache.compat = true;
+const BadComponent = () => {
+  throw new Error(
+    "I'm here to kick butt and chew bubblegum. And I'm all out of gum."
+  );
+};
 function App() {
-  // const location = useLocation();
+  const [count, setCount] = React.useState(0);
+
   return (
     <>
-      {/* <RouterProvider  router={router} fallbackElement={<p>Loading...</p>} />; */}
-      {/* <div>
-        <EuiProgress size="xs" color="accent" />
-      </div> */}
+      {/* <EuiProvider colorMode="light" cache={cache}>
+      </EuiProvider> */}
     </>
   )
 }
