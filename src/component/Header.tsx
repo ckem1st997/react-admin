@@ -28,6 +28,7 @@ import {
   useGeneratedHtmlId,
 } from '@elastic/eui';
 import { Link } from 'react-router-dom';
+import Search_Menu from './Search_Menu';
 export default () => {
   const renderLogo = () => (
     <EuiHeaderLogo
@@ -37,49 +38,6 @@ export default () => {
       aria-label="Go to home page"
     />
   );
-  const renderBreadcrumbs = () => {
-    const breadcrumbs: EuiBreadcrumb[] = [
-      {
-        text: 'Management',
-        href: '#',
-        onClick: (e) => {
-          e.preventDefault();
-        },
-        'data-test-subj': 'breadcrumbsAnimals',
-        className: 'customClass',
-      },
-      {
-        text: 'Truncation test is here for a really long item',
-        href: '#',
-        onClick: (e) => {
-          e.preventDefault();
-        },
-      },
-      {
-        text: 'Hidden',
-        href: '#',
-        onClick: (e) => {
-          e.preventDefault();
-        },
-      },
-      {
-        text: 'Users',
-        href: '#',
-        onClick: (e) => {
-          e.preventDefault();
-        },
-      },
-      {
-        text: 'Create',
-      },
-    ];
-    return (
-      <EuiHeaderBreadcrumbs
-        aria-label="Header breadcrumbs example"
-        breadcrumbs={breadcrumbs}
-      />
-    );
-  };
   const search = (
     <EuiSelectableTemplateSitewide
       options={[]}
@@ -114,7 +72,10 @@ export default () => {
       </EuiHeaderSection>
       {/* {renderBreadcrumbs()} */}
       <EuiHeaderSection side="right">
-        <EuiHeaderSectionItem>{search}</EuiHeaderSectionItem>
+        <EuiHeaderSectionItem>
+          {search}
+          {/* <Search_Menu></Search_Menu> */}
+        </EuiHeaderSectionItem>
         <EuiHeaderSectionItem>
           <HeaderUserMenu />
         </EuiHeaderSectionItem>

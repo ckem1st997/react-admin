@@ -23,22 +23,21 @@ export const Pages = () => {
   const [progress, setProgress] = useState(true);
   // Sử dụng useEffect để theo dõi thay đổi trong location (URL)
   useEffect(() => {
-   // setProgress(false);
-   console.log(location.pathname)
+    // setProgress(false);
+    console.log(location.pathname)
   }, [location.pathname]);
   console.log(progress)
 
 
   return (
     <>
-      <EuiProgress className={progress ? '' : 'hidden-block'} size="xs" color="accent" />
+      {/* <EuiProgress className={progress ? '' : 'hidden-block'} size="xs" color="accent" /> */}
+      <Header></Header>
       <EuiPageTemplate>
-
         <EuiPageTemplate.Sidebar >
           <EuiSideNav></EuiSideNav>
         </EuiPageTemplate.Sidebar>
 
-        <Header></Header>
         <Link to="/" >Home</Link>
         <Link to="/home" >Home d</Link>
         <Link to="/home/home1" >Home 1</Link>
