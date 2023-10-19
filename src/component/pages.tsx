@@ -13,44 +13,66 @@ import {
 } from '@elastic/eui';
 import Breadcrumbs from './Header';
 import EuiSideNav from './EuiSideNav';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation, useNavigation } from 'react-router-dom';
 import Header from './Header';
 import Breadcrumb from './Breadcrumb';
 import { text } from 'stream/consumers';
 
 export const Pages = () => {
-  // const location = useLocation();
-  // const [progress, setProgress] = useState(true);
-  // // Sử dụng useEffect để theo dõi thay đổi trong location (URL)
-  // useEffect(() => {
-  //   // setProgress(false);
-  //   console.log(location.pathname)
-  // }, [location.pathname]);
-  // console.log(progress)
+  const location = useLocation();
+  const [progress, setProgress] = useState(true);
+  const navigation = useNavigation();
+  // Sử dụng useEffect để theo dõi thay đổi trong location (URL)
+  useEffect(() => {
+    // setProgress(false);
+    console.log(location)
+    // navigation
+  }, [location.pathname]);
+  console.log(progress)
 
 
   return (
     <>
-      {/* <EuiProgress className={progress ? '' : 'hidden-block'} size="xs" color="accent" /> */}
+      <EuiProgress className={navigation.state !== "loading" ? '' : 'hidden-block'} size="xs" color="accent" />
       <Header></Header>
       <EuiPageTemplate>
         <EuiPageTemplate.Sidebar >
           <EuiSideNav></EuiSideNav>
         </EuiPageTemplate.Sidebar>
-
-        <Link to="/" >Home</Link>
-        <Link to="/home1" >Home 404</Link>
-        <Link to="/home/home1" >Home 1</Link>
-        <Link to="/home/home2" >Home 2</Link>
-        <Link to="/Blogs" >Blog</Link>
-        <Link to="/grid" >grid</Link>
-        <Link to="/pages" >pages</Link>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/" >Home</Link>
+            </li>
+            <li>
+              <Link to="/home131" >Home 404</Link>
+            </li>
+            <li>
+              <Link to="/home1" >Home 1</Link>
+            </li>
+            <li>
+              <NavLink to="/home2" reloadDocument>Home 2</NavLink>
+            </li>
+            <li>
+              <NavLink to="/Blogs" reloadDocument>Blog</NavLink>
+            </li>
+            <li>
+              <Link to="/grid" >grid</Link>
+            </li>
+            <li>
+              <Link to="/pages" >pages</Link>
+            </li>
+          </ul>
+        </nav>
         <EuiPageTemplate.Header>
           <Breadcrumb></Breadcrumb>
         </EuiPageTemplate.Header>
 
         <EuiPageTemplate.Section grow={false} >
-          <Outlet />
+          <main>
+            <Outlet />
+
+          </main>
         </EuiPageTemplate.Section>
       </EuiPageTemplate>
     </>

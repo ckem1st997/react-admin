@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { EuiIcon, EuiSideNav, slugify } from '@elastic/eui';
-import { useNavigate, useNavigation, useNavigationType } from 'react-router-dom';
+import { EuiIcon, EuiSideNav, htmlIdGenerator, slugify } from '@elastic/eui';
+import { Link, redirect, useNavigate, useNavigation, useNavigationType } from 'react-router-dom';
 export default () => {
   const navigate = useNavigate();
   const [isSideNavOpenOnMobile, setIsSideNavOpenOnMobile] = useState(false);
@@ -21,35 +21,24 @@ export default () => {
       ...data,
     };
   };
+
   const sideNav = [
-    createItem('Home', {
-      onClick: navigate("/"),
+    createItem('Trang chủ', {
+      onClick: () => { navigate("/") },
       icon: <EuiIcon type="logoElasticsearch" />,
       items: [
-        createItem('Home1', {
-          onClick: navigate("/home1"),
+        createItem('Home 1', {
+          onClick: () => { navigate("/home1") },
           icon: <EuiIcon type="logoElasticsearch" />,
-          // items: [
-          //   createItem('Data sources'),
-          //   createItem('Users'),
-          //   createItem('Roles'),
-          //   createItem('Watches'),
-          //   createItem(
-          //     'Extremely long title will become truncated when the browser is narrow enough'
-          //   ),
-          // ],
+          items: [
+            createItem('Data sources1'),
+          ],
         }),
         createItem('Home2', {
-          onClick: navigate("/home2"),
+          onClick: null,
           icon: <EuiIcon type="logoElasticsearch" />,
           items: [
             createItem('Data sources'),
-            createItem('Users'),
-            createItem('Roles'),
-            createItem('Watches'),
-            createItem(
-              'Extremely long title will become truncated when the browser is narrow enough'
-            ),
           ],
         }),
       ],
@@ -79,8 +68,13 @@ export default () => {
         createItem('Reporting'),
       ],
     }),
-    createItem('Logstash', {
-      onClick: undefined,
+    createItem('Logstash-Grid', {
+      onClick: () => { navigate("/grid") },
+      icon: <EuiIcon type="logoLogstash" />,
+      items: [createItem('Pipeline viewer')],
+    }),
+    createItem('Blogs', {
+      onClick: () => { navigate("/blogs") },
       icon: <EuiIcon type="logoLogstash" />,
       items: [createItem('Pipeline viewer')],
     }),

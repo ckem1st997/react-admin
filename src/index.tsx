@@ -9,7 +9,6 @@ import { RouterProvider } from 'react-router-dom';
 import router from './routes';
 import createCache from '@emotion/cache';
 
-
 const container = document.querySelector('meta[name="emotion-styles"]');
 const cache = createCache({
   key: 'eui',
@@ -28,9 +27,9 @@ const BadComponent = () => {
 };
 root.render(
   <React.StrictMode >
-    <RouterProvider router={router} />
+    <RouterProvider router={router}  fallbackElement={<EuiProgress size="xs" color="accent" />}/>
     {/* <EuiProgress size="xs" color="accent" /> */}
-    <EuiProvider colorMode="light" cache={cache}>
+    <EuiProvider colorMode="light" >
       {/* <EuiEmptyPrompt
         iconType="error"
         color="danger"
@@ -42,9 +41,10 @@ root.render(
           </p>
         }
       /> */}
-      <EuiErrorBoundary>
+      {/* <EuiErrorBoundary>
         <App></App>
-      </EuiErrorBoundary>
+      </EuiErrorBoundary> */}
+      <App/>
     </EuiProvider>
   </React.StrictMode>
 );

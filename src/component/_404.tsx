@@ -37,8 +37,8 @@ export default () => {
                 </p>
             }
             actions={[
-                <EuiButton  color="primary" fill>
-                    {/* <Link to="/" >Home</Link> */}
+                <EuiButton color="primary" fill>
+                    <Link to="/" >Home</Link>
                 </EuiButton>,
                 <EuiButtonEmpty iconType="arrowLeft" flush="both">
                     Go back
