@@ -21,45 +21,32 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <p>Homeeeeeeeeeeeeeeeeee</p>,
+        element: <Home text="Trang chủ" />,
         handle: {
           crumb: () => "/",
         }
       },
       {
         path: "home",
-        element: <Home text="Trang chủ" />,
+        element: <p>Home</p>,
         handle: {
-          // crumb: () => <Link to="/messages">Messages1</Link>,
           crumb: () => "/home",
         },
         children: [
-
           {
             path: "grid",
             element: <Grid_test key="homemmm" />,
             handle: {
               crumb: () => "/grid",
-            },
-            children: [
-              {
-                path: "home2",
-                element:  <Home text="Home dsafs" />,
-                handle: {
-                  crumb: () => "/home2",
-                },
-              }
-            ]
+            }
           },
           {
-            path: "home1",
-            element: <Home text="Home 4324324322" />,
+            path: "home",
+            element: <Home text="dsadsadsa" key="44fdsfdsfds" />,
             handle: {
-              crumb: () => "/home1",
-            },
-
-          },
-
+              crumb: () => "/home",
+            }
+          }
         ]
       },
       {

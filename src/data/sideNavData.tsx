@@ -16,41 +16,15 @@ export const sideNavData: NavItem[] = [
         icontype: 'logoElasticsearch',
         items: [
             {
-                label: 'Trang chủ',
-                icontype: 'logoWorkplaceSearch',
-                //  path: 'home',
-                items: [
-                    {
-                        label: 'Trang chủ',
-                        icontype: 'logoWorkplaceSearch',
-                        path: 'home',
-                    },
-                    {
-                        label: 'Grid',
-                        icontype: 'logoMaps',
-                        path: '/home/grid',                       
-                    },
-                    {
-                        label: 'Grid',
-                        icontype: 'logoMaps',
-                        // path: '/home/grid',
-                        items: [
-                            {
-                                label: 'Grid',
-                                icontype: 'logoWorkplaceSearch',
-                                path: 'home/grid/home2',
-                            },
-                        ]
-                    },
-                    {
-                        label: 'Home 1',
-                        icontype: 'logoMetrics',
-                        path: '/home/home1',
-
-                    },
-                ]
+                label: 'Grid',
+                icontype: 'logoMaps',
+                path: 'home/grid',
             },
-
+            {
+                label: 'Home',
+                icontype: 'logoMaps',
+                path: 'home/home',
+            },
         ],
     },
     {

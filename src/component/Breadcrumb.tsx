@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     EuiBreadcrumb,
     EuiHeaderBreadcrumbs
@@ -11,7 +11,6 @@ export default () => {
     //
     const location = useLocation();
     const currentPath = location.pathname;
-    console.log(location)
     // Tạo một hàm để chuyển đổi currentPath thành breadcrumbs
     function generateBreadcrumbs(path: string) {
         const pathParts = path.split('/').filter(part => part !== '');

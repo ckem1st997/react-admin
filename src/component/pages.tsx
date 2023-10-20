@@ -13,7 +13,7 @@ import {
 } from '@elastic/eui';
 import Breadcrumbs from './Header';
 import EuiSideNav from './EuiSideNav';
-import { Link, NavLink, Outlet, useLocation, useNavigation, useResolvedPath } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation, useNavigate, useNavigation, useResolvedPath } from 'react-router-dom';
 import Header from './Header';
 import Breadcrumb from './Breadcrumb';
 import { text } from 'stream/consumers';
@@ -22,8 +22,10 @@ export const Pages = () => {
   const location = useLocation();
   const [progress, setProgress] = useState(true);
   const navigation = useNavigation();
+  const navigate = useNavigate();
   // Sử dụng useEffect để theo dõi thay đổi trong location (URL)
   useEffect(() => {
+    navigate(location.pathname)
   }, [location.pathname]);
   return (
     <>
