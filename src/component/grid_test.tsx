@@ -154,18 +154,18 @@ export default () => {
                     type: 'icon',
                     onClick: (user: User) => {
                         setIsModalVisible(true);
-                        console.log(user);
-                        navigate("/home/grid/"+user.id)
+                        setIsUser(user);
                     },
                 },
                 {
-                    name: 'Clone',
-                    description: 'Clone this person',
+                    name: 'Edit',
+                    description: 'Edit this person',
                     icon: 'copy',
                     type: 'icon',
                     onClick: (user: User) => {
-                        cloneUserbyId(user.id);
-                        setSelectedItems([]);
+                        navigate("/grid/"+user.id)
+                        // cloneUserbyId(user.id);
+                        // setSelectedItems([]);
                     },
                 },
                 {
@@ -268,9 +268,20 @@ export default () => {
     };
 
     // modal
-
+    const data:User={
+        id: 0,
+        firstName: undefined,
+        lastName: '',
+        github: '',
+        dateOfBirth: new Date(),
+        online: false,
+        location: {
+            city: '',
+            country: ''
+        }
+    };
     const [isModalVisible, setIsModalVisible] = useState(false);
-
+    const [isUser, setIsUser] = useState(data);
     const closeModal = () => setIsModalVisible(false);
     const showModal = () => setIsModalVisible(true);
     const navigate = useNavigate();
@@ -280,7 +291,7 @@ export default () => {
         modal = (
             <EuiModal onClose={closeModal}>
                 <EuiModalHeader>
-                    <EuiModalHeaderTitle>Modal title</EuiModalHeaderTitle>
+                    <EuiModalHeaderTitle>id user: {isUser.id}</EuiModalHeaderTitle>
                 </EuiModalHeader>
 
                 <EuiModalBody>

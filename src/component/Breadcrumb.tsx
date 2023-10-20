@@ -144,14 +144,13 @@ export default () => {
     function Breadcrumbs() {
         let matches = useMatches();
         const breadcrumbsData: EuiBreadcrumb[] = [];
-        console.log(matches)
         let crumbs = matches
             .filter((match: any) => Boolean(match.handle?.crumb))
             .map((match: any) => match.handle.crumb(match.data));
         let url = "";
         for (let index = 0; index < crumbs.length; index++) {
             const element = crumbs[index];
-            url = url + element;
+            url = url + element.name;
             if (index !== crumbs.length - 1) {
                 breadcrumbsData.push({
                     text: url,

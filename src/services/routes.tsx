@@ -12,6 +12,7 @@ import Grid_test from "../component/grid_test";
 import { Pages } from "../component/pages";
 import _404 from "../component/_404";
 import Details from "../component/_details";
+import _details from "../component/_details";
 
 
 const router = createBrowserRouter([
@@ -24,7 +25,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home text="Trang chủ" />,
         handle: {
-          crumb: () => "/",
+          crumb: () => {return {
+            url:"/",
+            name:"dsadsadsa"
+          }},
         }
       },
       {
@@ -72,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: "grid",
         element: <Grid_test />,
+      },
+      {
+        path: "grid/:id",
+        element: <Details />,
       }
     ],
   },
