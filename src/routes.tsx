@@ -14,12 +14,16 @@ import _404 from "./component/_404";
 
 const router = createBrowserRouter([
   {
-   // path: "/",
+    // path: "/",
     element: <Pages />,
     errorElement: <_404 />,
     children: [
       {
         path: "/",
+        element: <p>Homeeeeeeeeeeeeeeeeee</p>,
+      },
+      {
+        path: "home",
         element: <Home text="Trang chủ" />,
         children: [
 

@@ -4,60 +4,51 @@ import {
     EuiHeaderBreadcrumbs
 } from '@elastic/eui';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { sideNavData } from '../data/sideNavData';
 export default () => {
     const navigate = useNavigate();
 
     //
     const location = useLocation();
     const currentPath = location.pathname;
+    console.log(location)
     // Tạo một hàm để chuyển đổi currentPath thành breadcrumbs
     function generateBreadcrumbs(path: string) {
         const pathParts = path.split('/').filter(part => part !== '');
-
         const breadcrumbs: EuiBreadcrumb[] = [];
-
+      
         let currentPath = '';
-
+      
         pathParts.forEach((part, index) => {
-            currentPath += '/' + part;
-
-            const breadcrumb: EuiBreadcrumb = {
-                text: part,
-                className: 'customClass',
+          currentPath += '/' + part;
+          const breadcrumb: EuiBreadcrumb = {
+            text: part,
+            className: 'customClass',
+          };
+          
+          if (index === 0) {
+            breadcrumb.onClick = () => {
+              navigate('/');
             };
-
-            // Điều hướng đến đường dẫn tương ứng khi click vào breadcrumb
-            if (index === 0) {
-                breadcrumb.onClick = () => {
-                    navigate('/');
-                };
-                breadcrumbs.push({
-                    text: part,
-                    onClick: (e) => {
-                        navigate("/");
-                    },
-                    className: 'customClass',
-                })
-            } else {
-                breadcrumb.onClick = () => {
-                    navigate(currentPath);
-                };
-                breadcrumbs.push({
-                    text: part,
-                    onClick: (e) => {
-                        navigate(currentPath);
-                    },
-                    className: 'customClass',
-                })
-            }
-
-          //  breadcrumbs.push(breadcrumb);
+          } else {
+            breadcrumb.onClick = () => {
+              navigate(currentPath);
+            };
+          }
+      
+          breadcrumbs.push(breadcrumb);
+      
+          // Bỏ sự kiện onClick và sử dụng label thay vì text cho các đối tượng con cuối cùng
+          if (index === pathParts.length - 1) {
+            breadcrumbs[breadcrumbs.length - 1].onClick = undefined;
+            breadcrumbs[breadcrumbs.length - 1].text = pathParts[pathParts.length - 1];
+          }
         });
-
+      
         return breadcrumbs;
-    }
+      }
+      
 
-console.log(generateBreadcrumbs(currentPath))
     //
 
     const renderBreadcrumbs = () => {
@@ -83,7 +74,11 @@ console.log(generateBreadcrumbs(currentPath))
     };
     return (
         <>
-            {renderBreadcrumbs()}
+            {/* {renderBreadcrumbs()} */}
+                <EuiHeaderBreadcrumbs
+                aria-label="Header breadcrumbs example"
+                breadcrumbs={generateBreadcrumbs(currentPath)}
+            />
         </>
     );
 };

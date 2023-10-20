@@ -33,7 +33,7 @@ export const Pages = () => {
         <EuiPageTemplate.Sidebar  sticky={true}>
           <EuiSideNav></EuiSideNav>
         </EuiPageTemplate.Sidebar>
-        <EuiPageTemplate.Header>
+        <EuiPageTemplate.Header paddingSize='m'>
           <Breadcrumb></Breadcrumb>
         </EuiPageTemplate.Header>
 
