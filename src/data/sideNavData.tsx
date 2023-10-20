@@ -1,4 +1,4 @@
-type NavItem = {
+export interface NavItem {
     label: string;
     icontype?: string;
     path?: string;
@@ -28,12 +28,12 @@ export const sideNavData: NavItem[] = [
                     {
                         label: 'Home 1',
                         icontype: 'logoMaps',
-                        path: 'home/home1',
+                        path: '/home/home1',
                     },
                     {
                         label: 'Home 2',
                         icontype: 'logoMetrics',
-                        path: 'home/home2',
+                        path: '/home/home2',
                     },
                 ]
             },
