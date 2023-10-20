@@ -27,7 +27,7 @@ const BadComponent = () => {
 root.render(
   <React.StrictMode >
     <RouterProvider router={router}  />
-    <EuiProvider colorMode="light">
+    <EuiProvider colorMode="light" cache={cache}>
       <App />
     </EuiProvider>
   </React.StrictMode>
