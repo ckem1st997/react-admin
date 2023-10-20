@@ -3,7 +3,7 @@ import {
     EuiBreadcrumb,
     EuiHeaderBreadcrumbs
 } from '@elastic/eui';
-import { Link, NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavigateFunction, useLocation, useMatches, useNavigate } from 'react-router-dom';
 import { NavItem, sideNavData } from '../data/sideNavData';
 export default () => {
     const navigate = useNavigate();
@@ -47,22 +47,22 @@ export default () => {
 
         return breadcrumbs;
     }
-    function generateBreadcrumbs1(navData:NavItem[], path:string, navigate:NavigateFunction) {
+    function generateBreadcrumbs1(navData: NavItem[], path: string, navigate: NavigateFunction) {
         const pathParts = path.split('/').filter(part => part !== '');
         const breadcrumbs: EuiBreadcrumb[] = [];
-    
+
         let currentPath = '';
-    
+
         pathParts.forEach((part, index) => {
             currentPath += '/' + part;
             const matchingItem = navData.find(item => item.path === currentPath);
-    
+
             if (matchingItem) {
-                const breadcrumb:EuiBreadcrumb = {
+                const breadcrumb: EuiBreadcrumb = {
                     text: matchingItem.label,
                     className: 'customClass',
                 };
-    
+
                 if (index === 0) {
                     breadcrumb.onClick = () => {
                         navigate('/');
@@ -72,18 +72,18 @@ export default () => {
                         navigate(currentPath);
                     };
                 }
-    
+
                 breadcrumbs.push(breadcrumb);
             }
         });
-    
+
         return breadcrumbs;
     }
     //
 
     function findParentsByPath(navData: NavItem[], path: string) {
-        const parents: NavItem[]=[];
-        const findParents = (data:NavItem[], currentPath:string) => {
+        const parents: NavItem[] = [];
+        const findParents = (data: NavItem[], currentPath: string) => {
             for (const item of data) {
                 if (item.path === currentPath) {
                     return true;
@@ -110,8 +110,8 @@ export default () => {
     //
 
     const pathToFind = '/home/home1'; // Thay đổi path cần tìm ở đây
-const parentsList = findParentsByPath(sideNavData, currentPath);
-console.log('Parents:', parentsList);
+    const parentsList = findParentsByPath(sideNavData, currentPath);
+    console.log('Parents:', parentsList);
 
 
 
@@ -141,12 +141,42 @@ console.log('Parents:', parentsList);
             />
         );
     };
+
+    function Breadcrumbs() {
+        let matches = useMatches();
+        const breadcrumbsData: EuiBreadcrumb[] = [];
+        console.log(matches)
+        let crumbs = matches
+            .filter((match: any) => Boolean(match.handle?.crumb))
+            .map((match: any) => match.handle.crumb(match.data));
+        let url = "";
+        for (let index = 0; index < crumbs.length; index++) {
+            const element = crumbs[index];
+            url = url + element;
+            if (index !== crumbs.length - 1) {
+                breadcrumbsData.push({
+                    text: url,
+                    onClick: (e) => {
+                        navigate(url);
+                    },
+                    className: 'customClass',
+                })
+            }
+            else
+                breadcrumbsData.push({
+                    text: url,
+                    className: 'customClass',
+                })
+        }
+        return breadcrumbsData;
+    }
+
     return (
         <>
             {/* {renderBreadcrumbs()} */}
             <EuiHeaderBreadcrumbs
                 aria-label="Header breadcrumbs example"
-                breadcrumbs={generateBreadcrumbs(currentPath)}
+                breadcrumbs={Breadcrumbs()}
             />
         </>
     );

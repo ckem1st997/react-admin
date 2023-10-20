@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { EuiEmptyPrompt, EuiErrorBoundary, EuiProgress, EuiProvider, euiStylisPrefixer } from '@elastic/eui';
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { RouterProvider } from 'react-router-dom';
-import router from './routes';
+import router from './services/routes';
 import createCache from '@emotion/cache';
 
 const container = document.querySelector('meta[name="emotion-styles"]');
@@ -27,8 +27,8 @@ const BadComponent = () => {
 };
 root.render(
   <React.StrictMode >
-    <RouterProvider router={router} fallbackElement={<EuiProgress size="xs" color="accent" />} />
-    <EuiProvider colorMode="light" cache={cache}>
+    <RouterProvider router={router}  />
+    <EuiProvider colorMode="light">
       <App />
     </EuiProvider>
   </React.StrictMode>

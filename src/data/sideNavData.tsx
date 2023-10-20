@@ -26,14 +26,27 @@ export const sideNavData: NavItem[] = [
                         path: 'home',
                     },
                     {
-                        label: 'Home 1',
+                        label: 'Grid',
                         icontype: 'logoMaps',
-                        path: '/home/home1',
+                        path: '/home/grid',                       
                     },
                     {
-                        label: 'Home 2',
+                        label: 'Grid',
+                        icontype: 'logoMaps',
+                        // path: '/home/grid',
+                        items: [
+                            {
+                                label: 'Grid',
+                                icontype: 'logoWorkplaceSearch',
+                                path: 'home/grid/home2',
+                            },
+                        ]
+                    },
+                    {
+                        label: 'Home 1',
                         icontype: 'logoMetrics',
-                        path: '/home/home2',
+                        path: '/home/home1',
+
                     },
                 ]
             },

@@ -13,23 +13,10 @@ import Layout from './component/Layout';
 import { BrowserRouter, Routes, Route, RouterProvider, useLocation } from 'react-router-dom';
 import Blogs from './component/blog';
 import Home from './component/home';
-import router from './routes';
+import router from './services/routes';
 import createCache from '@emotion/cache';
 
 
-const container = document.querySelector('meta[name="emotion-styles"]');
-const cache = createCache({
-  key: 'eui',
-  container: container || undefined,
-  stylisPlugins: [euiStylisPrefixer],
-
-});
-cache.compat = true;
-const BadComponent = () => {
-  throw new Error(
-    "I'm here to kick butt and chew bubblegum. And I'm all out of gum."
-  );
-};
 function App() {
   const [count, setCount] = React.useState(0);
 
