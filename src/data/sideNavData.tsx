@@ -12,18 +12,18 @@ export const sideNavData: NavItem[] = [
         path: '/'
     },
     {
-        label: 'Quản lý 1',
+        label: 'Quản lý vật tư',
         icontype: 'logoElasticsearch',
         items: [
             {
-                label: 'Grid',
+                label: 'Danh sách vật tư',
                 icontype: 'logoMaps',
-                path: 'home/grid',
+                path: 'unit/grid',
             },
             {
-                label: 'Home',
+                label: 'Emty Pages',
                 icontype: 'logoMaps',
-                path: 'home/home',
+                path: 'unit/home',
             },
         ],
     },

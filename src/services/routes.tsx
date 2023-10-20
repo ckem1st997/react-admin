@@ -13,6 +13,7 @@ import { Pages } from "../component/pages";
 import _404 from "../component/_404";
 import Details from "../component/_details";
 import _details from "../component/_details";
+import { SelectListItem } from "../model/model";
 
 
 const router = createBrowserRouter([
@@ -25,32 +26,72 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home text="Trang chủ" />,
         handle: {
-          crumb: () => {return {
-            url:"/",
-            name:"dsadsadsa"
-          }},
+          crumb: () => {
+            let model: SelectListItem = {
+              Disabled: false,
+              Group: null,
+              Selected: false,
+              Text: "",
+              Value: ""
+            };
+            model.Text = "Trang chủ";
+            model.Value = "/";
+            return model;
+          },
         }
       },
       {
-        path: "/home",
+        path: "/unit",
         // element: <p>Home</p>,
         handle: {
-          crumb: () => "/home",
+          crumb: () => {
+            let model: SelectListItem = {
+              Disabled: false,
+              Group: null,
+              Selected: false,
+              Text: "",
+              Value: ""
+            };
+            model.Text = "Quản lý vật tư";
+            model.Value = "/unit";
+            return model;
+          },
         },
-
         children: [
           {
             path: "grid",
             element: <Grid_test />,
             handle: {
-              crumb: () => "/grid",
+              crumb: () => {
+                let model: SelectListItem = {
+                  Disabled: false,
+                  Group: null,
+                  Selected: false,
+                  Text: "",
+                  Value: ""
+                };
+                model.Text = "Danh sách vật tư";
+                model.Value = "/grid";
+                return model;
+              },
             },
             children: [
               {
                 path: ":id",
                 element: <Details />,
                 handle: {
-                  crumb: () => "/:id",
+                  crumb: () => {
+                    let model: SelectListItem = {
+                      Disabled: false,
+                      Group: null,
+                      Selected: false,
+                      Text: "",
+                      Value: ""
+                    };
+                    model.Text = "Chi tiết vật tư";
+                    model.Value = "/:id";
+                    return model;
+                  },
                 },
               }
             ]
@@ -59,7 +100,18 @@ const router = createBrowserRouter([
             path: "home",
             element: <Home text="dsadsadsa" key="44fdsfdsfds" />,
             handle: {
-              crumb: () => "/home",
+              crumb: () => {
+                let model: SelectListItem = {
+                  Disabled: false,
+                  Group: null,
+                  Selected: false,
+                  Text: "",
+                  Value: ""
+                };
+                model.Text = "Trang chủ vật tư";
+                model.Value = "/home";
+                return model;
+              },
             },
 
           }

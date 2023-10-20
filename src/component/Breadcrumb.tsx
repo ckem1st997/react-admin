@@ -5,6 +5,8 @@ import {
 } from '@elastic/eui';
 import { Link, NavigateFunction, useLocation, useMatches, useNavigate } from 'react-router-dom';
 import { NavItem, sideNavData } from '../data/sideNavData';
+import { SelectListItem } from '../model/model';
+import { isNullOrEmpty } from '../hepler/StringHelper';
 export default () => {
     const navigate = useNavigate();
 
@@ -108,14 +110,7 @@ export default () => {
 
     //
 
-    const pathToFind = '/home/home1'; // Thay đổi path cần tìm ở đây
-    const parentsList = findParentsByPath(sideNavData, currentPath);
-    console.log('Parents:', parentsList);
-
-
-
-
-
+    //  const parentsList = findParentsByPath(sideNavData, currentPath);
 
     //
 
@@ -144,27 +139,38 @@ export default () => {
     function Breadcrumbs() {
         let matches = useMatches();
         const breadcrumbsData: EuiBreadcrumb[] = [];
+        breadcrumbsData.push({
+            text: "Trang chủ",
+            onClick: (e) => {
+                navigate("/");
+            },
+            className: 'customClass',
+        })
         let crumbs = matches
             .filter((match: any) => Boolean(match.handle?.crumb))
             .map((match: any) => match.handle.crumb(match.data));
         let url = "";
         for (let index = 0; index < crumbs.length; index++) {
-            const element = crumbs[index];
-            url = url + element.name;
-            if (index !== crumbs.length - 1) {
-                breadcrumbsData.push({
-                    text: url,
-                    onClick: (e) => {
-                        navigate(url);
-                    },
-                    className: 'customClass',
-                })
+            const element: SelectListItem = crumbs[index];
+            console.log(element)
+            if (element && !isNullOrEmpty(element.Text) && element.Value !=='/') {
+                url = url + element.Value;
+                if (index !== crumbs.length - 1) {
+                    breadcrumbsData.push({
+                        text: element.Text,
+                        onClick: (e) => {
+                            navigate(url);
+                        },
+                        className: 'customClass',
+                    })
+                }
+                else
+                    breadcrumbsData.push({
+                        text: element.Text,
+                        className: 'customClass',
+                    })
             }
-            else
-                breadcrumbsData.push({
-                    text: url,
-                    className: 'customClass',
-                })
+
         }
         return breadcrumbsData;
     }
