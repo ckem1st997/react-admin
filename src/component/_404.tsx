@@ -43,7 +43,7 @@ export default () => {
                 </EuiButton>,
                 <EuiButtonEmpty iconType="arrowLeft" flush="both" onClick={() => navigate(-1)}>
                     Quay lại
-                </EuiButtonEmpty>,
+                </EuiButtonEmpty>
             ]}
         />
     );
