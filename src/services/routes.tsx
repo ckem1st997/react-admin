@@ -128,6 +128,20 @@ const router = createBrowserRouter([
       {
         path: "grid",
         element: <Grid_test />,
+        handle: {
+          crumb: () => {
+            let model: SelectListItem = {
+              Disabled: false,
+              Group: null,
+              Selected: false,
+              Text: "",
+              Value: ""
+            };
+            model.Text = "Danh sách kho";
+            model.Value = "/grid";
+            return model;
+          },
+        },
       },
       {
         path: "grid/:id",

@@ -28,11 +28,11 @@ export const sideNavData: NavItem[] = [
         ],
     },
     {
-        label: 'Quản lý 2',
+        label: 'Quản lý kho',
         icontype: 'logoElasticStack',
         items: [
             {
-                label: 'Grid',
+                label: 'Danh sách kho',
                 icontype: 'logoObservability',
                 path: '/Grid',
             },
