@@ -5,8 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { EuiEmptyPrompt, EuiErrorBoundary, EuiProgress, EuiProvider, euiStylisPrefixer } from '@elastic/eui';
 import '@elastic/eui/dist/eui_theme_light.min.css';
-import { RouterProvider } from 'react-router-dom';
-import router from './services/routes';
+import { BrowserRouter as Router, Routes, Route, RouterProvider } from "react-router-dom";import router from './services/routes';
 import createCache from '@emotion/cache';
 
 const container = document.querySelector('meta[name="emotion-styles"]');

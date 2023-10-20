@@ -22,7 +22,7 @@ import {
     EuiModalHeaderTitle,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 type User = {
     id: number;
     firstName: string | null | undefined;
@@ -154,7 +154,8 @@ export default () => {
                     type: 'icon',
                     onClick: (user: User) => {
                         setIsModalVisible(true);
-                        console.log(user)
+                        console.log(user);
+                        navigate("/home/grid/"+user.id)
                     },
                 },
                 {
@@ -272,9 +273,10 @@ export default () => {
 
     const closeModal = () => setIsModalVisible(false);
     const showModal = () => setIsModalVisible(true);
-
+    const navigate = useNavigate();
     let modal;
     if (isModalVisible) {
+
         modal = (
             <EuiModal onClose={closeModal}>
                 <EuiModalHeader>
