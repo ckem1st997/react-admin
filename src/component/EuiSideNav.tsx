@@ -3,8 +3,6 @@ import { EuiFieldSearch, EuiHeaderSectionItem, EuiHeaderSectionItemButton, EuiIc
 import { Link, redirect, useNavigate, useNavigation, useNavigationType } from 'react-router-dom';
 import { sideNavData } from '../data/sideNavData';
 import { createItemMenu } from '../hepler/Helper';
-import Search_Menu from './Search_Menu';
-import Search_Menu_Admin from './Search_Menu_Admin';
 import { isNullOrEmpty } from '../hepler/StringHelper';
 import { recursiveSearch } from '../hepler/FunctionHelper';
 

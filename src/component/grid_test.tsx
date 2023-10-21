@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import {
     formatDate,
     Comparators,
@@ -20,6 +20,17 @@ import {
     EuiModalFooter,
     EuiModalHeader,
     EuiModalHeaderTitle,
+    EuiFormRow,
+    EuiRange,
+    EuiFieldSearch,
+    EuiTextArea,
+    euiPaletteColorBlindBehindText,
+    EuiComboBox,
+    EuiComboBoxOptionOption,
+    EuiHighlight,
+    euiPaletteColorBlind,
+    EuiText,
+    EuiHorizontalRule,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
@@ -65,7 +76,121 @@ const deleteUsersByIds = (...ids: number[]) => {
         }
     });
 };
+const visColors = euiPaletteColorBlind();
+const visColorsBehindText = euiPaletteColorBlindBehindText();
+const optionsStatic = [
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Titan',
+        'data-test-subj': 'titanOption',
+        color: visColorsBehindText[0],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Enceladus',
+        color: visColorsBehindText[1],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Mimas',
+        color: visColorsBehindText[2],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Dione',
+        color: visColorsBehindText[3],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Iapetus',
+        color: visColorsBehindText[4],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Phoebe',
+        color: visColorsBehindText[5],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Rhea',
+        color: visColorsBehindText[6],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label:
+            "Pandora is one of Saturn's moons, named for a Titaness of Greek mythology",
+        color: visColorsBehindText[7],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Tethys',
+        color: visColorsBehindText[8],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Hyperion',
+        color: visColorsBehindText[9],
+    },
+];
+
+
 export default () => {
+
+    //combobox
+
+    const [options, setOptions] = useState(optionsStatic);
+    const [selectedOptions, setSelected] = useState([options[2], options[5]]);
+
+    const onChange = (selectedOptions: any) => {
+        setSelected(selectedOptions);
+    };
+
+    const onCreateOption = (searchValue: any, flattenedOptions: Array<EuiComboBoxOptionOption<string>> = []) => {
+        if (!searchValue) {
+            return;
+        }
+
+        const normalizedSearchValue = searchValue.trim().toLowerCase();
+
+        if (!normalizedSearchValue) {
+            return;
+        }
+
+        const newOption: any = {
+            label: searchValue,
+        }
+
+        // Create the option if it doesn't exist.
+        // if (flattenedOptions.findIndex(
+        //         (option) => option.label.trim().toLowerCase() === normalizedSearchValue
+        //     ) === -1
+        // ) {
+        //     setOptions([...options, newOption]);
+        // }
+
+        // Select the option.
+        setSelected((prevSelected) => [...prevSelected, newOption]);
+    };
     /**
      * Mobile column options
      */
@@ -163,7 +288,7 @@ export default () => {
                     icon: 'copy',
                     type: 'icon',
                     onClick: (user: User) => {
-                        navigate("/grid/"+user.id)
+                        navigate("/grid/" + user.id)
                         // cloneUserbyId(user.id);
                         // setSelectedItems([]);
                     },
@@ -259,6 +384,7 @@ export default () => {
         pageSize: pageSize,
         totalItemCount: totalItemCount,
         pageSizeOptions: [3, 5, 8],
+        
     };
     const sorting: EuiTableSortingType<User> = {
         sort: {
@@ -268,7 +394,7 @@ export default () => {
     };
 
     // modal
-    const data:User={
+    const data: User = {
         id: 0,
         firstName: undefined,
         lastName: '',
@@ -298,21 +424,7 @@ export default () => {
                     This modal has the following setup:
                     <EuiSpacer />
                     <EuiCodeBlock language="html" isCopyable>
-                        {`<EuiModal onClose={closeModal}>
-      <EuiModalHeader>
-        <EuiModalHeaderTitle><!-- Modal title --></EuiModalHeaderTitle>
-      </EuiModalHeader>
-    
-      <EuiModalBody>
-        <!-- Modal body -->
-      </EuiModalBody>
-    
-      <EuiModalFooter>
-        <EuiButton onClick={closeModal} fill>
-          Close
-        </EuiButton>
-      </EuiModalFooter>
-    </EuiModal>`}
+                        {`test`}
                     </EuiCodeBlock>
                 </EuiModalBody>
 
@@ -324,26 +436,80 @@ export default () => {
             </EuiModal>
         );
     }
+
+    //
+    const renderOption = (option: any, searchValue: any, contentClassName: string | undefined) => {
+        const { color, label, value } = option;
+        const dotColor = visColors[visColorsBehindText.indexOf(color)];
+        return (
+            <EuiHealth color={dotColor}>
+                <span className={contentClassName}>
+                    <EuiHighlight search={searchValue}>{label}</EuiHighlight>
+                    &nbsp;
+                    <span>({value.size})</span>
+                </span>
+            </EuiHealth>
+        );
+    };
+    //
+
     return (
         <>
-            <EuiFlexGroup alignItems="center" responsive={false}>
-                <EuiFlexItem grow={false}>
-                    <EuiSwitch
-                        label="Responsive"
-                        checked={isResponsive}
-                        onChange={() => setIsResponsive(!isResponsive)}
-                    />
+            <EuiFlexGroup responsive={true}>
+                <EuiFlexItem grow={3}>
+                    <EuiFormRow label="Trạng thái: ">
+                        <EuiComboBox
+                            aria-label="Accessible screen reader label"
+                            placeholder="Chọn..."
+                            options={options}
+                            selectedOptions={selectedOptions}
+                            onChange={onChange}
+                            fullWidth={true}
+                            singleSelection={true}
+                            customOptionText="dsadsadsa"
+                        // onCreateOption={onCreateOption}                       
+                        />
+                    </EuiFormRow>
                 </EuiFlexItem>
-                <EuiFlexItem grow={false}>
-                    <EuiSwitch
-                        label="Custom header"
-                        disabled={!isResponsive}
-                        checked={isResponsive && customHeader}
-                        onChange={() => setCustomHeader(!customHeader)}
-                    />
+
+                <EuiFlexItem grow={3}>
+                    <EuiFormRow label="Tên: ">
+
+                        <EuiComboBox
+                            aria-label="Accessible screen reader label"
+                            placeholder="Chọn..."
+                            options={options}
+                            selectedOptions={selectedOptions}
+                            onChange={onChange}
+                            fullWidth={true}
+                            renderOption={renderOption}
+                        // onCreateOption={onCreateOption}                       
+                        />
+                    </EuiFormRow>
+
                 </EuiFlexItem>
-            </EuiFlexGroup>
-            <EuiSpacer size="l" />
+
+                <EuiFlexItem grow={4}>
+                    <EuiFormRow label="Tìm kiếm">
+                        <EuiFlexGroup >
+                            <EuiFlexItem>
+                                <EuiFieldSearch
+                                    placeholder="Tìm kiếm..."
+                                    fullWidth
+                                    aria-label="An example of search with fullWidth"
+                                />
+                            </EuiFlexItem>
+                            <EuiFlexItem grow={false}>
+                                <EuiButton>Search</EuiButton>
+                            </EuiFlexItem>
+                        </EuiFlexGroup>
+                    </EuiFormRow>
+
+                    <EuiSpacer size="s" />
+                </EuiFlexItem>
+            </EuiFlexGroup >
+            {/* <EuiSpacer size="l" /> */}
+            <EuiHorizontalRule size="full" />
             <EuiBasicTable
                 tableCaption="Demo for responsive EuiBasicTable with mobile options"
                 items={pageOfItems}
@@ -354,7 +520,7 @@ export default () => {
                 selection={selection}
                 isSelectable={true}
                 hasActions={true}
-                responsive={isResponsive}
+                responsive={true}
                 onChange={onTableChange}
             />
             {modal}

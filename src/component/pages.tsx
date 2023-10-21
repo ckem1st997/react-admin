@@ -39,7 +39,7 @@ export const Pages = () => {
           <Breadcrumb></Breadcrumb>
         </EuiPageTemplate.Header>
 
-        <EuiPageTemplate.Section grow={false} >
+        <EuiPageTemplate.Section   grow={false} >
           <Outlet />
         </EuiPageTemplate.Section>
       </EuiPageTemplate>
