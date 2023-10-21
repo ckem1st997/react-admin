@@ -45,7 +45,7 @@ export default () => {
         compressed: true,
       }}
       popoverButton={
-        <EuiHeaderSectionItemButton aria-label="Sitewide search">
+        <EuiHeaderSectionItemButton flush='left' aria-label="Sitewide search">
           <EuiIcon type="search" size="m" />
         </EuiHeaderSectionItemButton>
       }

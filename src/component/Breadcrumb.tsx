@@ -18,8 +18,8 @@ export default () => {
     const currentPath = location.pathname;
     const [isLoadingButon, setisLoadingButon] = useState(true);
     useEffect(() => {
-      //  setisLoadingButon(false);
-        }, [location.pathname]);
+        //  setisLoadingButon(false);
+    }, [location.pathname]);
 
     function Breadcrumbs() {
         let matches = useMatches();
@@ -37,17 +37,22 @@ export default () => {
         let url = "";
         for (let index = 0; index < crumbs.length; index++) {
             const element: SelectListItem = crumbs[index];
-            console.log(element)
             if (element && !isNullOrEmpty(element.Text) && element.Value !== '/') {
                 url = url + element.Value;
                 if (index !== crumbs.length - 1) {
-                    breadcrumbsData.push({
-                        text: element.Text,
-                        onClick: (e) => {
-                            navigate(url);
-                        },
-                        className: 'customClass',
-                    })
+                    if (!element.Disabled)
+                        breadcrumbsData.push({
+                            text: element.Text,
+                            onClick: (e) => {
+                                navigate(url);
+                            },
+                            className: 'customClass',
+                        })
+                    else
+                        breadcrumbsData.push({
+                            text: element.Text,
+                            className: 'customClass',
+                        })
                 }
                 else
                     breadcrumbsData.push({
@@ -67,9 +72,9 @@ export default () => {
                 aria-label="Header breadcrumbs example"
                 breadcrumbs={Breadcrumbs()}
             />
-            <EuiButton iconType="home" color="primary" size='s' fill onClick={() => navigate("/")}>
+            {/* <EuiButton iconType="home" color="primary" size='s' fill onClick={() => navigate("/")}>
                 Home
-            </EuiButton>,
+            </EuiButton>, */}
             <EuiButtonEmpty iconType="arrowLeft" flush="both" onClick={() => navigate(-1)}>
                 Quay lại
             </EuiButtonEmpty>

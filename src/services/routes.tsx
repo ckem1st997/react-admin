@@ -46,7 +46,7 @@ const router = createBrowserRouter([
         handle: {
           crumb: () => {
             let model: SelectListItem = {
-              Disabled: false,
+              Disabled: true,
               Group: null,
               Selected: false,
               Text: "",
@@ -64,7 +64,7 @@ const router = createBrowserRouter([
             handle: {
               crumb: () => {
                 let model: SelectListItem = {
-                  Disabled: false,
+                  Disabled: true,
                   Group: null,
                   Selected: false,
                   Text: "",
