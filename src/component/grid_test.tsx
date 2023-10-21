@@ -31,6 +31,8 @@ import {
     euiPaletteColorBlind,
     EuiText,
     EuiHorizontalRule,
+    Pagination,
+    RIGHT_ALIGNMENT,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
@@ -61,13 +63,6 @@ for (let i = 0; i < 20; i++) {
         },
     });
 }
-const cloneUserbyId = (id: number) => {
-    const index = users.findIndex((user) => user.id === id);
-    if (index >= 0) {
-        const user = users[index];
-        users.splice(index, 0, { ...user, id: users.length });
-    }
-};
 const deleteUsersByIds = (...ids: number[]) => {
     ids.forEach((id) => {
         const index = users.findIndex((user) => user.id === id);
@@ -260,6 +255,14 @@ export default () => {
                 return <EuiHealth color={color}>{label}</EuiHealth>;
             },
             sortable: true,
+            footer: () => {
+
+                return (
+                    <strong>
+                        Total: 99999
+                    </strong>
+                );
+            },
         },
         {
             field: '',
@@ -306,6 +309,7 @@ export default () => {
                 },
             ],
         },
+
     ];
     /**
      * Selection
@@ -384,7 +388,7 @@ export default () => {
         pageSize: pageSize,
         totalItemCount: totalItemCount,
         pageSizeOptions: [3, 5, 8],
-        
+
     };
     const sorting: EuiTableSortingType<User> = {
         sort: {

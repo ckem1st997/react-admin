@@ -14,6 +14,7 @@ import _404 from "../component/_404";
 import Details from "../component/_details";
 import _details from "../component/_details";
 import { SelectListItem } from "../model/model";
+import Tableexample from "../component/tableexample";
 
 
 const router = createBrowserRouter([
@@ -127,7 +128,7 @@ const router = createBrowserRouter([
       },
       {
         path: "grid",
-        element: <Grid_test />,
+        element: <Tableexample />,
         handle: {
           crumb: () => {
             let model: SelectListItem = {
