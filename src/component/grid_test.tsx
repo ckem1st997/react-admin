@@ -155,9 +155,14 @@ export default () => {
 
     const [options, setOptions] = useState(optionsStatic);
     const [selectedOptions, setSelected] = useState([options[2], options[5]]);
-
+    const [selectedOptions1, setSelected1] = useState([options[2]]);
     const onChange = (selectedOptions: any) => {
+        console.log(selectedOptions)
         setSelected(selectedOptions);
+    };
+
+    const onChange1 = (selectedOptions: any) => {
+        setSelected1(selectedOptions);
     };
 
     const onCreateOption = (searchValue: any, flattenedOptions: Array<EuiComboBoxOptionOption<string>> = []) => {
@@ -475,24 +480,20 @@ export default () => {
                             onChange={onChange}
                             fullWidth={true}
                             singleSelection={true}
-                            customOptionText="dsadsadsa"
-                        // onCreateOption={onCreateOption}                       
                         />
                     </EuiFormRow>
                 </EuiFlexItem>
 
                 <EuiFlexItem grow={3}>
                     <EuiFormRow label="Tên: ">
-
                         <EuiComboBox
                             aria-label="Accessible screen reader label"
                             placeholder="Chọn..."
                             options={options}
-                            selectedOptions={selectedOptions}
-                            onChange={onChange}
+                            selectedOptions={selectedOptions1}
+                            onChange={onChange1}
                             fullWidth={true}
                             renderOption={renderOption}
-                        // onCreateOption={onCreateOption}                       
                         />
                     </EuiFormRow>
 
@@ -531,6 +532,7 @@ export default () => {
                 hasActions={true}
                 responsive={true}
                 onChange={onTableChange}
+                loading={true}
             />
             {modal}
         </>
