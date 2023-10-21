@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, ReactNode, useState } from 'react';
 import {
     formatDate,
     Comparators,
@@ -33,6 +33,7 @@ import {
     EuiHorizontalRule,
     Pagination,
     RIGHT_ALIGNMENT,
+    EuiEmptyPrompt,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
@@ -466,7 +467,24 @@ export default () => {
         );
     };
     //
-
+    const [message, setMessage] = useState<ReactNode>(
+        <EuiEmptyPrompt
+          title={<h3>No users</h3>}
+          titleSize="xs"
+          body="Looks like you don&rsquo;t have any users. Let&rsquo;s create some!"
+          actions={
+            <EuiButton
+              size="s"
+              key="loadUsers"
+              onClick={() => {
+              //  loadUsers();
+              }}
+            >
+              Load Users
+            </EuiButton>
+          }
+        />
+      );
     return (
         <>
             <EuiFlexGroup responsive={true}>
@@ -533,6 +551,8 @@ export default () => {
                 responsive={true}
                 onChange={onTableChange}
                 loading={true}
+                // có lỗi thì sẽ không hiển thị
+                //error=""
             />
             {modal}
         </>

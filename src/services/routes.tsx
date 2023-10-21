@@ -15,6 +15,7 @@ import Details from "../component/_details";
 import _details from "../component/_details";
 import { SelectListItem } from "../model/model";
 import Tableexample from "../component/tableexample";
+import Tablememory from "../component/tablememory";
 
 
 const router = createBrowserRouter([
@@ -128,7 +129,7 @@ const router = createBrowserRouter([
       },
       {
         path: "grid",
-        element: <Tableexample />,
+        element: <Tablememory />,
         handle: {
           crumb: () => {
             let model: SelectListItem = {
