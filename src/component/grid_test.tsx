@@ -212,6 +212,19 @@ export default () => {
             },
         },
         {
+           // field: 'github',
+            name: 'Github',
+            render: (username: User) => (
+                <EuiLink onClick={(e)=>{
+                    console.log(username)
+                    setIsUser(username);
+                    setIsModalVisible(true);
+                }} target="_blank">
+                  {username.firstName}-{username.github}
+                </EuiLink>
+            ),
+        },
+        {
             field: 'lastName',
             name: 'Last Name',
             truncateText: true,
@@ -219,15 +232,7 @@ export default () => {
                 show: !isResponsive || !customHeader,
             },
         },
-        {
-            field: 'github',
-            name: 'Github',
-            render: (username: User['github']) => (
-                <EuiLink href="#" target="_blank">
-                    {username}
-                </EuiLink>
-            ),
-        },
+
         {
             field: 'dateOfBirth',
             name: 'Date of Birth',
