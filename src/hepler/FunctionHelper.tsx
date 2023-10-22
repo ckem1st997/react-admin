@@ -17,3 +17,8 @@ export const recursiveSearch = (items: any[], query: string) => {
       })
       .filter((item) => item !== null); // Lọc bỏ các item là null
   };
+
+  export function Delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  

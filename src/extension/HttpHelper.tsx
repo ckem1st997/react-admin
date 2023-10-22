@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
+import { Delay } from '../hepler/FunctionHelper';
 
 class Repository {
   private axiosInstance: AxiosInstance;
@@ -10,6 +11,7 @@ class Repository {
   }
 
   public async get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
+    await Delay(1000);
     return await this.axiosInstance.get<T, R>(url, config);
   }
 

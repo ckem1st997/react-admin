@@ -64,6 +64,13 @@ const columns: Array<EuiBasicTableColumn<WareHouseDTOs>> = [
         },
     },
     {
+        field: 'address',
+        name: 'Địa chỉ',
+        mobileOptions: {
+            show: false,
+        },
+    },
+    {
         field: 'description',
         name: 'Mô tả',
         mobileOptions: {
@@ -74,9 +81,9 @@ const columns: Array<EuiBasicTableColumn<WareHouseDTOs>> = [
         field: 'inactive',
         name: 'Trạng thái',
         dataType: 'boolean',
-        render: (online: WareHouseDTOs) => {
-            const color = online.inactive ? 'success' : 'danger';
-            const label = online.inactive ? 'Online' : 'Offline';
+        render: (online: WareHouseDTOs["inactive"]) => {
+            const color = online ? 'success' : 'danger';
+            const label = online ? 'Online' : 'Offline';
             return <EuiHealth color={color}>{label}</EuiHealth>;
         },
         sortable: true,
@@ -165,12 +172,28 @@ const optionsStatic = [
         color: visColorsBehindText[9],
     },
 ];
-
+const optionInactive = [
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Kích hoạt',
+        'data-test-subj': 'titanOption',
+        color: visColorsBehindText[0],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Chưa kích hoạt',
+        color: visColorsBehindText[1],
+    }
+];
 export default () => {
     // state
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<WareHouseDTOs[]>([]);
-    const [pages, setPages] = useState<PageTotalCount<WareHouseDTOs>>();
+    const [isFrist, setIsFrist] = useState(true);
     const [message, setMessage] = useState<ReactNode>(
         <EuiEmptyPrompt
             title={<h3>Dữ liệu rỗng !</h3>}
@@ -189,7 +212,7 @@ export default () => {
             }
         />
     );
-    const [selection, setSelection] = useState<WareHouseDTOs[]>([]);
+    const [selectionInactive, setSelectionInactive] = useState(optionInactive);
     const [error, setError] = useState<string | undefined>();
     const tableRef = useRef<EuiInMemoryTable<WareHouseDTOs> | null>(null);
     const dataGridRef = useRef<EuiDataGridRefProps | null>(null);
@@ -199,7 +222,10 @@ export default () => {
     const [selectedOptions1, setSelected1] = useState();
     //
     useEffect(() => {
-        loadUsers(pagination.pageIndex, pagination.pageSize);
+        if (isFrist)
+            setIsFrist(false);
+        else
+            loadUsers(pagination.pageIndex, pagination.pageSize);
     }, [pagination.pageIndex, pagination.pageSize]);
 
 
@@ -209,47 +235,29 @@ export default () => {
         setLoading(true);
         setUsers([]);
         setError(undefined);
-
-        setError(undefined);
         const repository = new Repository("http://localhost:5005/api/v1/WareHouses");
         try {
-            let callapi = await repository.get<MessageResponse<WareHouseDTOs[]>>(`/get-list?Skip=${index}&Take=${size}`);
-            if (isNullOrUndefined(callapi.data.data))
+            let callapi = await repository.get<MessageResponse<WareHouseDTOs[]>>(`/get-list?Skip=${(index * (size ?? 0))}&Take=${size}`);
+            if (isNullOrUndefined(callapi) || isNullOrUndefined(callapi.data) || isNullOrUndefined(callapi.data.data))
                 setMessage(noItemsFoundMsg);
-            setUsers(callapi.data.data);
-            setPagination({ ...pagination, totalItemCount: callapi.data.totalCount });
-            //  setPages({ pageOfItems: callapi.data.data, totalItemCount: callapi.data.totalCount });
-            return callapi.data; // Trả về dữ liệu từ API
+            else {
+                setUsers(callapi.data.data);
+                setPagination({ ...pagination, totalItemCount: callapi.data.totalCount });
+            }
+            return callapi.data; 
         } catch (error: any) {
-            setError('Có lỗi xảy ra khi tải dữ liệu.');
-            // setMessage(error);
-            return null; // Trả về null nếu có lỗi
+            setError('Có lỗi xảy ra khi tải dữ liệu !');
+                return null; 
         } finally {
             setLoading(false);
         }
-    };
-    const loadUsersWithError = () => {
-        setMessage('Đang lấy dữ liệ...');
-        setLoading(true);
-        setUsers([]);
-        setError(undefined);
-        setTimeout(() => {
-            setLoading(false);
-            setMessage(noItemsFoundMsg);
-            setError('ouch!... again... ');
-            setUsers([]);
-        }, random.number({ min: 0, max: 3000 }));
     };
 
     //
     const onTableChange = async ({ page: { index, size } }: CriteriaWithPagination<WareHouseDTOs>) => {
         setPagination({ ...pagination, pageIndex: index, pageSize: size });
-        // await loadUsers(index, size);
     };
-
     //
-
-
 
     const onChange = (selectedOptions: any) => {
         setSelected(selectedOptions);
@@ -281,7 +289,7 @@ export default () => {
                         <EuiComboBox
                             aria-label="Accessible screen reader label"
                             placeholder="Chọn..."
-                            options={options}
+                            options={optionInactive}
                             selectedOptions={selectedOptions}
                             onChange={onChange}
                             fullWidth={true}

@@ -7,11 +7,11 @@ declare global {
 }
 
 String.prototype.isNullOrEmpty = function (): boolean {
-  return this == null || this.trim() === '' || this.length < 0;
+  return this == null || this.trim() === '' || this.length < 1;
 };
 
 export function isNullOrEmpty(input: string): boolean {
-  return input == undefined || input == null || input.trim() === '' || input.length < 0;
+  return input == undefined || input == null || input.trim() === '' || input.length < 1;
 }
 
 export function isNullOrUndefined(input: any): boolean {
