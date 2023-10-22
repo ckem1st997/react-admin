@@ -15,56 +15,35 @@ import {
     EuiSpacer,
     EuiDataGridRefProps,
     CriteriaWithPagination,
+    EuiFormRow,
+    EuiComboBox,
+    EuiFieldSearch,
+    EuiHighlight,
+    euiPaletteColorBlind,
+    euiPaletteColorBlindBehindText,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
 import { PaginationOptions, paginationBase } from '../extension/BaseTable';
 import { size } from '@elastic/eui/src/themes/amsterdam/global_styling/variables/_size';
-type User = {
-    id: number;
-    firstName: string | null | undefined;
-    lastName: string;
-    github: string;
-    dateOfBirth: Date;
-    online: boolean;
-    location: {
-        city: string;
-        country: string;
-    };
-};
-const userData: User[] = [];
-for (let i = 0; i < 20; i++) {
-    userData.push({
-        id: i + 1,
-        firstName: faker.person.firstName(),
-        lastName: faker.person.lastName(),
-        github: faker.internet.userName(),
-        dateOfBirth: faker.date.past(),
-        online: faker.datatype.boolean(),
-        location: {
-            city: faker.location.city(),
-            country: faker.location.country(),
-        },
-    });
-}
-const onlineUsers = userData.filter((user) => user.online);
-const deleteUsersByIds = (...ids: number[]) => {
-    ids.forEach((id) => {
-        const index = userData.findIndex((user) => user.id === id);
-        if (index >= 0) {
-            userData.splice(index, 1);
-        }
-    });
-};
-const columns: Array<EuiBasicTableColumn<User>> = [
+import Repository from '../extension/HttpHelper';
+import { MessageResponse, PageTotalCount, WareHouseDTOs } from '../model/model';
+import { isNullOrUndefined } from '../hepler/StringHelper';
+const userData: WareHouseDTOs[] = [];
+const columns: Array<EuiBasicTableColumn<WareHouseDTOs>> = [
     {
-        field: 'firstName',
+        field: 'name',
         name: 'First Name',
         sortable: true,
         truncateText: true,
+        render: (username: WareHouseDTOs['name']) => (
+            <EuiLink target="_blank">
+                {username}
+            </EuiLink>
+        ),
         mobileOptions: {
-            render: (user: User) => (
+            render: (user: WareHouseDTOs) => (
                 <span>
-                    {user.firstName} {user.lastName}
+                    {user.name}
                 </span>
             ),
             header: false,
@@ -74,46 +53,27 @@ const columns: Array<EuiBasicTableColumn<User>> = [
         },
     },
     {
-        field: 'lastName',
-        name: 'Last Name',
+        field: 'code',
+        name: 'Code',
         truncateText: true,
         mobileOptions: {
             show: false,
         },
     },
     {
-        field: 'github',
-        name: 'Github',
-        render: (username: User['github']) => (
-            <EuiLink href="#" target="_blank">
-                {username}
-            </EuiLink>
-        ),
-    },
-    {
-        field: 'dateOfBirth',
-        name: 'Date of Birth',
-        dataType: 'date',
-        render: (dateOfBirth: User['dateOfBirth']) =>
-            formatDate(dateOfBirth, 'dobLong'),
-        sortable: true,
-    },
-    {
-        field: 'location',
-        name: 'Location',
-        truncateText: true,
-        textOnly: true,
-        render: (location: User['location']) => {
-            return `${location.city}, ${location.country}`;
+        field: 'description',
+        name: 'Mô tả',
+        mobileOptions: {
+            show: false,
         },
     },
     {
-        field: 'online',
-        name: 'Online',
+        field: 'inactive',
+        name: 'Trạng thái',
         dataType: 'boolean',
-        render: (online: User['online']) => {
-            const color = online ? 'success' : 'danger';
-            const label = online ? 'Online' : 'Offline';
+        render: (online: WareHouseDTOs) => {
+            const color = online.inactive ? 'success' : 'danger';
+            const label = online.inactive ? 'Online' : 'Offline';
             return <EuiHealth color={color}>{label}</EuiHealth>;
         },
         sortable: true,
@@ -124,9 +84,89 @@ const columns: Array<EuiBasicTableColumn<User>> = [
 ];
 const random = new Random();
 const noItemsFoundMsg = 'Không có kết quả tìm kiếm phù hợp...';
+
+
+const visColors = euiPaletteColorBlind();
+const visColorsBehindText = euiPaletteColorBlindBehindText();
+const optionsStatic = [
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Titan',
+        'data-test-subj': 'titanOption',
+        color: visColorsBehindText[0],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Enceladus',
+        color: visColorsBehindText[1],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Mimas',
+        color: visColorsBehindText[2],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Dione',
+        color: visColorsBehindText[3],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Iapetus',
+        color: visColorsBehindText[4],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Phoebe',
+        color: visColorsBehindText[5],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Rhea',
+        color: visColorsBehindText[6],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label:
+            "Pandora is one of Saturn's moons, named for a Titaness of Greek mythology",
+        color: visColorsBehindText[7],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Tethys',
+        color: visColorsBehindText[8],
+    },
+    {
+        value: {
+            size: 5,
+        },
+        label: 'Hyperion',
+        color: visColorsBehindText[9],
+    },
+];
+
 export default () => {
     const [loading, setLoading] = useState(false);
-    const [users, setUsers] = useState<User[]>([]);
+    const [users, setUsers] = useState<WareHouseDTOs[]>([]);
+    const [pages, setPages] = useState<PageTotalCount<WareHouseDTOs>>();
     const [message, setMessage] = useState<ReactNode>(
         <EuiEmptyPrompt
             title={<h3>Dữ liệu rỗng !</h3>}
@@ -136,8 +176,8 @@ export default () => {
                 <EuiButton
                     size="s"
                     key="loadUsers"
-                    onClick={() => {
-                        loadUsers();
+                    onClick={async () => {
+                        await loadUsers(pagination.pageIndex, pagination.pageSize);
                     }}
                 >
                     Load Users
@@ -145,22 +185,39 @@ export default () => {
             }
         />
     );
-    const [selection, setSelection] = useState<User[]>([]);
+    const [selection, setSelection] = useState<WareHouseDTOs[]>([]);
     const [error, setError] = useState<string | undefined>();
-    const tableRef = useRef<EuiInMemoryTable<User> | null>(null);
+    const tableRef = useRef<EuiInMemoryTable<WareHouseDTOs> | null>(null);
     const dataGridRef = useRef<EuiDataGridRefProps | null>(null);
 
-    const loadUsers = () => {
+//
+
+
+
+
+    const loadUsers = async (index: number, size: number) => {
         setMessage('Đang lấy dữ liệu...');
         setLoading(true);
         setUsers([]);
         setError(undefined);
-        setTimeout(() => {
+        setLoading(false);
+        setMessage(noItemsFoundMsg);
+        setError(undefined);
+        const repository = new Repository("http://localhost:5005/api/v1/WareHouses");
+        try {
+            let callapi = await repository.get<MessageResponse<WareHouseDTOs[]>>(`/get-list?Skip=${index}&Take=${size}`);
+            setPagination({ pageIndex: index, pageSize: size, totalItemCount: callapi.data.totalCount });
+            setUsers(callapi.data.data);
+            setPages({ pageOfItems: callapi.data.data, totalItemCount: callapi.data.totalCount });
+            console.log(pagination)
+            console.log(pages)
+            return callapi.data; // Trả về dữ liệu từ API
+        } catch (error) {
+            setError('Có lỗi xảy ra khi tải dữ liệu.');
+            return null; // Trả về null nếu có lỗi
+        } finally {
             setLoading(false);
-            setMessage(noItemsFoundMsg);
-            setError(undefined);
-            setUsers(userData);
-        }, random.number({ min: 100, max: 500 }));
+        }      
     };
     const loadUsersWithError = () => {
         setMessage('Đang lấy dữ liệ...');
@@ -174,99 +231,92 @@ export default () => {
             setUsers([]);
         }, random.number({ min: 0, max: 3000 }));
     };
-    const renderToolsLeft = () => {
-        if (selection.length === 0) {
-            return;
-        }
-        const onClick = () => {
-            deleteUsersByIds(...selection.map((user) => user.id));
-            setSelection([]);
-        };
-        return (
-            <EuiButton color="danger" iconType="trash" onClick={onClick}>
-                Delete {selection.length} Users
-            </EuiButton>
-        );
-    };
-    const renderToolsRight = () => {
-        return [
-            <EuiButton
-                key="loadUsers"
-                onClick={() => {
-                    loadUsers();
-                }}
-                isDisabled={loading}
-            >
-                Load Users
-            </EuiButton>,
-            <EuiButton
-                key="loadUsersError"
-                onClick={() => {
-                    loadUsersWithError();
-                }}
-                isDisabled={loading}
-            >
-                Load Users (Error)
-            </EuiButton>,
-        ];
-    };
-    const search: EuiSearchBarProps = {
-        toolsLeft: renderToolsLeft(),
-        toolsRight: renderToolsRight(),
-        box: {
-            incremental: true,
-        },
-        filters: [
-            {
-                type: 'is',
-                field: 'online',
-                name: 'Online',
-                negatedName: 'Offline',
-            },
-            {
-                type: 'field_value_selection',
-                field: 'location.country',
-                name: 'Country',
-                multiSelect: false,
-                options: userData.map(({ location: { country } }) => ({
-                    value: country,
-                })),
-            },
-        ],
-    };
 
     //
     const [pagination, setPagination] = useState<PaginationOptions>(paginationBase);
-    const onTableChange = ({ page: { index, size } }: CriteriaWithPagination<User>) => {
-        loadUsers();
-        setPagination({ pageIndex: index, pageSize: size });
+    const onTableChange = async ({ page: { index, size } }: CriteriaWithPagination<WareHouseDTOs>) => {
+        await loadUsers(index, size);
     };
-
 
     //
-    const selectionValue: EuiTableSelectionType<User> = {
-        selectable: (user) => user.online,
-        selectableMessage: (selectable) =>
-            !selectable ? 'User is currently offline' : '',
-        onSelectionChange: (selection) => setSelection(selection),
-        initialSelected: onlineUsers,
+
+
+    const [options, setOptions] = useState(optionsStatic);
+    const [selectedOptions, setSelected] = useState();
+    const [selectedOptions1, setSelected1] = useState();
+    const onChange = (selectedOptions: any) => {
+        setSelected(selectedOptions);
     };
-    const onSelection = () => {
-        tableRef.current?.setSelection(onlineUsers);
+
+    const onChange1 = (selectedOptions: any) => {
+        setSelected1(selectedOptions);
     };
+
+    const renderOption = (option: any, searchValue: any, contentClassName: string | undefined) => {
+        const { color, label, value } = option;
+        const dotColor = visColors[visColorsBehindText.indexOf(color)];
+        return (
+            <EuiHealth color={dotColor}>
+                <span className={contentClassName}>
+                    <EuiHighlight search={searchValue}>{label}</EuiHighlight>
+                    &nbsp;
+                    <span>({value.size})</span>
+                </span>
+            </EuiHealth>
+        );
+    };
+
+
     return (
         <>
             <EuiFlexGroup alignItems="center">
-                <EuiFlexItem grow={false}>
-                    <EuiButton onClick={onSelection}>Select online users</EuiButton>
-                    <EuiButton
-                        size="s"
-                        onClick={() => dataGridRef.current!.setIsFullScreen(true)}
-                    >
-                        Set grid to fullscreen
-                    </EuiButton>
+                <EuiFlexItem grow={3}>
+                    <EuiFormRow label="Trạng thái: ">
+                        <EuiComboBox
+                            aria-label="Accessible screen reader label"
+                            placeholder="Chọn..."
+                            options={options}
+                            selectedOptions={selectedOptions}
+                            onChange={onChange}
+                            fullWidth={true}
+                            singleSelection={true}
+                        />
+                    </EuiFormRow>
                 </EuiFlexItem>
-                <EuiFlexItem />
+
+                <EuiFlexItem grow={3}>
+                    <EuiFormRow label="Tên: ">
+                        <EuiComboBox
+                            aria-label="Accessible screen reader label"
+                            placeholder="Chọn..."
+                            options={options}
+                            selectedOptions={selectedOptions1}
+                            onChange={onChange1}
+                            fullWidth={true}
+                            renderOption={renderOption}
+                        />
+                    </EuiFormRow>
+
+                </EuiFlexItem>
+
+                <EuiFlexItem grow={4}>
+                    <EuiFormRow label="Tìm kiếm">
+                        <EuiFlexGroup >
+                            <EuiFlexItem>
+                                <EuiFieldSearch
+                                    placeholder="Tìm kiếm..."
+                                    fullWidth
+                                    aria-label="An example of search with fullWidth"
+                                />
+                            </EuiFlexItem>
+                            <EuiFlexItem grow={false}>
+                                <EuiButton>Search</EuiButton>
+                            </EuiFlexItem>
+                        </EuiFlexGroup>
+                    </EuiFormRow>
+
+                    <EuiSpacer size="s" />
+                </EuiFlexItem>
             </EuiFlexGroup>
             <EuiSpacer size="l" />
             <EuiInMemoryTable
@@ -278,10 +328,9 @@ export default () => {
                 loading={loading}
                 message={message}
                 columns={columns}
-                search={search}
+                // search={search}
                 pagination={pagination}
                 sorting={true}
-                selection={selectionValue}
                 isSelectable={true}
                 // onChange={(e:any)=>console.log(e)}
                 onTableChange={onTableChange}
