@@ -209,18 +209,20 @@ export default () => {
         setLoading(true);
         setUsers([]);
         setError(undefined);
-        setMessage(noItemsFoundMsg);
+
         setError(undefined);
         const repository = new Repository("http://localhost:5005/api/v1/WareHouses");
         try {
             let callapi = await repository.get<MessageResponse<WareHouseDTOs[]>>(`/get-list?Skip=${index}&Take=${size}`);
+            if (isNullOrUndefined(callapi.data.data))
+                setMessage(noItemsFoundMsg);
             setUsers(callapi.data.data);
-            console.log(pagination)
             setPagination({ ...pagination, totalItemCount: callapi.data.totalCount });
             //  setPages({ pageOfItems: callapi.data.data, totalItemCount: callapi.data.totalCount });
             return callapi.data; // Trả về dữ liệu từ API
-        } catch (error) {
+        } catch (error: any) {
             setError('Có lỗi xảy ra khi tải dữ liệu.');
+            // setMessage(error);
             return null; // Trả về null nếu có lỗi
         } finally {
             setLoading(false);
@@ -242,7 +244,7 @@ export default () => {
     //
     const onTableChange = async ({ page: { index, size } }: CriteriaWithPagination<WareHouseDTOs>) => {
         setPagination({ ...pagination, pageIndex: index, pageSize: size });
-       // await loadUsers(index, size);
+        // await loadUsers(index, size);
     };
 
     //
@@ -330,13 +332,14 @@ export default () => {
                 itemId="id"
                 error={error}
                 loading={loading}
-                noItemsMessage="Không có dữ liệu"
-                
-               // message={message}
+                // noItemsMessage="Không có dữ liệu==> check không có data thì throw là không có dữ liệu, lỗi thì throw ra lỗi"
+                noItemsMessage={isNullOrUndefined(users) ? message : ""}
+
+                // message={message}
                 columns={columns}
                 // search={search}
                 pagination={pagination}
-               // sorting={true}
+                // sorting={true}
                 isSelectable={true}
                 hasActions={true}
                 responsive={true}
