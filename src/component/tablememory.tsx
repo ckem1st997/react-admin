@@ -1,4 +1,4 @@
-import React, { useState, useRef, ReactNode } from 'react';
+import React, { useState, useRef, ReactNode, useEffect } from 'react';
 import {
     formatDate,
     Random,
@@ -21,6 +21,9 @@ import {
     EuiHighlight,
     euiPaletteColorBlind,
     euiPaletteColorBlindBehindText,
+    EuiDataGrid,
+    EuiBasicTable,
+    Pagination,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
 import { PaginationOptions, paginationBase } from '../extension/BaseTable';
@@ -164,6 +167,7 @@ const optionsStatic = [
 ];
 
 export default () => {
+    // state
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<WareHouseDTOs[]>([]);
     const [pages, setPages] = useState<PageTotalCount<WareHouseDTOs>>();
@@ -189,35 +193,38 @@ export default () => {
     const [error, setError] = useState<string | undefined>();
     const tableRef = useRef<EuiInMemoryTable<WareHouseDTOs> | null>(null);
     const dataGridRef = useRef<EuiDataGridRefProps | null>(null);
+    const [pagination, setPagination] = useState<Pagination>(paginationBase);
+    const [options, setOptions] = useState(optionsStatic);
+    const [selectedOptions, setSelected] = useState();
+    const [selectedOptions1, setSelected1] = useState();
+    //
+    useEffect(() => {
+        loadUsers(pagination.pageIndex, pagination.pageSize);
+    }, [pagination.pageIndex, pagination.pageSize]);
 
-//
 
 
-
-
-    const loadUsers = async (index: number, size: number) => {
+    const loadUsers = async (index: number, size?: number) => {
         setMessage('Đang lấy dữ liệu...');
         setLoading(true);
         setUsers([]);
         setError(undefined);
-        setLoading(false);
         setMessage(noItemsFoundMsg);
         setError(undefined);
         const repository = new Repository("http://localhost:5005/api/v1/WareHouses");
         try {
             let callapi = await repository.get<MessageResponse<WareHouseDTOs[]>>(`/get-list?Skip=${index}&Take=${size}`);
-            setPagination({ pageIndex: index, pageSize: size, totalItemCount: callapi.data.totalCount });
             setUsers(callapi.data.data);
-            setPages({ pageOfItems: callapi.data.data, totalItemCount: callapi.data.totalCount });
             console.log(pagination)
-            console.log(pages)
+            setPagination({ ...pagination, totalItemCount: callapi.data.totalCount });
+            //  setPages({ pageOfItems: callapi.data.data, totalItemCount: callapi.data.totalCount });
             return callapi.data; // Trả về dữ liệu từ API
         } catch (error) {
             setError('Có lỗi xảy ra khi tải dữ liệu.');
             return null; // Trả về null nếu có lỗi
         } finally {
             setLoading(false);
-        }      
+        }
     };
     const loadUsersWithError = () => {
         setMessage('Đang lấy dữ liệ...');
@@ -233,17 +240,15 @@ export default () => {
     };
 
     //
-    const [pagination, setPagination] = useState<PaginationOptions>(paginationBase);
     const onTableChange = async ({ page: { index, size } }: CriteriaWithPagination<WareHouseDTOs>) => {
-        await loadUsers(index, size);
+        setPagination({ ...pagination, pageIndex: index, pageSize: size });
+       // await loadUsers(index, size);
     };
 
     //
 
 
-    const [options, setOptions] = useState(optionsStatic);
-    const [selectedOptions, setSelected] = useState();
-    const [selectedOptions1, setSelected1] = useState();
+
     const onChange = (selectedOptions: any) => {
         setSelected(selectedOptions);
     };
@@ -265,7 +270,6 @@ export default () => {
             </EuiHealth>
         );
     };
-
 
     return (
         <>
@@ -319,21 +323,25 @@ export default () => {
                 </EuiFlexItem>
             </EuiFlexGroup>
             <EuiSpacer size="l" />
-            <EuiInMemoryTable
-                tableCaption="Demo of EuiInMemoryTable with selection"
-                ref={tableRef}
+            <EuiBasicTable
+                tableCaption="Demo of EuiDataGrid with selection"
+                //ref={tableRef}
                 items={users}
                 itemId="id"
                 error={error}
                 loading={loading}
-                message={message}
+                noItemsMessage="Không có dữ liệu"
+                
+               // message={message}
                 columns={columns}
                 // search={search}
                 pagination={pagination}
-                sorting={true}
+               // sorting={true}
                 isSelectable={true}
-                // onChange={(e:any)=>console.log(e)}
-                onTableChange={onTableChange}
+                hasActions={true}
+                responsive={true}
+                //  onChange={onTableChange}
+                onChange={onTableChange}
             />
         </>
     );

@@ -1,3 +1,5 @@
+import { Pagination } from "@elastic/eui";
+
 export interface PaginationOptions {
     pageSizeOptions?: number[];
     initialPageIndex?: number;
@@ -8,10 +10,10 @@ export interface PaginationOptions {
 };
 
 
-export const paginationBase: PaginationOptions = {
-    initialPageSize: 5,
+export const paginationBase: Pagination = {
     pageSizeOptions: [3, 5, 10],
     pageIndex: 0,
     pageSize: 5,
-    totalItemCount:10
+    totalItemCount:0
 };
+

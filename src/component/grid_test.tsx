@@ -397,7 +397,7 @@ export default () => {
     const pagination = {
         pageIndex: pageIndex,
         pageSize: pageSize,
-        totalItemCount: totalItemCount,
+        totalItemCount: 100,
         pageSizeOptions: [3, 5, 8],
 
     };
@@ -550,7 +550,9 @@ export default () => {
                 hasActions={true}
                 responsive={true}
                 onChange={onTableChange}
+                //
                 loading={true}
+                error=""
                 // có lỗi thì sẽ không hiển thị
                 //error=""
             />

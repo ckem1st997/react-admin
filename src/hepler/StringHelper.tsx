@@ -15,5 +15,5 @@ export function isNullOrEmpty(input: string): boolean {
 }
 
 export function isNullOrUndefined(input: any): boolean {
-  return input == undefined || input == null || input.length < 1;
+  return input === undefined || input === null || input.length < 1;
 }
