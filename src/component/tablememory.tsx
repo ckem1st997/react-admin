@@ -225,6 +225,8 @@ export default () => {
             setIsFrist(false);
         else
             loadUsers(pagination.pageIndex, pagination.pageSize, paramSearch?.keyWord, paramSearch?.inActive);
+        ToastifyHelper.info("useEffect !");
+
     }, [pagination.pageIndex, pagination.pageSize]);
     //nếu muốn tìm kiếm luôn theo trường muốn
     //}, [pagination.pageIndex, pagination.pageSize, paramSearch?.inActive, paramSearch?.keyWord]);

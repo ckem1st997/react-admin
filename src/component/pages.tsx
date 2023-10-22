@@ -29,7 +29,9 @@ export const Pages = () => {
   }, [location.pathname]);
   return (
     <>
-      {/* <EuiProgress className={navigation.state !== "loading" ? '' : 'hidden-block'} size="xs" color="accent" /> */}
+      <EuiProgress className={navigation.state !== "loading" ? '' : 'hidden-block'} size="xs" color="accent" />
+      <EuiProgress size="xs" color="accent" />
+
       <Header></Header>
       <EuiPageTemplate>
         <EuiPageTemplate.Sidebar sticky={true}>

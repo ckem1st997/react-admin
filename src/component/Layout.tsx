@@ -7,8 +7,7 @@ import { Link, Outlet } from "react-router-dom"
 function Layout() {
     return (
         <>
-                        <EuiProgress size="xs" color="accent" />
-
+            <EuiProgress size="xs" color="accent" />
             <Breadcrumbs></Breadcrumbs>
             <Search_Menu></Search_Menu>
             <Link to="/" >Home</Link>
@@ -28,7 +27,7 @@ function Layout() {
             <Link to="/grid" >grid</Link>
             <br></br>
             <Link to="/pages" >pages</Link>
-            <Outlet/>
+            <Outlet />
 
         </>
     )
