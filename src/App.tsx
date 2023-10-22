@@ -15,16 +15,27 @@ import Blogs from './component/blog';
 import Home from './component/home';
 import router from './services/routes';
 import createCache from '@emotion/cache';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+  
 
 function App() {
-  const [count, setCount] = React.useState(0);
 
   return (
     <>
-      {/* <EuiProvider colorMode="light" cache={cache}>
-      </EuiProvider> */}
-    </>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />  
+        </>
   )
 }
 

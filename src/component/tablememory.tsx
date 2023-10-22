@@ -1,4 +1,4 @@
-import React, { useState, useRef, ReactNode, useEffect } from 'react';
+import React, { useState, useRef, ReactNode, useEffect, EventHandler } from 'react';
 import {
     formatDate,
     Random,
@@ -29,8 +29,10 @@ import { faker } from '@faker-js/faker';
 import { PaginationOptions, paginationBase } from '../extension/BaseTable';
 import { size } from '@elastic/eui/src/themes/amsterdam/global_styling/variables/_size';
 import Repository from '../extension/HttpHelper';
-import { MessageResponse, PageTotalCount, WareHouseDTOs } from '../model/model';
-import { isNullOrUndefined } from '../hepler/StringHelper';
+import { MessageResponse, PageTotalCount, ParamSearchBase, WareHouseDTOs } from '../model/model';
+import { isNullOrEmpty, isNullOrUndefined, isNullOrUndefinedArry } from '../hepler/StringHelper';
+import { ToastContainer, toast } from 'react-toastify';
+import { ToastifyHelper } from '../hepler/ToastifyHelper';
 const userData: WareHouseDTOs[] = [];
 const columns: Array<EuiBasicTableColumn<WareHouseDTOs>> = [
     {
@@ -174,17 +176,13 @@ const optionsStatic = [
 ];
 const optionInactive = [
     {
-        value: {
-            size: 5,
-        },
+        value: true,
         label: 'Kích hoạt',
         'data-test-subj': 'titanOption',
         color: visColorsBehindText[0],
     },
     {
-        value: {
-            size: 5,
-        },
+        value: false,
         label: 'Chưa kích hoạt',
         color: visColorsBehindText[1],
     }
@@ -220,34 +218,43 @@ export default () => {
     const [options, setOptions] = useState(optionsStatic);
     const [selectedOptions, setSelected] = useState();
     const [selectedOptions1, setSelected1] = useState();
+    const [paramSearch, setParamSearch] = useState<ParamSearchBase>();
     //
     useEffect(() => {
         if (isFrist)
             setIsFrist(false);
         else
-            loadUsers(pagination.pageIndex, pagination.pageSize);
+            loadUsers(pagination.pageIndex, pagination.pageSize, paramSearch?.keyWord, paramSearch?.inActive);
     }, [pagination.pageIndex, pagination.pageSize]);
+    //nếu muốn tìm kiếm luôn theo trường muốn
+    //}, [pagination.pageIndex, pagination.pageSize, paramSearch?.inActive, paramSearch?.keyWord]);
 
 
 
-    const loadUsers = async (index: number, size?: number) => {
+
+    const loadUsers = async (index: number, size?: number, keyWord?: string, inActive?: boolean) => {
         setMessage('Đang lấy dữ liệu...');
         setLoading(true);
         setUsers([]);
-        setError(undefined);
-        const repository = new Repository("http://localhost:5005/api/v1/WareHouses");
+        setError(undefined);//get-list?KeySearch=1&Active=true&Skip=1&Take=1
+        const repository = new Repository("http://localhost:5005/api/v1");
         try {
-            let callapi = await repository.get<MessageResponse<WareHouseDTOs[]>>(`/get-list?Skip=${(index * (size ?? 0))}&Take=${size}`);
-            if (isNullOrUndefined(callapi) || isNullOrUndefined(callapi.data) || isNullOrUndefined(callapi.data.data))
+            let urlSearch = `/WareHouses/get-list?Skip=${(index * (size ?? 0))}&Take=${size}`;
+            if (!isNullOrEmpty(keyWord))
+                urlSearch = urlSearch + `&KeySearch=` + keyWord;
+            if (!isNullOrUndefined(inActive))
+                urlSearch = urlSearch + `&Active=` + inActive;
+            let callapi = await repository.get<MessageResponse<WareHouseDTOs[]>>(urlSearch);
+            if (isNullOrUndefined(callapi) || isNullOrUndefined(callapi.data) || isNullOrUndefinedArry(callapi.data.data))
                 setMessage(noItemsFoundMsg);
             else {
                 setUsers(callapi.data.data);
                 setPagination({ ...pagination, totalItemCount: callapi.data.totalCount });
             }
-            return callapi.data; 
+            return callapi.data;
         } catch (error: any) {
             setError('Có lỗi xảy ra khi tải dữ liệu !');
-                return null; 
+            return null;
         } finally {
             setLoading(false);
         }
@@ -259,12 +266,31 @@ export default () => {
     };
     //
 
+    const onSearch = async (event: any) => {
+        ToastifyHelper.success("Call api !");
+        // ToastifyHelper.info("Call api !");
+        await loadUsers(pagination.pageIndex, pagination.pageSize, paramSearch?.keyWord, paramSearch?.inActive);
+    };
+
     const onChange = (selectedOptions: any) => {
         setSelected(selectedOptions);
+        if (!isNullOrUndefinedArry(selectedOptions)) {
+            const value = selectedOptions[0].value;
+            if (!isNullOrUndefined(value))
+                setParamSearch({ ...paramSearch, inActive: value })
+        }
+        else
+            setParamSearch({ ...paramSearch, inActive: undefined })
     };
 
     const onChange1 = (selectedOptions: any) => {
         setSelected1(selectedOptions);
+    };
+
+    const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const key = event.target.value;
+        if (!isNullOrEmpty(key))
+            setParamSearch({ ...paramSearch, keyWord: key })
     };
 
     const renderOption = (option: any, searchValue: any, contentClassName: string | undefined) => {
@@ -280,7 +306,6 @@ export default () => {
             </EuiHealth>
         );
     };
-
     return (
         <>
             <EuiFlexGroup alignItems="center">
@@ -294,6 +319,8 @@ export default () => {
                             onChange={onChange}
                             fullWidth={true}
                             singleSelection={true}
+                            isDisabled={loading}
+
                         />
                     </EuiFormRow>
                 </EuiFlexItem>
@@ -308,6 +335,8 @@ export default () => {
                             onChange={onChange1}
                             fullWidth={true}
                             renderOption={renderOption}
+                            isDisabled={loading}
+
                         />
                     </EuiFormRow>
 
@@ -321,10 +350,12 @@ export default () => {
                                     placeholder="Tìm kiếm..."
                                     fullWidth
                                     aria-label="An example of search with fullWidth"
+                                    onChange={onChangeText}
+                                    disabled={loading}
                                 />
                             </EuiFlexItem>
                             <EuiFlexItem grow={false}>
-                                <EuiButton>Search</EuiButton>
+                                <EuiButton isLoading={loading} iconType="lensApp" isDisabled={loading} onClick={onSearch}>Search</EuiButton>
                             </EuiFlexItem>
                         </EuiFlexGroup>
                     </EuiFormRow>
@@ -341,7 +372,7 @@ export default () => {
                 error={error}
                 loading={loading}
                 // noItemsMessage="Không có dữ liệu==> check không có data thì throw là không có dữ liệu, lỗi thì throw ra lỗi"
-                noItemsMessage={isNullOrUndefined(users) ? message : ""}
+                noItemsMessage={isNullOrUndefinedArry(users) ? message : ""}
 
                 // message={message}
                 columns={columns}
@@ -353,6 +384,7 @@ export default () => {
                 responsive={true}
                 //  onChange={onTableChange}
                 onChange={onTableChange}
+                compressed={true}
             />
         </>
     );

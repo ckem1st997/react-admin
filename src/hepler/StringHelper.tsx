@@ -10,10 +10,14 @@ String.prototype.isNullOrEmpty = function (): boolean {
   return this == null || this.trim() === '' || this.length < 1;
 };
 
-export function isNullOrEmpty(input: string): boolean {
+export function isNullOrEmpty(input?: string): boolean {
   return input == undefined || input == null || input.trim() === '' || input.length < 1;
 }
 
-export function isNullOrUndefined(input: any): boolean {
+export function isNullOrUndefined(input?: any): boolean {
+  return input === undefined || input === null;
+}
+
+export function isNullOrUndefinedArry(input?: Array<any>): boolean {
   return input === undefined || input === null || input.length < 1;
 }

@@ -1,10 +1,13 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
 import { Delay } from '../hepler/FunctionHelper';
+import { isNullOrEmpty } from '../hepler/StringHelper';
 
 class Repository {
   private axiosInstance: AxiosInstance;
 
-  constructor(baseURL: string) {
+  constructor(baseURL?: string) {
+    if (isNullOrEmpty(baseURL))
+      throw Error("Lỗi base url env !");
     this.axiosInstance = axios.create({
       baseURL,
     });

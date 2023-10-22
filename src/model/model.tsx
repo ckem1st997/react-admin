@@ -47,3 +47,9 @@ export interface PageTotalCount<T> {
   pageOfItems: T[];
   totalItemCount: number
 }
+
+
+export interface ParamSearchBase {
+  keyWord?: string;
+  inActive?: boolean
+}
