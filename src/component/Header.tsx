@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   EuiAvatar,
   EuiBreadcrumb,
@@ -24,12 +24,32 @@ import {
   EuiSelectableProps,
   EuiSelectableTemplateSitewide,
   EuiSpacer,
+  EuiSwitch,
+  EuiSwitchEvent,
   EuiText,
   useGeneratedHtmlId,
 } from '@elastic/eui';
 import { Link } from 'react-router-dom';
 import Search_Menu from './Search_Menu';
+import { ThemeToggeContext } from '../default/Context';
+
 export default () => {
+  const [checked, setChecked] = useState(false);
+  const { theme, setTheme } = useContext(ThemeToggeContext);
+
+  // Sử dụng useEffect để theo dõi thay đổi trong location (URL)
+  useEffect(() => {
+    const color = checked ? 'light' : 'dark';
+    setTheme(color);
+    console.log(theme)
+  }, [checked]);
+
+
+  const onChange = (e: EuiSwitchEvent) => {
+    setChecked(e.target.checked);
+  };
+
+  
   const renderLogo = () => (
     <EuiHeaderLogo
       iconType="logoElastic"
@@ -68,6 +88,11 @@ export default () => {
       {/* {renderBreadcrumbs()} */}
       <EuiHeaderSection side="right">
         <EuiHeaderSectionItem>
+          <EuiSwitch
+            label="Malware protection"
+            checked={checked}
+            onChange={(e) => onChange(e)}
+          />
           {search}
           {/* <Search_Menu></Search_Menu> */}
         </EuiHeaderSectionItem>
