@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import {
   EuiText,
   EuiPageTemplate,
@@ -10,6 +10,8 @@ import {
   EuiGlobalToastList,
   EuiToast,
   EuiProgress,
+  EuiSwitch,
+  EuiSwitchEvent,
 } from '@elastic/eui';
 import Breadcrumbs from './Header';
 import EuiSideNav from './EuiSideNav';
@@ -23,15 +25,12 @@ export const Pages = () => {
   const [progress, setProgress] = useState(true);
   const navigation = useNavigation();
   const navigate = useNavigate();
-  // Sử dụng useEffect để theo dõi thay đổi trong location (URL)
-  useEffect(() => {
-    //redirect(location.pathname)
-  }, [location.pathname]);
+
   return (
     <>
-      <EuiProgress className={navigation.state !== "loading" ? '' : 'hidden-block'} size="xs" color="accent" />
-      <EuiProgress size="xs" color="accent" />
-
+      {/* <EuiProgress className={navigation.state !== "loading" ? '' : 'hidden-block'} size="xs" color="accent" /> */}
+      {/* <EuiProgress size="xs" color="accent" /> */}
+      
       <Header></Header>
       <EuiPageTemplate>
         <EuiPageTemplate.Sidebar sticky={true}>
@@ -41,7 +40,7 @@ export const Pages = () => {
           <Breadcrumb></Breadcrumb>
         </EuiPageTemplate.Header>
 
-        <EuiPageTemplate.Section   grow={false} >
+        <EuiPageTemplate.Section grow={false} >
           <Outlet />
         </EuiPageTemplate.Section>
       </EuiPageTemplate>

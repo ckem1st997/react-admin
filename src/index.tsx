@@ -7,33 +7,16 @@ import { EuiEmptyPrompt, EuiErrorBoundary, EuiProgress, EuiProvider, euiStylisPr
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import { BrowserRouter as Router, Routes, Route, RouterProvider } from "react-router-dom"; import router from './services/routes';
 import createCache from '@emotion/cache';
-// import dotenv from 'dotenv';
 
 
-// Load environment variables from .env
-//dotenv.config();
-const container = document.querySelector('meta[name="emotion-styles"]');
-const cache = createCache({
-  key: 'eui',
-  container: container || undefined,
-  stylisPlugins: [euiStylisPrefixer],
-
-});
-cache.compat = true;
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-const BadComponent = () => {
-  throw new Error(
-    "I'm here to kick butt and chew bubblegum. And I'm all out of gum."
-  );
-};
+
 root.render(
   <React.StrictMode >
     <RouterProvider router={router} />
-    <EuiProvider colorMode="light" cache={cache}>
-      <App />
-    </EuiProvider>
+    <App />
   </React.StrictMode>
 );
 

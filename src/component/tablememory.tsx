@@ -24,6 +24,7 @@ import {
     EuiDataGrid,
     EuiBasicTable,
     Pagination,
+    EuiButtonIcon,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
 import { PaginationOptions, paginationBase } from '../extension/BaseTable';
@@ -33,6 +34,7 @@ import { MessageResponse, PageTotalCount, ParamSearchBase, WareHouseDTOs } from 
 import { isNullOrEmpty, isNullOrUndefined, isNullOrUndefinedArry } from '../hepler/StringHelper';
 import { ToastContainer, toast } from 'react-toastify';
 import { ToastifyHelper } from '../hepler/ToastifyHelper';
+import { json } from 'stream/consumers';
 const userData: WareHouseDTOs[] = [];
 const columns: Array<EuiBasicTableColumn<WareHouseDTOs>> = [
     {
@@ -92,6 +94,63 @@ const columns: Array<EuiBasicTableColumn<WareHouseDTOs>> = [
         mobileOptions: {
             show: false,
         },
+    },
+    {
+        name: 'Actions',
+        render: (online: WareHouseDTOs) => {
+
+
+            const color = online ? 'success' : 'danger';
+            const label = online ? 'Online' : 'Offline';
+            return <>
+
+                <EuiButton
+                    color='primary'
+                    fill
+                    size='s'
+                    onClick={(e: any) => { ToastifyHelper.info(JSON.stringify(online)); }}
+                >
+                    Filled
+                </EuiButton>
+                <EuiButtonIcon
+                    display="base"
+                    iconType="trash"
+                    aria-label="Delete"
+                    color="danger"
+                    onClick={(e: any) => { ToastifyHelper.info(JSON.stringify(online)); }}
+
+                />
+            </>;
+        },
+        // actions: [
+        //     {
+        //         name: 'Modal',
+        //         description: 'Modal this person',
+        //         icon: 'apps',
+        //         type: 'icon',
+
+        //     },
+        //     {
+        //         name: 'Edit',
+        //         description: 'Edit this person',
+        //         icon: 'copy',
+        //         type: 'icon',
+        //         onClick: (user: WareHouseDTOs) => {
+        //             ToastifyHelper.info(JSON.stringify(user));
+
+        //         },
+        //     },
+        //     {
+        //         name: 'Delete',
+        //         description: 'Delete this person',
+        //         icon: 'trash',
+        //         type: 'icon',
+        //         color: 'danger',
+        //         onClick: (user: WareHouseDTOs) => {
+        //             ToastifyHelper.info(JSON.stringify(user));
+        //         },
+        //     },
+        // ],
     },
 ];
 const random = new Random();
@@ -225,7 +284,7 @@ export default () => {
             setIsFrist(false);
         else
             loadUsers(pagination.pageIndex, pagination.pageSize, paramSearch?.keyWord, paramSearch?.inActive);
-        ToastifyHelper.info("useEffect !");
+        //  ToastifyHelper.info("useEffect !");
 
     }, [pagination.pageIndex, pagination.pageSize]);
     //nếu muốn tìm kiếm luôn theo trường muốn
@@ -269,7 +328,7 @@ export default () => {
     //
 
     const onSearch = async (event: any) => {
-        ToastifyHelper.success("Call api !");
+        //  ToastifyHelper.success("Call api !");
         // ToastifyHelper.info("Call api !");
         await loadUsers(pagination.pageIndex, pagination.pageSize, paramSearch?.keyWord, paramSearch?.inActive);
     };
