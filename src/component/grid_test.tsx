@@ -202,6 +202,7 @@ export default () => {
             field: 'firstName',
             name: 'First Name',
             truncateText: true,
+            footer: <em>Page totals:</em>,
             sortable: true,
             mobileOptions: {
                 render: customHeader

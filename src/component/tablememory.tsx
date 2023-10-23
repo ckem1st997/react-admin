@@ -35,124 +35,9 @@ import { isNullOrEmpty, isNullOrUndefined, isNullOrUndefinedArry } from '../hepl
 import { ToastContainer, toast } from 'react-toastify';
 import { ToastifyHelper } from '../hepler/ToastifyHelper';
 import { json } from 'stream/consumers';
+import Create from './warehouse/Create';
 const userData: WareHouseDTOs[] = [];
-const columns: Array<EuiBasicTableColumn<WareHouseDTOs>> = [
-    {
-        field: 'name',
-        name: 'First Name',
-        sortable: true,
-        truncateText: true,
-        render: (username: WareHouseDTOs['name']) => (
-            <EuiLink target="_blank">
-                {username}
-            </EuiLink>
-        ),
-        mobileOptions: {
-            render: (user: WareHouseDTOs) => (
-                <span>
-                    {user.name}
-                </span>
-            ),
-            header: false,
-            truncateText: false,
-            enlarge: true,
-            width: '100%',
-        },
-    },
-    {
-        field: 'code',
-        name: 'Code',
-        truncateText: true,
-        mobileOptions: {
-            show: false,
-        },
-    },
-    {
-        field: 'address',
-        name: 'Địa chỉ',
-        mobileOptions: {
-            show: false,
-        },
-    },
-    {
-        field: 'description',
-        name: 'Mô tả',
-        mobileOptions: {
-            show: false,
-        },
-    },
-    {
-        field: 'inactive',
-        name: 'Trạng thái',
-        dataType: 'boolean',
-        render: (online: WareHouseDTOs["inactive"]) => {
-            const color = online ? 'success' : 'danger';
-            const label = online ? 'Online' : 'Offline';
-            return <EuiHealth color={color}>{label}</EuiHealth>;
-        },
-        sortable: true,
-        mobileOptions: {
-            show: false,
-        },
-    },
-    {
-        name: 'Actions',
-        render: (online: WareHouseDTOs) => {
 
-
-            const color = online ? 'success' : 'danger';
-            const label = online ? 'Online' : 'Offline';
-            return <>
-
-                <EuiButton
-                    color='primary'
-                    fill
-                    size='s'
-                    onClick={(e: any) => { ToastifyHelper.info(JSON.stringify(online)); }}
-                >
-                    Filled
-                </EuiButton>
-                <EuiButtonIcon
-                    display="base"
-                    iconType="trash"
-                    aria-label="Delete"
-                    color="danger"
-                    onClick={(e: any) => { ToastifyHelper.info(JSON.stringify(online)); }}
-
-                />
-            </>;
-        },
-        // actions: [
-        //     {
-        //         name: 'Modal',
-        //         description: 'Modal this person',
-        //         icon: 'apps',
-        //         type: 'icon',
-
-        //     },
-        //     {
-        //         name: 'Edit',
-        //         description: 'Edit this person',
-        //         icon: 'copy',
-        //         type: 'icon',
-        //         onClick: (user: WareHouseDTOs) => {
-        //             ToastifyHelper.info(JSON.stringify(user));
-
-        //         },
-        //     },
-        //     {
-        //         name: 'Delete',
-        //         description: 'Delete this person',
-        //         icon: 'trash',
-        //         type: 'icon',
-        //         color: 'danger',
-        //         onClick: (user: WareHouseDTOs) => {
-        //             ToastifyHelper.info(JSON.stringify(user));
-        //         },
-        //     },
-        // ],
-    },
-];
 const random = new Random();
 const noItemsFoundMsg = 'Không có kết quả tìm kiếm phù hợp...';
 
@@ -247,6 +132,92 @@ const optionInactive = [
     }
 ];
 export default () => {
+    // VARIBLE
+    const columns: Array<EuiBasicTableColumn<WareHouseDTOs>> = [
+        {
+            field: 'name',
+            name: 'First Name',
+            footer: <em>Page totals:</em>,
+            sortable: true,
+            truncateText: true,
+            render: (username: WareHouseDTOs['name']) => (
+                <EuiLink target="_blank">
+                    {username}
+                </EuiLink>
+            ),
+            mobileOptions: {
+                render: (user: WareHouseDTOs) => (
+                    <span>
+                        {user.name}
+                    </span>
+                ),
+                header: false,
+                truncateText: false,
+                enlarge: true,
+                width: '100%',
+            },
+        },
+        {
+            field: 'code',
+            name: 'Code',
+            truncateText: true,
+            mobileOptions: {
+                show: false,
+            },
+        },
+        {
+            field: 'address',
+            name: 'Địa chỉ',
+            mobileOptions: {
+                show: false,
+            },
+        },
+        {
+            field: 'description',
+            name: 'Mô tả',
+            mobileOptions: {
+                show: false,
+            },
+        },
+        {
+            field: 'inactive',
+            name: 'Trạng thái',
+            dataType: 'boolean',
+            render: (online: WareHouseDTOs["inactive"]) => {
+                const color = online ? 'success' : 'danger';
+                const label = online ? 'Online' : 'Offline';
+                return <EuiHealth color={color}>{label}</EuiHealth>;
+            },
+            sortable: true,
+            mobileOptions: {
+                show: false,
+            },
+        },
+        {
+            name: 'Actions',
+            render: (online: WareHouseDTOs) => {
+                return <>
+                    <EuiFlexItem grow={false}>
+                        <EuiButtonIcon
+                            iconType="dashboardApp"
+                            aria-label="Dashboard"
+                            color="success"
+                            onClick={(e: any) => { setIsCreate(true) }}
+                        />
+                    </EuiFlexItem>
+                    <EuiFlexItem grow={false}>
+                        <EuiButtonIcon
+                            display="base"
+                            iconType="trash"
+                            aria-label="Delete"
+                            color="danger"
+                            onClick={(e: any) => { ToastifyHelper.info(JSON.stringify(online)); }}
+                        />
+                    </EuiFlexItem>
+                </>;
+            },
+        },
+    ];
     // state
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<WareHouseDTOs[]>([]);
@@ -278,6 +249,8 @@ export default () => {
     const [selectedOptions, setSelected] = useState();
     const [selectedOptions1, setSelected1] = useState();
     const [paramSearch, setParamSearch] = useState<ParamSearchBase>();
+    const [isCreate, setIsCreate] = useState(false);
+
     //
     useEffect(() => {
         if (isFrist)
@@ -367,6 +340,23 @@ export default () => {
             </EuiHealth>
         );
     };
+
+    //
+    const [, setSelectedItems] = useState<WareHouseDTOs[]>([]);
+    const onSelectionChange = (selectedItems: WareHouseDTOs[]) => {
+        setSelectedItems(selectedItems);
+    };
+    const selection: EuiTableSelectionType<WareHouseDTOs> = {
+        // tieu chi de checkbox
+        selectable: (user: WareHouseDTOs) => true,
+        selectableMessage: (selectable: boolean) =>
+            !selectable ? 'User is currently offline' : '',
+        onSelectionChange,
+    };
+    //modal
+    const closeModal = () => setIsCreate(false);
+    const modelCreate = <Create></Create>
+
     return (
         <>
             <EuiFlexGroup alignItems="center">
@@ -420,8 +410,6 @@ export default () => {
                             </EuiFlexItem>
                         </EuiFlexGroup>
                     </EuiFormRow>
-
-                    <EuiSpacer size="s" />
                 </EuiFlexItem>
             </EuiFlexGroup>
             <EuiSpacer size="l" />
@@ -434,7 +422,7 @@ export default () => {
                 loading={loading}
                 // noItemsMessage="Không có dữ liệu==> check không có data thì throw là không có dữ liệu, lỗi thì throw ra lỗi"
                 noItemsMessage={isNullOrUndefinedArry(users) ? message : ""}
-
+                selection={selection}
                 // message={message}
                 columns={columns}
                 // search={search}
@@ -447,6 +435,7 @@ export default () => {
                 onChange={onTableChange}
                 compressed={true}
             />
+            {isCreate && modelCreate}
         </>
     );
 };

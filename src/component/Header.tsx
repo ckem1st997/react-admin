@@ -49,7 +49,7 @@ export default () => {
     setChecked(e.target.checked);
   };
 
-  
+
   const renderLogo = () => (
     <EuiHeaderLogo
       iconType="logoElastic"
@@ -88,11 +88,11 @@ export default () => {
       {/* {renderBreadcrumbs()} */}
       <EuiHeaderSection side="right">
         <EuiHeaderSectionItem>
-          <EuiSwitch
+          {/* <EuiSwitch
             label="Malware protection"
             checked={checked}
             onChange={(e) => onChange(e)}
-          />
+          /> */}
           {search}
           {/* <Search_Menu></Search_Menu> */}
         </EuiHeaderSectionItem>
