@@ -18,6 +18,8 @@ import createCache from '@emotion/cache';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ThemeToggeContext } from './default/Context';
+import { ReactKeycloakProvider } from '@react-keycloak/web';
+import keycloak from './auth/keyclodk';
 // import dotenv from 'dotenv';
 
 
@@ -34,7 +36,7 @@ cache.compat = true;
 
 
 function App() {
- // const [theme, setTheme] = useState<EuiThemeColorMode>('light');
+  // const [theme, setTheme] = useState<EuiThemeColorMode>('light');
   return (
     <>
       <ToastContainer
@@ -49,14 +51,12 @@ function App() {
         pauseOnHover
         theme='light'
       />
-      {/* <ThemeToggeContext.Provider value={{
-        theme,
-        setTheme
-      }}> */}
+      <ReactKeycloakProvider authClient={keycloak}>
+
+        <RouterProvider router={router} />
         <EuiProvider colorMode='light' cache={cache}>
         </EuiProvider>
-      {/* </ThemeToggeContext.Provider> */}
-
+      </ReactKeycloakProvider>
     </>
   )
 }
