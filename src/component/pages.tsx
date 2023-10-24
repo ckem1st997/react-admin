@@ -18,9 +18,6 @@ import EuiSideNav from './EuiSideNav';
 import { Link, NavLink, Outlet, redirect, useLocation, useNavigate, useNavigation, useResolvedPath } from 'react-router-dom';
 import Header from './Header';
 import Breadcrumb from './Breadcrumb';
-import { text } from 'stream/consumers';
-import { useKeycloak } from '@react-keycloak/web';
-import UserService from '../auth/userService';
 import axios from 'axios';
 
 export const Pages = () => {
@@ -28,39 +25,8 @@ export const Pages = () => {
   const [progress, setProgress] = useState(true);
   const navigation = useNavigation();
   const navigate = useNavigate();
-  const { keycloak, initialized } = useKeycloak();
+ // const { keycloak, initialized } = useKeycloak();
 
-  useEffect(() => {
-    console.log(keycloak);
-    const keycloakURL = 'http://localhost:8080/realms/test-auth/protocol/openid-connect/token';
-    const data = new URLSearchParams();
-    data.append('grant_type', 'password');
-    data.append('client_id', 'test-client');
-    data.append('client_secret', 'LmjMgqPNyUiXZrjm0aLS9NRplYs91pjk');
-    data.append('username', 'test');
-    data.append('password', '12345');
-
-    axios.post(keycloakURL, data, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-      .then(response => {
-        console.log(response.data);
-        const jsonData = response.data
-        keycloak.token = jsonData.access_token;
-        keycloak.refreshToken = jsonData.refresh_token;
-        keycloak.tokenParsed = { /* Thông tin từ access token được phân tích */ };
-        keycloak.refreshTokenParsed = { /* Thông tin từ refresh token được phân tích */ };
-        let timeLocal = (new Date().getTime() + new Date().getTime()) / 2;
-        setToken(keycloak, jsonData.access_token, jsonData.refresh_token, null, timeLocal)
-        console.log(keycloak);
-
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
 
 
   function decodeToken(str: string) {
@@ -170,3 +136,36 @@ export const Pages = () => {
 
   );
 };
+
+
+// useEffect(() => {
+//   console.log(keycloak);
+//   const keycloakURL = 'http://localhost:8080/realms/test-auth/protocol/openid-connect/token';
+//   const data = new URLSearchParams();
+//   data.append('grant_type', 'password');
+//   data.append('client_id', 'test-client');
+//   data.append('client_secret', 'LmjMgqPNyUiXZrjm0aLS9NRplYs91pjk');
+//   data.append('username', 'test');
+//   data.append('password', '12345');
+
+//   axios.post(keycloakURL, data, {
+//     headers: {
+//       'Content-Type': 'application/x-www-form-urlencoded'
+//     }
+//   })
+//     .then(response => {
+//       console.log(response.data);
+//       const jsonData = response.data
+//       keycloak.token = jsonData.access_token;
+//       keycloak.refreshToken = jsonData.refresh_token;
+//       keycloak.tokenParsed = { /* Thông tin từ access token được phân tích */ };
+//       keycloak.refreshTokenParsed = { /* Thông tin từ refresh token được phân tích */ };
+//       let timeLocal = (new Date().getTime() + new Date().getTime()) / 2;
+//       setToken(keycloak, jsonData.access_token, jsonData.refresh_token, null, timeLocal)
+//       console.log(keycloak);
+
+//     })
+//     .catch(error => {
+//       console.error(error);
+//     });
+// }, []);

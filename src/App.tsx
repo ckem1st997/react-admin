@@ -16,10 +16,11 @@ import Home from './component/home';
 import router from './services/routes';
 import createCache from '@emotion/cache';
 import { ToastContainer } from 'react-toastify';
+//css
 import 'react-toastify/dist/ReactToastify.css';
+import '@elastic/eui/dist/eui_theme_light.min.css';
+
 import { ThemeToggeContext } from './default/Context';
-import { ReactKeycloakProvider } from '@react-keycloak/web';
-import keycloak from './auth/keyclodk';
 // import dotenv from 'dotenv';
 
 
@@ -51,12 +52,12 @@ function App() {
         pauseOnHover
         theme='light'
       />
-      <ReactKeycloakProvider authClient={keycloak}>
+      {/* <ReactKeycloakProvider authClient={keycloak}> */}
 
-        <RouterProvider router={router} />
-        <EuiProvider colorMode='light' cache={cache}>
-        </EuiProvider>
-      </ReactKeycloakProvider>
+      <RouterProvider router={router} />
+      <EuiProvider colorMode='light' cache={cache}>
+      </EuiProvider>
+      {/* </ReactKeycloakProvider> */}
     </>
   )
 }
