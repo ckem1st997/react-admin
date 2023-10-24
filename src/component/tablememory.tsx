@@ -1,4 +1,4 @@
-import React, { useState, useRef, ReactNode, useEffect, EventHandler } from 'react';
+import React, { useState, useRef, ReactNode, useEffect, EventHandler, createContext } from 'react';
 import {
     formatDate,
     Random,
@@ -30,12 +30,24 @@ import { faker } from '@faker-js/faker';
 import { PaginationOptions, paginationBase } from '../extension/BaseTable';
 import { size } from '@elastic/eui/src/themes/amsterdam/global_styling/variables/_size';
 import Repository from '../extension/HttpHelper';
-import { MessageResponse, PageTotalCount, ParamSearchBase, WareHouseDTOs } from '../model/model';
+import { MessageResponse, PageTotalCount, ParamSearchBase, TodoContextType, WareHouseDTOs } from '../model/model';
 import { isNullOrEmpty, isNullOrUndefined, isNullOrUndefinedArry } from '../hepler/StringHelper';
 import { ToastContainer, toast } from 'react-toastify';
 import { ToastifyHelper } from '../hepler/ToastifyHelper';
 import { json } from 'stream/consumers';
 import Create from './warehouse/Create';
+
+
+
+
+
+
+
+
+
+// Context
+export const ModelContext = createContext<any>(null);
+//
 const userData: WareHouseDTOs[] = [];
 
 const random = new Random();
@@ -132,7 +144,7 @@ const optionInactive = [
     }
 ];
 export default () => {
-    // VARIBLE
+    //#region VARIBLE
     const columns: Array<EuiBasicTableColumn<WareHouseDTOs>> = [
         {
             field: 'name',
@@ -218,7 +230,9 @@ export default () => {
             },
         },
     ];
-    // state
+    //#endregion
+
+    //#region state
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<WareHouseDTOs[]>([]);
     const [isFrist, setIsFrist] = useState(true);
@@ -250,22 +264,23 @@ export default () => {
     const [selectedOptions1, setSelected1] = useState();
     const [paramSearch, setParamSearch] = useState<ParamSearchBase>();
     const [isCreate, setIsCreate] = useState(false);
+    const [, setSelectedItems] = useState<WareHouseDTOs[]>([]);
+    //#endregion
 
-    //
+    //#region Effect
     useEffect(() => {
         if (isFrist)
             setIsFrist(false);
         else
             loadUsers(pagination.pageIndex, pagination.pageSize, paramSearch?.keyWord, paramSearch?.inActive);
         //  ToastifyHelper.info("useEffect !");
+        console.log(isCreate)
+        //nếu muốn tìm kiếm luôn theo trường muốn
+    }, [pagination.pageIndex, pagination.pageSize, paramSearch?.inActive, paramSearch?.keyWord]);
 
-    }, [pagination.pageIndex, pagination.pageSize]);
-    //nếu muốn tìm kiếm luôn theo trường muốn
-    //}, [pagination.pageIndex, pagination.pageSize, paramSearch?.inActive, paramSearch?.keyWord]);
+    //#endregion
 
-
-
-
+    //#region  varible funtion
     const loadUsers = async (index: number, size?: number, keyWord?: string, inActive?: boolean) => {
         setMessage('Đang lấy dữ liệu...');
         setLoading(true);
@@ -293,13 +308,9 @@ export default () => {
             setLoading(false);
         }
     };
-
-    //
     const onTableChange = async ({ page: { index, size } }: CriteriaWithPagination<WareHouseDTOs>) => {
         setPagination({ ...pagination, pageIndex: index, pageSize: size });
     };
-    //
-
     const onSearch = async (event: any) => {
         //  ToastifyHelper.success("Call api !");
         // ToastifyHelper.info("Call api !");
@@ -341,8 +352,6 @@ export default () => {
         );
     };
 
-    //
-    const [, setSelectedItems] = useState<WareHouseDTOs[]>([]);
     const onSelectionChange = (selectedItems: WareHouseDTOs[]) => {
         setSelectedItems(selectedItems);
     };
@@ -353,9 +362,9 @@ export default () => {
             !selectable ? 'User is currently offline' : '',
         onSelectionChange,
     };
-    //modal
-    const closeModal = () => setIsCreate(false);
-    const modelCreate = <Create></Create>
+
+    //#endregion
+
 
     return (
         <>
@@ -435,7 +444,10 @@ export default () => {
                 onChange={onTableChange}
                 compressed={true}
             />
-            {isCreate && modelCreate}
+            <ModelContext.Provider value={{ isCreate, setIsCreate }}>
+                <Create ></Create >
+            </ModelContext.Provider>.
+
         </>
     );
 };

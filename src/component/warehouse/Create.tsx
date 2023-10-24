@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     EuiButton,
     EuiButtonEmpty,
@@ -16,17 +16,22 @@ import {
     EuiText,
     useGeneratedHtmlId,
 } from '@elastic/eui';
-export default () => {
-    const [isModalVisible, setIsModalVisible] = useState(false);
+import { ModelContext } from '../tablememory';
+export default function () {
+    //
+    const { isCreate, setIsCreate } = useContext(ModelContext);
+
+    //
     const [isSwitchChecked, setIsSwitchChecked] = useState(true);
-    const [superSelectvalue, setSuperSelectValue] = useState('option_one');
     const modalFormId = useGeneratedHtmlId({ prefix: 'modalForm' });
     const modalFormSwitchId = useGeneratedHtmlId({ prefix: 'modalFormSwitch' });
-    const onSwitchChange = () =>
-        setIsSwitchChecked((isSwitchChecked) => !isSwitchChecked);
-    const closeModal = () => setIsModalVisible(false);
-    const showModal = () => setIsModalVisible(true);
-
+    const onSwitchChange = () => setIsSwitchChecked((isSwitchChecked) => !isSwitchChecked);
+    const closeModal = () => {
+        setIsCreate(false);
+    };
+    // useEffect(() => {
+    //     setIsCreate(false);
+    // }, [isModalVisible]);
     const formSample = (
         <EuiForm id={modalFormId} component="form">
             <EuiFormRow>
@@ -35,8 +40,7 @@ export default () => {
                     name="popswitch"
                     label="Cool modal form"
                     checked={isSwitchChecked}
-                    onChange={onSwitchChange}
-                />
+                    onChange={onSwitchChange} />
             </EuiFormRow>
             <EuiFormRow label="A text field">
                 <EuiFieldText name="popfirst" />
@@ -46,28 +50,29 @@ export default () => {
             </EuiFormRow>
         </EuiForm>
     );
-    const onSuperSelectChange = (value: string) => {
-        setSuperSelectValue(value);
-    };
-    let modal = (
-        <EuiModal onClose={closeModal} initialFocus="[name=popswitch]">
-            <EuiModalHeader>
-                <EuiModalHeaderTitle>Modal title</EuiModalHeaderTitle>
-            </EuiModalHeader>
-            <EuiModalBody>{formSample}</EuiModalBody>
-            <EuiModalFooter>
-                <EuiButtonEmpty onClick={closeModal}>Cancel</EuiButtonEmpty>
-                <EuiButton type="submit" form={modalFormId} onClick={closeModal} fill>
-                    Save
-                </EuiButton>
-            </EuiModalFooter>
-        </EuiModal>
-    );
+
+
+    let modal;
+    if (isCreate) {
+        modal = (
+            <EuiModal onClose={closeModal} initialFocus="[name=popswitch]">
+                <EuiModalHeader>
+                    <EuiModalHeaderTitle>Modal title</EuiModalHeaderTitle>
+                </EuiModalHeader>
+                <EuiModalBody>{formSample}</EuiModalBody>
+                <EuiModalFooter>
+                    <EuiButtonEmpty onClick={closeModal}>Cancel</EuiButtonEmpty>
+                    <EuiButton type="submit" form={modalFormId} onClick={closeModal} fill>
+                        Save
+                    </EuiButton>
+                </EuiModalFooter>
+            </EuiModal>
+        );
+    }
 
     return (
-        <div>
-            <EuiButton onClick={showModal}>Show form modal</EuiButton>
+        <>
             {modal}
-        </div>
+        </>
     );
 }

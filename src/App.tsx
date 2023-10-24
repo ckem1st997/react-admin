@@ -36,25 +36,15 @@ const cache = createCache({
 cache.compat = true;
 
 
+
 function App() {
   // const [theme, setTheme] = useState<EuiThemeColorMode>('light');
   return (
     <>
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme='light'
-      />
       {/* <ReactKeycloakProvider authClient={keycloak}> */}
 
       <RouterProvider router={router} />
+
       <EuiProvider colorMode='light' cache={cache}>
       </EuiProvider>
       {/* </ReactKeycloakProvider> */}

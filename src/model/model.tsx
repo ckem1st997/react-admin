@@ -1,3 +1,5 @@
+import { SetStateAction } from "react";
+
 // SelectListItem.tsx
 export interface SelectListItem {
   Disabled: boolean;
@@ -53,3 +55,9 @@ export interface ParamSearchBase {
   keyWord?: string;
   inActive?: boolean
 }
+
+
+export type TodoContextType = {
+  isCreate: boolean;
+  setIsCreate: SetStateAction<boolean>;
+};
