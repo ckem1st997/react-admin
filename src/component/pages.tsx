@@ -119,15 +119,15 @@ export const Pages = () => {
       {/* <EuiProgress size="xs" color="accent" /> */}
 
       <Header></Header>
-      <EuiPageTemplate>
+      <EuiPageTemplate paddingSize='m'>
         <EuiPageTemplate.Sidebar sticky={true}>
           <EuiSideNav></EuiSideNav>
         </EuiPageTemplate.Sidebar>
-        <EuiPageTemplate.Header paddingSize='s'>
+        <EuiPageTemplate.Header>
           <Breadcrumb></Breadcrumb>
         </EuiPageTemplate.Header>
 
-        <EuiPageTemplate.Section grow={false} >
+        <EuiPageTemplate.Section  grow={false} >
           <Outlet />
         </EuiPageTemplate.Section>
       </EuiPageTemplate>

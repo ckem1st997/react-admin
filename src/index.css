@@ -15,3 +15,6 @@ code {
 .hidden-block{
   opacity: 0;
 }
+.block-size-header{
+  block-size: 65px !important;
+}

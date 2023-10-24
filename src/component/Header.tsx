@@ -32,6 +32,7 @@ import {
 import { Link } from 'react-router-dom';
 import Search_Menu from './Search_Menu';
 import { ThemeToggeContext } from '../default/Context';
+import Contextmenu from './Contextmenu';
 
 export default () => {
   const [checked, setChecked] = useState(false);
@@ -78,14 +79,20 @@ export default () => {
     />
   );
   return (
-    <EuiHeader>
+    <EuiHeader className='block-size-header'>
       <EuiHeaderSection>
         <EuiHeaderSectionItem>{renderLogo()}</EuiHeaderSectionItem>
         <EuiHeaderSectionItem>
           <HeaderSpacesMenu />
         </EuiHeaderSectionItem>
       </EuiHeaderSection>
-      {/* {renderBreadcrumbs()} */}
+      <EuiHeaderSection >
+        <EuiHeaderSectionItem>
+          <Contextmenu />
+        </EuiHeaderSectionItem>
+
+      </EuiHeaderSection>
+
       <EuiHeaderSection side="right">
         <EuiHeaderSectionItem>
           {/* <EuiSwitch

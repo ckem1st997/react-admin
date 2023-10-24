@@ -26,6 +26,10 @@ import {
     Pagination,
     EuiButtonIcon,
     EuiToolTip,
+    EuiPopover,
+    EuiContextMenuItem,
+    EuiContextMenuPanel,
+    useGeneratedHtmlId,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
 import { PaginationOptions, paginationBase } from '../extension/BaseTable';
@@ -374,20 +378,61 @@ export default () => {
     //#endregion
 
 
+
+    // menu toggel
+
+    const [isPopoverOpen, setPopover] = useState(false);
+    const splitButtonPopoverId = useGeneratedHtmlId({
+      prefix: 'splitButtonPopover',
+    });
+  
+    const onButtonClick = () => {
+      setPopover(!isPopoverOpen);
+    };
+  
+    const closePopover = () => {
+      setPopover(false);
+    };
+  
+    const items = [
+      <EuiContextMenuItem key="copy" icon="copy" onClick={closePopover}>
+        Copy
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem key="edit" icon="pencil" onClick={closePopover}>
+        Edit
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem key="share" icon="share" onClick={closePopover}>
+        Share
+      </EuiContextMenuItem>,
+    ];
+    //
     return (
         <>
-            <EuiFlexGroup alignItems="center">
-                <EuiFlexItem grow={3}>
-
+            <EuiFlexGroup responsive={true} justifyContent='flexEnd' gutterSize="xs" alignItems="center">
+                <EuiFlexItem grow={false}>
+                    <EuiButton size="s" iconType="calendar">
+                        Last 15 min
+                    </EuiButton>
                 </EuiFlexItem>
-
-                <EuiFlexItem grow={3}>
-         
-
-                </EuiFlexItem>
-
-                <EuiFlexItem grow={4}>
-                   
+                <EuiFlexItem grow={false}>
+                    <EuiPopover
+                        id={splitButtonPopoverId}
+                        button={
+                            <EuiButtonIcon
+                                display="base"
+                                size="s"
+                                iconType="boxesVertical"
+                                aria-label="More"
+                                onClick={onButtonClick}
+                            />
+                        }
+                        isOpen={isPopoverOpen}
+                        closePopover={closePopover}
+                        panelPaddingSize="none"
+                        anchorPosition="downLeft"
+                    >
+                        <EuiContextMenuPanel size="s" items={items} />
+                    </EuiPopover>
                 </EuiFlexItem>
             </EuiFlexGroup>
             <EuiSpacer size="l" />
