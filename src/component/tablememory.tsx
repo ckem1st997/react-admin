@@ -25,6 +25,7 @@ import {
     EuiBasicTable,
     Pagination,
     EuiButtonIcon,
+    EuiToolTip,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
 import { PaginationOptions, paginationBase } from '../extension/BaseTable';
@@ -209,23 +210,31 @@ export default () => {
             name: 'Actions',
             render: (online: WareHouseDTOs) => {
                 return <>
-                    <EuiFlexItem grow={false}>
-                        <EuiButtonIcon
-                            iconType="dashboardApp"
-                            aria-label="Dashboard"
-                            color="success"
-                            onClick={(e: any) => { setIsCreate(true) }}
-                        />
-                    </EuiFlexItem>
-                    <EuiFlexItem grow={false}>
-                        <EuiButtonIcon
-                            display="base"
-                            iconType="trash"
-                            aria-label="Delete"
-                            color="danger"
-                            onClick={(e: any) => { ToastifyHelper.info(JSON.stringify(online)); }}
-                        />
-                    </EuiFlexItem>
+                    <EuiFlexGroup responsive={true} wrap={false} gutterSize="s" alignItems="center">
+                        <EuiFlexItem grow={false}>
+                            <EuiButtonIcon
+                                iconType="documentEdit"
+                                aria-label="Dashboard"
+                                color="success"
+                                onClick={(e: any) => { setIsCreate(true) }}
+                            />
+                            {/* <EuiButton size='s' isLoading={loading} iconType="trash" isDisabled={loading} onClick={onSearch}>Search</EuiButton> */}
+
+                        </EuiFlexItem>
+                        <EuiFlexItem grow={false}>
+
+                            <EuiButtonIcon
+                                //display="base"
+                                iconType="trash"
+                                // aria-label="Delete"
+                                color="danger"
+                                onClick={(e: any) => { ToastifyHelper.info(JSON.stringify(online)); }}
+                            />
+                            {/* <EuiButton size='s' isLoading={loading} iconType="trash" isDisabled={loading} onClick={onSearch}>Search</EuiButton> */}
+
+                        </EuiFlexItem>
+                    </EuiFlexGroup>
+
                 </>;
             },
         },
@@ -274,7 +283,6 @@ export default () => {
         else
             loadUsers(pagination.pageIndex, pagination.pageSize, paramSearch?.keyWord, paramSearch?.inActive);
         //  ToastifyHelper.info("useEffect !");
-        console.log(isCreate)
         //nếu muốn tìm kiếm luôn theo trường muốn
     }, [pagination.pageIndex, pagination.pageSize, paramSearch?.inActive, paramSearch?.keyWord]);
 
@@ -368,6 +376,21 @@ export default () => {
 
     return (
         <>
+            <EuiFlexGroup alignItems="center">
+                <EuiFlexItem grow={3}>
+
+                </EuiFlexItem>
+
+                <EuiFlexItem grow={3}>
+         
+
+                </EuiFlexItem>
+
+                <EuiFlexItem grow={4}>
+                   
+                </EuiFlexItem>
+            </EuiFlexGroup>
+            <EuiSpacer size="l" />
             <EuiFlexGroup alignItems="center">
                 <EuiFlexItem grow={3}>
                     <EuiFormRow label="Trạng thái: ">

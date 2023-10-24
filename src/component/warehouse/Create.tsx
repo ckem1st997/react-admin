@@ -15,13 +15,19 @@ import {
     EuiSuperSelect,
     EuiText,
     useGeneratedHtmlId,
+    EuiSelect,
+    EuiSpacer,
+    EuiTextArea,
 } from '@elastic/eui';
 import { ModelContext } from '../tablememory';
 export default function () {
+    // title
+    const title = "Tạo mới kho !"
     //
     const { isCreate, setIsCreate } = useContext(ModelContext);
 
-    //
+    // #region state
+
     const [isSwitchChecked, setIsSwitchChecked] = useState(true);
     const modalFormId = useGeneratedHtmlId({ prefix: 'modalForm' });
     const modalFormSwitchId = useGeneratedHtmlId({ prefix: 'modalFormSwitch' });
@@ -29,6 +35,26 @@ export default function () {
     const closeModal = () => {
         setIsCreate(false);
     };
+    const [showErrors, setShowErrors] = useState(true);
+
+    //#endregiond
+    let errors;
+    if (showErrors) {
+        errors = [
+            "Here's an example of an error",
+            'You might have more than one error, so pass an array.',
+        ];
+    }
+
+    const onButtonClick = () => {
+        setShowErrors(!showErrors);
+    };
+
+    const button = (
+        <EuiButton fill color="danger" onClick={onButtonClick}>
+            Toggle errors
+        </EuiButton>
+    );
     // useEffect(() => {
     //     setIsCreate(false);
     // }, [isModalVisible]);
@@ -51,19 +77,56 @@ export default function () {
         </EuiForm>
     );
 
+    const formCreate = (
+        <>
+            <EuiForm isInvalid={showErrors} error={errors} component="form">
+                <EuiFormRow label="Validation only" isInvalid={showErrors}>
+                    <EuiFieldText name="first" isInvalid={showErrors} />
+                </EuiFormRow>
+
+                <EuiFormRow
+                    label="Validation with help text and errors"
+                    helpText="I am some friendly help text."
+                    isInvalid={showErrors}
+                    error={errors}
+                >
+                    <EuiFieldText name="text" isInvalid={showErrors} />
+                </EuiFormRow>
+
+                <EuiFormRow label="Text area" isInvalid={showErrors}>
+                    <EuiTextArea name="area" isInvalid={showErrors} />
+                </EuiFormRow>
+
+                <EuiFormRow label="Select" isInvalid={showErrors}>
+                    <EuiSelect
+                        options={[
+                            { value: 'option_one', text: 'Option one' },
+                            { value: 'option_two', text: 'Option two' },
+                            { value: 'option_three', text: 'Option three' },
+                        ]}
+                        isInvalid={showErrors}
+                    />
+                </EuiFormRow>
+
+                <EuiSpacer />
+
+                {button}
+            </EuiForm>
+        </>
+    );
 
     let modal;
     if (isCreate) {
         modal = (
             <EuiModal onClose={closeModal} initialFocus="[name=popswitch]">
                 <EuiModalHeader>
-                    <EuiModalHeaderTitle>Modal title</EuiModalHeaderTitle>
+                    <EuiModalHeaderTitle>{title}</EuiModalHeaderTitle>
                 </EuiModalHeader>
-                <EuiModalBody>{formSample}</EuiModalBody>
+                <EuiModalBody>{formCreate}</EuiModalBody>
                 <EuiModalFooter>
-                    <EuiButtonEmpty onClick={closeModal}>Cancel</EuiButtonEmpty>
-                    <EuiButton type="submit" form={modalFormId} onClick={closeModal} fill>
-                        Save
+                    <EuiButton size='s' onClick={closeModal}>Huỷ bỏ</EuiButton>
+                    <EuiButton iconType="savedObjectsApp" size='s' type="submit" form={modalFormId} onClick={closeModal} fill>
+                        Lưu
                     </EuiButton>
                 </EuiModalFooter>
             </EuiModal>
