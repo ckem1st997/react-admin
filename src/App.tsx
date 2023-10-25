@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import reactLogo from './logo.svg'
 import viteLogo from './logo.svg'
 import './App.css'
@@ -20,7 +20,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '@elastic/eui/dist/eui_theme_light.min.css';
 
-import { ThemeToggeContext } from './default/Context';
+import { CreateContext, ThemeToggeContext } from './default/Context';
 // import dotenv from 'dotenv';
 
 
@@ -38,15 +38,19 @@ cache.compat = true;
 
 
 function App() {
+  const [isCreate, setIsCreate] = useState(false);
   // const [theme, setTheme] = useState<EuiThemeColorMode>('light');
   return (
     <>
       {/* <ReactKeycloakProvider authClient={keycloak}> */}
 
-      <RouterProvider router={router} />
 
-      <EuiProvider colorMode='light' cache={cache}>
-      </EuiProvider>
+      <CreateContext.Provider value={{ isCreate, setIsCreate }}>
+        <RouterProvider router={router} />
+        <EuiProvider colorMode='light' cache={cache}>
+        </EuiProvider>
+      </CreateContext.Provider>
+
       {/* </ReactKeycloakProvider> */}
     </>
   )

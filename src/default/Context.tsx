@@ -8,3 +8,6 @@ export const ThemeToggeContext = createContext<{
     theme: 'dark',
     setTheme: () => 'dark',
   });
+
+
+  export const CreateContext = createContext<any>(null);

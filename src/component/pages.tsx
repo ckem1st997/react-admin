@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import React, { ReactElement, createContext, useContext, useEffect, useState } from 'react';
 import {
   EuiText,
   EuiPageTemplate,
@@ -19,13 +19,21 @@ import { Link, NavLink, Outlet, redirect, useLocation, useNavigate, useNavigatio
 import Header from './Header';
 import Breadcrumb from './Breadcrumb';
 import axios from 'axios';
+import { CreateContext } from '../default/Context';
+
+
+
+//context 
+
 
 export const Pages = () => {
   const location = useLocation();
   const [progress, setProgress] = useState(true);
   const navigation = useNavigation();
   const navigate = useNavigate();
- // const { keycloak, initialized } = useKeycloak();
+
+
+  // const { keycloak, initialized } = useKeycloak();
 
 
 
@@ -117,20 +125,20 @@ export const Pages = () => {
     <>
       {/* <EuiProgress className={navigation.state !== "loading" ? '' : 'hidden-block'} size="xs" color="accent" /> */}
       {/* <EuiProgress size="xs" color="accent" /> */}
-
       <Header></Header>
       <EuiPageTemplate paddingSize='m'>
         <EuiPageTemplate.Sidebar sticky={true}>
           <EuiSideNav></EuiSideNav>
         </EuiPageTemplate.Sidebar>
-        <EuiPageTemplate.Header>
-          <Breadcrumb></Breadcrumb>
+        <EuiPageTemplate.Header paddingSize='xs'>
+          <Breadcrumb ></Breadcrumb>
         </EuiPageTemplate.Header>
 
-        <EuiPageTemplate.Section  grow={false} >
+        <EuiPageTemplate.Section grow={false} >
           <Outlet />
         </EuiPageTemplate.Section>
       </EuiPageTemplate>
+
     </>
 
 

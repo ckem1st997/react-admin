@@ -1,4 +1,4 @@
-import React, { useState, useRef, ReactNode, useEffect, EventHandler, createContext } from 'react';
+import React, { useState, useRef, ReactNode, useEffect, EventHandler, createContext, useContext } from 'react';
 import {
     formatDate,
     Random,
@@ -30,6 +30,7 @@ import {
     EuiContextMenuItem,
     EuiContextMenuPanel,
     useGeneratedHtmlId,
+    EuiHorizontalRule,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
 import { PaginationOptions, paginationBase } from '../extension/BaseTable';
@@ -41,6 +42,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { ToastifyHelper } from '../hepler/ToastifyHelper';
 import { json } from 'stream/consumers';
 import Create from './warehouse/Create';
+import { CreateContext } from '../default/Context';
 
 
 
@@ -51,7 +53,7 @@ import Create from './warehouse/Create';
 
 
 // Context
-export const ModelContext = createContext<any>(null);
+//export const ModelContext = createContext<any>(null);
 //
 const userData: WareHouseDTOs[] = [];
 
@@ -276,9 +278,12 @@ export default () => {
     const [selectedOptions, setSelected] = useState();
     const [selectedOptions1, setSelected1] = useState();
     const [paramSearch, setParamSearch] = useState<ParamSearchBase>();
-    const [isCreate, setIsCreate] = useState(false);
     const [, setSelectedItems] = useState<WareHouseDTOs[]>([]);
     //#endregion
+
+    const { isCreate, setIsCreate } = useContext(CreateContext);
+
+
 
     //#region Effect
     useEffect(() => {
@@ -383,32 +388,32 @@ export default () => {
 
     const [isPopoverOpen, setPopover] = useState(false);
     const splitButtonPopoverId = useGeneratedHtmlId({
-      prefix: 'splitButtonPopover',
+        prefix: 'splitButtonPopover',
     });
-  
+
     const onButtonClick = () => {
-      setPopover(!isPopoverOpen);
+        setPopover(!isPopoverOpen);
     };
-  
+
     const closePopover = () => {
-      setPopover(false);
+        setPopover(false);
     };
-  
+
     const items = [
-      <EuiContextMenuItem key="copy" icon="copy" onClick={closePopover}>
-        Copy
-      </EuiContextMenuItem>,
-      <EuiContextMenuItem key="edit" icon="pencil" onClick={closePopover}>
-        Edit
-      </EuiContextMenuItem>,
-      <EuiContextMenuItem key="share" icon="share" onClick={closePopover}>
-        Share
-      </EuiContextMenuItem>,
+        <EuiContextMenuItem key="copy" icon="copy" onClick={closePopover}>
+            Copy
+        </EuiContextMenuItem>,
+        <EuiContextMenuItem key="edit" icon="pencil" onClick={closePopover}>
+            Edit
+        </EuiContextMenuItem>,
+        <EuiContextMenuItem key="share" icon="share" onClick={closePopover}>
+            Share
+        </EuiContextMenuItem>,
     ];
     //
     return (
         <>
-            <EuiFlexGroup responsive={true} justifyContent='flexEnd' gutterSize="xs" alignItems="center">
+            {/* <EuiFlexGroup responsive={true} justifyContent='flexEnd' gutterSize="xs" alignItems="center">
                 <EuiFlexItem grow={false}>
                     <EuiButton size="s" iconType="calendar">
                         Last 15 min
@@ -435,7 +440,8 @@ export default () => {
                     </EuiPopover>
                 </EuiFlexItem>
             </EuiFlexGroup>
-            <EuiSpacer size="l" />
+            <EuiHorizontalRule /> */}
+            {/* <EuiSpacer size="xs" /> */}
             <EuiFlexGroup alignItems="center">
                 <EuiFlexItem grow={3}>
                     <EuiFormRow label="Trạng thái: ">
@@ -512,9 +518,9 @@ export default () => {
                 onChange={onTableChange}
                 compressed={true}
             />
-            <ModelContext.Provider value={{ isCreate, setIsCreate }}>
+            <CreateContext.Provider value={{ isCreate, setIsCreate }}>
                 <Create ></Create >
-            </ModelContext.Provider>.
+            </CreateContext.Provider>
 
         </>
     );

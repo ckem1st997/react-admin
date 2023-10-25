@@ -1,4 +1,4 @@
-import React, { Fragment, ReactNode, useState } from 'react';
+import React, { Fragment, ReactNode, useContext, useState } from 'react';
 import {
     formatDate,
     Comparators,
@@ -37,6 +37,8 @@ import {
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { CreateContext } from '../default/Context';
+import Edit from './warehouse/Edit';
 type User = {
     id: number;
     firstName: string | null | undefined;
@@ -192,6 +194,9 @@ export default () => {
         // Select the option.
         setSelected((prevSelected) => [...prevSelected, newOption]);
     };
+
+    const { isCreate, setIsCreate } = useContext(CreateContext);
+
     /**
      * Mobile column options
      */
@@ -219,15 +224,15 @@ export default () => {
             },
         },
         {
-           // field: 'github',
+            // field: 'github',
             name: 'Github',
             render: (username: User) => (
-                <EuiLink onClick={(e)=>{
+                <EuiLink onClick={(e) => {
                     console.log(username)
                     setIsUser(username);
                     setIsModalVisible(true);
                 }} target="_blank">
-                  {username.firstName}-{username.github}
+                    {username.firstName}-{username.github}
                 </EuiLink>
             ),
         },
@@ -470,22 +475,22 @@ export default () => {
     //
     const [message, setMessage] = useState<ReactNode>(
         <EuiEmptyPrompt
-          title={<h3>No users</h3>}
-          titleSize="xs"
-          body="Looks like you don&rsquo;t have any users. Let&rsquo;s create some!"
-          actions={
-            <EuiButton
-              size="s"
-              key="loadUsers"
-              onClick={() => {
-              //  loadUsers();
-              }}
-            >
-              Load Users
-            </EuiButton>
-          }
+            title={<h3>No users</h3>}
+            titleSize="xs"
+            body="Looks like you don&rsquo;t have any users. Let&rsquo;s create some!"
+            actions={
+                <EuiButton
+                    size="s"
+                    key="loadUsers"
+                    onClick={() => {
+                        //  loadUsers();
+                    }}
+                >
+                    Load Users
+                </EuiButton>
+            }
         />
-      );
+    );
     return (
         <>
             <EuiFlexGroup responsive={true}>
@@ -554,9 +559,12 @@ export default () => {
                 //
                 loading={true}
                 error=""
-                // có lỗi thì sẽ không hiển thị
-                //error=""
+            // có lỗi thì sẽ không hiển thị
+            //error=""
             />
+            <CreateContext.Provider value={{ isCreate, setIsCreate }}>
+                <Edit ></Edit >
+            </CreateContext.Provider>
             {modal}
         </>
     );

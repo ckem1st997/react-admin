@@ -22,7 +22,7 @@ import {
 import { CreateContext } from '../../default/Context';
 export default function () {
     // title
-    const title = "Tạo mới kho !"
+    const title = "Chỉnh sửa kho !"
     //
     const { isCreate, setIsCreate } = useContext(CreateContext);
 
@@ -36,9 +36,15 @@ export default function () {
         setIsCreate(false);
     };
     const [showErrors, setShowErrors] = useState(true);
-//
+    //
 
-    
+    useEffect(() => {
+
+        console.log(isCreate)
+    }, [isCreate])
+
+
+
     //#endregiond
     let errors;
     if (showErrors) {
@@ -57,9 +63,6 @@ export default function () {
             Toggle errors
         </EuiButton>
     );
-    // useEffect(() => {
-    //     setIsCreate(false);
-    // }, [isModalVisible]);
     const formSample = (
         <EuiForm id={modalFormId} component="form">
             <EuiFormRow>
@@ -118,8 +121,8 @@ export default function () {
     );
 
     let modal;
-    if (isCreate) {
-        modal = (
+    const CreateFrom = () => {
+        return (
             <EuiModal onClose={closeModal} initialFocus="[name=popswitch]">
                 <EuiModalHeader>
                     <EuiModalHeaderTitle>{title}</EuiModalHeaderTitle>
@@ -135,9 +138,25 @@ export default function () {
         );
     }
 
+
+
+
     return (
         <>
-            {modal}
+            {isCreate && (
+                <EuiModal onClose={closeModal} initialFocus="[name=popswitch]">
+                    <EuiModalHeader>
+                        <EuiModalHeaderTitle>{title}</EuiModalHeaderTitle>
+                    </EuiModalHeader>
+                    <EuiModalBody>{formCreate}</EuiModalBody>
+                    <EuiModalFooter>
+                        <EuiButton size='s' onClick={closeModal}>Huỷ bỏ</EuiButton>
+                        <EuiButton iconType="savedObjectsApp" size='s' type="submit" form={modalFormId} onClick={closeModal} fill>
+                            Lưu
+                        </EuiButton>
+                    </EuiModalFooter>
+                </EuiModal>
+            )}
         </>
     );
 }

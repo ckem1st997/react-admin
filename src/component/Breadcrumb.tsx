@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
     EuiBreadcrumb,
     EuiButton,
@@ -11,14 +11,34 @@ import { Link, NavigateFunction, useLocation, useMatches, useNavigate } from 're
 import { NavItem, sideNavData } from '../data/sideNavData';
 import { SelectListItem } from '../model/model';
 import { isNullOrEmpty } from '../hepler/StringHelper';
+import { CreateContext } from '../default/Context';
+
+
+
+
+
+
 export default () => {
     const navigate = useNavigate();
     //
     const location = useLocation();
     const currentPath = location.pathname;
     const [isLoadingButon, setisLoadingButon] = useState(true);
+    // bắn ra một file riêng
+    const { isCreate, setIsCreate } = useContext(CreateContext);
+
+
+
+    const listPathIgnoreBreadcrumbs = ['/']
+    const [isIgnoreBreadcrumbs, setIgnoreBreadcrumbs] = useState(false);
+
+    //
     useEffect(() => {
-        //  setisLoadingButon(false);
+        if (!isNullOrEmpty(location.pathname) && listPathIgnoreBreadcrumbs.includes(location.pathname)) {
+            setIgnoreBreadcrumbs(true);
+        }
+        else
+            setIgnoreBreadcrumbs(false);
     }, [location.pathname]);
 
     function Breadcrumbs() {
@@ -65,6 +85,7 @@ export default () => {
         return breadcrumbsData;
     }
 
+
     return (
         <>
             {/* {renderBreadcrumbs()} */}
@@ -72,9 +93,21 @@ export default () => {
                 aria-label="Header breadcrumbs example"
                 breadcrumbs={Breadcrumbs()}
             />
-            {/* <EuiButton iconType="home" color="primary" size='s' fill onClick={() => navigate("/")}>
-                Home
-            </EuiButton>, */}
+
+            {!isIgnoreBreadcrumbs &&
+                <>
+                    <EuiButton iconType="home" color="primary" size='s' fill onClick={(e: any) => {
+                        setIsCreate(true)
+                        console.log(isCreate)
+                    }}>
+                        Thêm mới
+                    </EuiButton>
+                    <EuiButton iconType="pencil" color="primary" size='s' fill onClick={() => navigate("/")}>
+                        Chỉnh sửa
+                    </EuiButton>
+                </>
+            }
+
             <EuiButtonEmpty iconType="arrowLeft" flush="both" onClick={() => navigate(-1)}>
                 Quay lại
             </EuiButtonEmpty>
