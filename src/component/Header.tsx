@@ -90,7 +90,7 @@ export default () => {
 
       </EuiHeaderSection>
       <EuiSpacer size='l' />
-      <Contextmenu />
+      {/* <Contextmenu /> */}
 
       <EuiHeaderSection side="right">
         <EuiHeaderSectionItem>
