@@ -12,6 +12,7 @@ import {
   EuiHeaderSectionItem,
   EuiHeaderSectionItemButton,
   EuiIcon,
+  EuiImage,
   EuiKeyPadMenu,
   EuiKeyPadMenuItem,
   EuiLink,
@@ -52,11 +53,11 @@ export default () => {
 
 
   const renderLogo = () => (
-    <EuiHeaderLogo
-      iconType="logoElastic"
-      href="#"
-      onClick={(e) => e.preventDefault()}
-      aria-label="Go to home page"
+    <EuiImage
+      margin='s'
+      size="s"
+      alt="" // Because this image is sufficiently described by its caption, there is no need to repeat it via alt text
+      src="https://hanoicomputercdn.com/media/lib/09-08-2023/logo-hacom-since-2001.png"
     />
   );
   const search = (
@@ -82,16 +83,14 @@ export default () => {
     <EuiHeader className='block-size-header'>
       <EuiHeaderSection>
         <EuiHeaderSectionItem>{renderLogo()}</EuiHeaderSectionItem>
-        <EuiHeaderSectionItem>
-          <HeaderSpacesMenu />
-        </EuiHeaderSectionItem>
       </EuiHeaderSection>
       <EuiHeaderSection >
         <EuiHeaderSectionItem>
-          <Contextmenu />
         </EuiHeaderSectionItem>
 
       </EuiHeaderSection>
+      <EuiSpacer size='l' />
+      <Contextmenu />
 
       <EuiHeaderSection side="right">
         <EuiHeaderSectionItem>
@@ -102,6 +101,9 @@ export default () => {
           /> */}
           {search}
           {/* <Search_Menu></Search_Menu> */}
+        </EuiHeaderSectionItem>
+        <EuiHeaderSectionItem>
+          <HeaderSpacesMenu />
         </EuiHeaderSectionItem>
         <EuiHeaderSectionItem>
           <HeaderUserMenu />

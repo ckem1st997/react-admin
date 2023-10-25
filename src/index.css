@@ -18,7 +18,30 @@ code {
 .block-size-header{
   block-size: 65px !important;
 }
-.disable-hover:hover {
-  pointer-events: none; /* Vô hiệu hóa tương tác hover */
-  cursor: default; /* Đổi con trỏ thành mặc định */
+
+.css-kkbtad-euiKeyPadMenuItem-enabled:hover,
+.css-kkbtad-euiKeyPadMenuItem-enabled:focus,
+.css-kkbtad-euiKeyPadMenuItem-enabled:focus-within {
+  cursor: default !important; /* Đổi con trỏ thành mặc định */
+  /* Xóa tất cả các hiệu ứng hover và tương tác hover */
+  text-decoration: none !important; /* Xóa underline */
+  box-shadow: none !important; /* Xóa bất kỳ hiệu ứng shadow nào */
+}
+nav.header-fix{
+  height: 65px; /* Đặt chiều cao của nav là 65px */
+  display: flex;
+  align-items: center;
+}
+
+.header-fix ul.euiKeyPadMenu {
+  height: 65px;
+  inline-size: auto !important;
+}
+
+.header-fix ul.euiKeyPadMenu li {
+  height: 65px;
+}
+
+.header-fix ul.euiKeyPadMenu li button {
+  height: 65px;
 }

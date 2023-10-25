@@ -11,9 +11,14 @@ import {
     EuiContextMenuPanelDescriptor,
     EuiKeyPadMenu,
     EuiKeyPadMenuItem,
+    EuiEmptyPrompt,
+    EuiLink,
+    EuiTitle,
 } from '@elastic/eui';
 import { NavItem, sideNavData } from '../data/sideNavData';
+import { useNavigate } from 'react-router-dom';
 export default () => {
+    const navigate = useNavigate();
     const [isPopoverOpen, setPopover] = useState(false);
     const embeddedCodeSwitchId__1 = useGeneratedHtmlId({
         prefix: 'embeddedCodeSwitch',
@@ -37,148 +42,81 @@ export default () => {
     const panels: EuiContextMenuPanelDescriptor[] = [
         {
             id: 0,
-            title: 'This is a context menu',
+            title: 'Danh sách trang',
             items: [
                 {
-                    name: 'Handle an onClick',
-                    icon: 'search',
+                    name: 'Quản lý kho',
+                    icon: 'search',                   
                     onClick: () => {
-                        closePopover();
+                        navigate("/")
                     },
                 },
                 {
-                    name: 'Go to a link',
+                    name: 'Quản lý tồn',
                     icon: 'user',
-                    href: 'http://elastic.co',
+                  // href: 'http://elastic.co',
                     target: '_blank',
+                    panel: 1
                 },
                 {
-                    name: 'Nest panels',
-                    icon: 'wrench',
-                    panel: 1,
-                },
-                {
-                    name: 'Add a tooltip',
-                    icon: 'document',
-                    toolTipTitle: 'Optional tooltip',
-                    toolTipContent: 'Optional content for a tooltip',
-                    toolTipPosition: 'right',
+                    name: 'Quản lý vật tư',
+                    icon: 'color',
                     onClick: () => {
-                        closePopover();
+                        navigate("/grid")
                     },
-                },
-                {
-                    name: 'Use an app icon',
-                    icon: 'visualizeApp',
-                },
-                {
-                    name: 'Pass an icon as a component to customize it',
-                    icon: <EuiIcon type="trash" size="m" color="danger" />,
-                },
-                {
-                    name: 'Disabled option',
-                    icon: 'user',
-                    toolTipContent: 'For reasons, this item is disabled',
-                    toolTipPosition: 'right',
-                    disabled: true,
-                    onClick: () => {
-                        closePopover();
-                    },
-                },
+                }
             ],
         },
         {
             id: 1,
             initialFocusedItemIndex: 1,
-            title: 'Nest panels',
+            title: 'Danh sách',
             items: [
                 {
                     name: 'PDF reports',
                     icon: 'user',
                     onClick: () => {
-                        closePopover();
+                        navigate("/unit/grid")
                     },
                 },
                 {
                     name: 'Embed code',
                     icon: 'user',
-                    panel: 2,
+                   // panel: 2,
                 },
-                {
-                    name: 'Permalinks',
-                    icon: 'user',
-                    onClick: () => {
-                        closePopover();
-                    },
-                },
-            ],
-        },
-        {
-            id: 2,
-            title: 'Embed code',
-            content: (
-                <div style={{ padding: 16 }}>
-                    <EuiFormRow label="Generate a public snapshot?" hasChildLabel={false}>
-                        <EuiSwitch
-                            name="switch"
-                            id={embeddedCodeSwitchId__1}
-                            label="Snapshot data"
-                            checked={true}
-                            onChange={() => { }}
-                        />
-                    </EuiFormRow>
-                    <EuiFormRow
-                        label="Include the following in the embed"
-                        hasChildLabel={false}
-                    >
-                        <EuiSwitch
-                            name="switch"
-                            id={embeddedCodeSwitchId__2}
-                            label="Current time range"
-                            checked={true}
-                            onChange={() => { }}
-                        />
-                    </EuiFormRow>
-                    <EuiSpacer />
-                    <EuiButton fill>Copy iFrame code</EuiButton>
-                </div>
-            ),
-        },
-    ];
-    const button = (
-        <>
-            <EuiIcon type="logoElasticsearch" color='white' display="base" onClick={onButtonClick} size="xl" />
-            {/* <EuiButton size="s" color={undefined} iconType="calendar">
-                Last 15 min
-            </EuiButton> */}
-        </>
+            ]
+        }
 
-    );
+    ];
+    const menuItems = [
+        { label: 'Quản lý kho', iconType: 'indexManagementApp', onClick: onButtonClick },
+        { label: 'Quản lý vật tư', iconType: 'cloudSunny' },
+        { label: 'Báo cáo', iconType: 'reporter', onClick: onButtonClick },
+    ];
     return (
         <>
             <EuiPopover
                 id={contextMenuPopoverId}
+
                 isOpen={isPopoverOpen}
                 closePopover={closePopover}
-                panelPaddingSize="none"
-                anchorPosition="downLeft"
+                panelPaddingSize="s"
+                // anchorPosition="upRight"
                 title='Quản lý'
             >
 
                 <EuiContextMenu initialPanelId={0} panels={panels} />
             </EuiPopover>
-            <nav aria-label="Nav title">
-                <EuiKeyPadMenu className="disable-hover" >
-                    <EuiKeyPadMenuItem onClick={onButtonClick} label="Dashboard">
-                        <EuiIcon type="dashboardApp" size="l" />
-                    </EuiKeyPadMenuItem>
-
-                    <EuiKeyPadMenuItem label="Canvas">
-                        <EuiIcon type="canvasApp" size="l" />
-                    </EuiKeyPadMenuItem>
-
+            <nav aria-label="Nav title" className='header-fix'>
+                <EuiKeyPadMenu>
+                    {menuItems.map((menuItem, index) => (
+                        <EuiKeyPadMenuItem key={index} onClick={menuItem.onClick} label={menuItem.label}>
+                            <EuiIcon type={menuItem.iconType} size="l" />
+                        </EuiKeyPadMenuItem>
+                    ))}
                 </EuiKeyPadMenu>
             </nav>
+
             {/* <EuiSpacer size="s" /> */}
             {/* <p>llll</p> */}
         </>

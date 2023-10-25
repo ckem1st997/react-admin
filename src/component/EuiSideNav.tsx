@@ -10,9 +10,6 @@ import { recursiveSearch } from '../hepler/FunctionHelper';
 
 
 export default () => {
-
-
-  
   const navigate = useNavigate();
   const [isSideNavOpenOnMobile, setIsSideNavOpenOnMobile] = useState(false);
   const [sideNavs, setSideNavs] = useState<any[]>([]);
