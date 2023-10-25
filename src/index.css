@@ -18,3 +18,7 @@ code {
 .block-size-header{
   block-size: 65px !important;
 }
+.disable-hover:hover {
+  pointer-events: none; /* Vô hiệu hóa tương tác hover */
+  cursor: default; /* Đổi con trỏ thành mặc định */
+}

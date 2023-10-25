@@ -9,6 +9,8 @@ import {
     EuiSpacer,
     useGeneratedHtmlId,
     EuiContextMenuPanelDescriptor,
+    EuiKeyPadMenu,
+    EuiKeyPadMenuItem,
 } from '@elastic/eui';
 import { NavItem, sideNavData } from '../data/sideNavData';
 export default () => {
@@ -156,7 +158,6 @@ export default () => {
         <>
             <EuiPopover
                 id={contextMenuPopoverId}
-                button={button}
                 isOpen={isPopoverOpen}
                 closePopover={closePopover}
                 panelPaddingSize="none"
@@ -166,6 +167,18 @@ export default () => {
 
                 <EuiContextMenu initialPanelId={0} panels={panels} />
             </EuiPopover>
+            <nav aria-label="Nav title">
+                <EuiKeyPadMenu className="disable-hover" >
+                    <EuiKeyPadMenuItem onClick={onButtonClick} label="Dashboard">
+                        <EuiIcon type="dashboardApp" size="l" />
+                    </EuiKeyPadMenuItem>
+
+                    <EuiKeyPadMenuItem label="Canvas">
+                        <EuiIcon type="canvasApp" size="l" />
+                    </EuiKeyPadMenuItem>
+
+                </EuiKeyPadMenu>
+            </nav>
             {/* <EuiSpacer size="s" /> */}
             {/* <p>llll</p> */}
         </>
