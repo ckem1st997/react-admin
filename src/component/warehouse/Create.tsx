@@ -82,7 +82,7 @@ export default function () {
     const formCreate = (
         <>
             <EuiForm isInvalid={showErrors} error={errors} component="form">
-                <EuiFormRow label="Validation only" isInvalid={showErrors}>
+                <EuiFormRow label="Tên kho: "  isInvalid={showErrors}>
                     <EuiFieldText name="first" isInvalid={showErrors} />
                 </EuiFormRow>
 
