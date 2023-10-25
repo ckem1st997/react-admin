@@ -61,3 +61,16 @@ export type TodoContextType = {
   isCreate: boolean;
   setIsCreate: SetStateAction<boolean>;
 };
+
+export interface BaseEntity {
+  id: string;
+}
+export interface WareHouse extends BaseEntity {
+  code: string;
+  name: string;
+  address: string;
+  description: string;
+  parentId: string;
+  path: string;
+  inactive: boolean;
+}

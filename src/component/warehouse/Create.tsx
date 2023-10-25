@@ -36,9 +36,9 @@ export default function () {
         setIsCreate(false);
     };
     const [showErrors, setShowErrors] = useState(true);
-//
+    //
 
-    
+
     //#endregiond
     let errors;
     if (showErrors) {
@@ -82,7 +82,7 @@ export default function () {
     const formCreate = (
         <>
             <EuiForm isInvalid={showErrors} error={errors} component="form">
-                <EuiFormRow label="Tên kho: "  isInvalid={showErrors}>
+                <EuiFormRow label="Tên kho: " isInvalid={showErrors}>
                     <EuiFieldText name="first" isInvalid={showErrors} />
                 </EuiFormRow>
 
@@ -116,7 +116,7 @@ export default function () {
             </EuiForm>
         </>
     );
-// dùng https://github.com/AlexJPotter/fluentvalidation-ts
+    // dùng https://github.com/AlexJPotter/fluentvalidation-ts
     let modal;
     if (isCreate) {
         modal = (
