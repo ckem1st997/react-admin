@@ -58,3 +58,7 @@ nav.header-fix{
 .EuiHorizontalRule_brecrum{
   margin-block:14px !important ;
 }
+
+.Menu_IconChevronDown_Search{
+  padding: 5px;
+}

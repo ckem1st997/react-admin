@@ -47,7 +47,7 @@ import Create from './warehouse/Create';
 import { CreateContext } from '../default/Context';
 import { modals } from '@mantine/modals';
 import { MessageHelper } from '../hepler/MessageHelper';
-import { Menu, Button, rem, Text, Box, Group } from '@mantine/core';
+import { Menu, Button, rem, Text, Box, Group, Divider, Tooltip, Title } from '@mantine/core';
 import { IconSettings, IconMessageCircle, IconPhoto, IconSearch, IconArrowsLeftRight, IconTrash, IconPlus, IconEdit, IconDotsVertical, IconChevronDown } from '@tabler/icons-react';
 
 
@@ -156,12 +156,14 @@ const optionInactive = [
     }
 ];
 export default () => {
+    const [toltal, setTotal] = useState(0);
+
     //#region VARIBLE
     const columns: Array<EuiBasicTableColumn<WareHouseDTOs>> = [
         {
             field: 'name',
             name: 'First Name',
-            footer: <em>Page totals:</em>,
+            footer: <em>Page totals: {toltal}</em>,
             sortable: true,
             truncateText: true,
             render: (username: WareHouseDTOs['name']) => (
@@ -296,11 +298,11 @@ export default () => {
             setIsFrist(false);
         else
             loadUsers(pagination.pageIndex, pagination.pageSize, paramSearch?.keyWord, paramSearch?.inActive);
-        ToastifyHelper.info("useEffect !");
-        MessageHelper.Success("test thông báo !")
+        //  ToastifyHelper.info("useEffect !");
+        // MessageHelper.Success("test thông báo !")
 
         //nếu muốn tìm kiếm luôn theo trường muốn
-    }, [pagination.pageIndex, pagination.pageSize, paramSearch?.inActive, paramSearch?.keyWord]);
+    }, [pagination.pageIndex, pagination.pageSize]);
 
     //#endregion
 
@@ -323,6 +325,7 @@ export default () => {
             else {
                 setUsers(callapi.data.data);
                 setPagination({ ...pagination, totalItemCount: callapi.data.totalCount });
+                setTotal(callapi.data.totalCount)
             }
             return callapi.data;
         } catch (error: any) {
@@ -336,10 +339,6 @@ export default () => {
         setPagination({ ...pagination, pageIndex: index, pageSize: size });
     };
     const onSearch = async (event: any) => {
-        MessageHelper.Success("test thông báo !")
-        ToastifyHelper.info("useEffect !");
-        //  ToastifyHelper.success("Call api !");
-        // ToastifyHelper.info("Call api !");
         await loadUsers(pagination.pageIndex, pagination.pageSize, paramSearch?.keyWord, paramSearch?.inActive);
     };
 
@@ -360,7 +359,7 @@ export default () => {
 
     const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
         const key = event.target.value;
-        if (!isNullOrEmpty(key))
+        if (!isNullOrUndefined(key))
             setParamSearch({ ...paramSearch, keyWord: key })
     };
 
@@ -408,26 +407,15 @@ export default () => {
         setPopover(false);
     };
 
-    const items = [
-        <EuiContextMenuItem key="copy" icon="copy" onClick={closePopover}>
-            Copy
-        </EuiContextMenuItem>,
-        <EuiContextMenuItem key="edit" icon="pencil" onClick={closePopover}>
-            Edit
-        </EuiContextMenuItem>,
-        <EuiContextMenuItem key="share" icon="share" onClick={closePopover}>
-            Share
-        </EuiContextMenuItem>,
-    ];
     //mantine
 
 
     const openModal = () => modals.openConfirmModal({
-        title: <EuiModalHeaderTitle>Thêm mới !</EuiModalHeaderTitle>,
+        // title: <Title order={3}>This is h3 title</Title>,
         children: (
             <Create></Create>
         ),
-        labels: { confirm: 'Delete account', cancel: "No don't delete it" },
+        //  labels: { confirm: 'Delete account', cancel: "No don't delete it" },
         confirmProps: { display: 'none' },
         cancelProps: { display: 'none' },
     });
@@ -437,7 +425,7 @@ export default () => {
             <Box style={{ overflow: 'hidden' }}>
                 <Box mx="auto">
                     <Group wrap="nowrap" justify='flex-end'>
-                        <Button leftSection={<IconPlus size={14} />} color='blue' variant='outline'>Thêm mới</Button>
+                        <Button onClick={openModal} leftSection={<IconPlus size={14} />} color='blue' variant='outline'>Thêm mới</Button>
                         <Button leftSection={<IconEdit size={14} />} color='orange' variant="outline">Chỉnh sửa</Button>
                         <Button leftSection={<IconTrash size={14} />} color='red' variant="outline">Xóa (Đã chọn)</Button>
                         <Menu shadow="md" trigger="hover" openDelay={100} closeDelay={200} >
@@ -486,110 +474,73 @@ export default () => {
                     </Group>
                 </Box>
             </Box>
-
+            <Divider my="sm" />
             {/* <EuiSpacer size="xs" /> */}
-            <EuiFlexGroup alignItems="center">
-                <EuiFlexItem grow={3}>
-                    <EuiFormRow label="Trạng thái: ">
-                        <EuiComboBox
-                            aria-label="Accessible screen reader label"
-                            placeholder="Chọn..."
-                            options={optionInactive}
-                            selectedOptions={selectedOptions}
-                            onChange={onChange}
-                            fullWidth={true}
-                            singleSelection={true}
-                            isDisabled={loading}
+            <EuiFlexGroup>
+                <EuiFormRow label="Tìm kiếm :">
+                    <EuiFlexGroup alignItems='flexEnd' >
+                        <EuiFlexItem grow={false}>
+                            <EuiFieldSearch
+                                placeholder="Tìm kiếm..."
+                                fullWidth
+                                aria-label="An example of search with fullWidth"
+                                onChange={onChangeText}
+                                disabled={loading}
+                                append={
+                                    <Menu trigger='click' closeOnClickOutside={false} shadow="md" width={800} openDelay={100} closeDelay={300} >
+                                        <Menu.Target>
+                                            <Tooltip label="Hiển thị tùy chọn tìm kiếm">
+                                                <IconChevronDown className='Menu_IconChevronDown_Search' width={35} size={20} />
+                                            </Tooltip>
 
-                        />
-                    </EuiFormRow>
-                </EuiFlexItem>
+                                        </Menu.Target>
 
-                <EuiFlexItem grow={3}>
-                    <EuiFormRow label="Tên: ">
-                        <EuiComboBox
-                            aria-label="Accessible screen reader label"
-                            placeholder="Chọn..."
-                            options={options}
-                            selectedOptions={selectedOptions1}
-                            onChange={onChange1}
-                            fullWidth={true}
-                            renderOption={renderOption}
-                            isDisabled={loading}
+                                        <Menu.Dropdown >
+                                            <Menu.Label>Tùy chọn tìm kiếm</Menu.Label>
+                                            <Menu.Item closeMenuOnClick={false}>
+                                                <EuiFormRow label="Trạng thái: ">
+                                                    <EuiComboBox
+                                                        aria-label="Accessible screen reader label"
+                                                        placeholder="Chọn..."
+                                                        options={optionInactive}
+                                                        selectedOptions={selectedOptions}
+                                                        onChange={onChange}
+                                                        fullWidth={true}
+                                                        singleSelection={true}
+                                                        isDisabled={loading}
+                                                        isCaseSensitive
 
-                        />
-                    </EuiFormRow>
+                                                    />
+                                                </EuiFormRow>
+                                            </Menu.Item>
+                                            <Menu.Item closeMenuOnClick={false}>
+                                                <EuiFormRow label="Tên: ">
+                                                    <EuiComboBox
+                                                        aria-label="Accessible screen reader label"
+                                                        placeholder="Chọn..."
+                                                        options={options}
+                                                        selectedOptions={selectedOptions1}
+                                                        onChange={onChange1}
+                                                        fullWidth={true}
+                                                        renderOption={renderOption}
+                                                        isDisabled={loading}
 
-                </EuiFlexItem>
-
-                <EuiFlexItem grow={4}>
-                    <EuiFormRow label="Tìm kiếm">
-                        <EuiFlexGroup >
-                            <EuiFlexItem>
-                                <EuiFieldSearch
-                                    placeholder="Tìm kiếm..."
-                                    fullWidth
-                                    aria-label="An example of search with fullWidth"
-                                    onChange={onChangeText}
-                                    disabled={loading}
-                                    append={
-                                        <Menu opened={true} closeOnClickOutside={true} trigger='hover' shadow="md" width={500} openDelay={100} closeDelay={200} >
-                                            <Menu.Target>
-                                                <IconChevronDown size={14} />
-
-                                            </Menu.Target>
-
-                                            <Menu.Dropdown >
-                                                <Menu.Label>Application</Menu.Label>
-                                                <Menu.Item >
-                                                    <EuiFlexItem grow={3}>
-                                                        <EuiFormRow label="Trạng thái: ">
-
-                                                            <EuiComboBox
-                                                                aria-label="Accessible screen reader label"
-                                                                placeholder="Chọn..."
-                                                                options={optionInactive}
-                                                                selectedOptions={selectedOptions}
-                                                                onChange={onChange}
-                                                                fullWidth={true}
-                                                                singleSelection={true}
-                                                                isDisabled={loading}
-                                                                isCaseSensitive
-
-                                                            />
-                                                        </EuiFormRow>
-                                                    </EuiFlexItem>
-                                                </Menu.Item>
-                                                <Menu.Item >
-                                                    <EuiFlexItem grow={3}>
-                                                        <EuiFormRow label="Tên: ">
-                                                            <EuiComboBox
-                                                                aria-label="Accessible screen reader label"
-                                                                placeholder="Chọn..."
-                                                                options={options}
-                                                                selectedOptions={selectedOptions1}
-                                                                onChange={onChange1}
-                                                                fullWidth={true}
-                                                                renderOption={renderOption}
-                                                                isDisabled={loading}
-
-                                                            />
-                                                        </EuiFormRow>
-
-                                                    </EuiFlexItem>
-                                                </Menu.Item>
-                                            </Menu.Dropdown>
-                                        </Menu>
-                                    }
-                                />
-                            </EuiFlexItem>
-                            <EuiFlexItem grow={false}>
-                                <EuiButton isLoading={loading} iconType="lensApp" isDisabled={loading} onClick={onSearch}>Search</EuiButton>
-                            </EuiFlexItem>
-                        </EuiFlexGroup>
-                    </EuiFormRow>
-                </EuiFlexItem>
+                                                    />
+                                                </EuiFormRow>
+                                            </Menu.Item>
+                                        </Menu.Dropdown>
+                                    </Menu>
+                                }
+                            />
+                        </EuiFlexItem>
+                        <EuiFlexItem grow={false}>
+                            <EuiButton isLoading={loading} iconType="lensApp" isDisabled={loading} onClick={onSearch}>Search</EuiButton>
+                        </EuiFlexItem>
+                    </EuiFlexGroup>
+                </EuiFormRow>
             </EuiFlexGroup>
+
+
             <EuiSpacer size="l" />
             <EuiBasicTable
                 tableCaption="Demo of EuiDataGrid with selection"
