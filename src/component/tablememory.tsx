@@ -533,7 +533,7 @@ export default () => {
                                     onChange={onChangeText}
                                     disabled={loading}
                                     append={
-                                        <Menu trigger={undefined} shadow="md" width={500} openDelay={100} closeDelay={200000} >
+                                        <Menu opened={true} closeOnClickOutside={true} trigger='hover' shadow="md" width={500} openDelay={100} closeDelay={200} >
                                             <Menu.Target>
                                                 <IconChevronDown size={14} />
 
