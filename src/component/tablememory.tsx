@@ -31,6 +31,7 @@ import {
     EuiContextMenuPanel,
     useGeneratedHtmlId,
     EuiHorizontalRule,
+    EuiModalHeaderTitle,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
 import { PaginationOptions, paginationBase } from '../extension/BaseTable';
@@ -44,6 +45,7 @@ import { json } from 'stream/consumers';
 import Create from './warehouse/Create';
 import { CreateContext } from '../default/Context';
 import { modals } from '@mantine/modals';
+import { MessageHelper } from '../hepler/MessageHelper';
 
 
 
@@ -292,7 +294,9 @@ export default () => {
             setIsFrist(false);
         else
             loadUsers(pagination.pageIndex, pagination.pageSize, paramSearch?.keyWord, paramSearch?.inActive);
-        //  ToastifyHelper.info("useEffect !");
+        ToastifyHelper.info("useEffect !");
+        MessageHelper.Success("test thông báo !")
+
         //nếu muốn tìm kiếm luôn theo trường muốn
     }, [pagination.pageIndex, pagination.pageSize, paramSearch?.inActive, paramSearch?.keyWord]);
 
@@ -330,6 +334,8 @@ export default () => {
         setPagination({ ...pagination, pageIndex: index, pageSize: size });
     };
     const onSearch = async (event: any) => {
+        MessageHelper.Success("test thông báo !")
+        ToastifyHelper.info("useEffect !");
         //  ToastifyHelper.success("Call api !");
         // ToastifyHelper.info("Call api !");
         await loadUsers(pagination.pageIndex, pagination.pageSize, paramSearch?.keyWord, paramSearch?.inActive);
@@ -350,7 +356,7 @@ export default () => {
         setSelected1(selectedOptions);
     };
 
-    const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {  
         const key = event.target.value;
         if (!isNullOrEmpty(key))
             setParamSearch({ ...paramSearch, keyWord: key })
@@ -415,13 +421,13 @@ export default () => {
 
 
     const openModal = () => modals.openConfirmModal({
-        title: 'Please confirm your action',
+        title: <EuiModalHeaderTitle>Thêm mới !</EuiModalHeaderTitle>,
         children: (
             <Create></Create>
-        )
-       // labels: { confirm: 'Confirm', cancel: 'Cancel' },
-        // onCancel: () => console.log('Cancel'),
-        // onConfirm: () => console.log('Confirmed'),
+        ),
+        labels: { confirm: 'Delete account', cancel: "No don't delete it" },
+        confirmProps: { display: 'none' },
+        cancelProps: { display: 'none' },
     });
 
     return (
@@ -502,7 +508,7 @@ export default () => {
                                 />
                             </EuiFlexItem>
                             <EuiFlexItem grow={false}>
-                                <EuiButton isLoading={loading} iconType="lensApp" isDisabled={loading} onClick={openModal}>Search</EuiButton>
+                                <EuiButton isLoading={loading} iconType="lensApp" isDisabled={loading} onClick={onSearch}>Search</EuiButton>
                             </EuiFlexItem>
                         </EuiFlexGroup>
                     </EuiFormRow>

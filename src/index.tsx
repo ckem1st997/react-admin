@@ -6,6 +6,8 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { MantineProvider, createTheme } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals'
+import { Notifications } from '@mantine/notifications';
+
 const theme = createTheme({
   /** Put your mantine theme override here */
 });
@@ -29,7 +31,8 @@ root.render(
       theme='light'
     />
     <MantineProvider >
-      <ModalsProvider>
+      <ModalsProvider >
+        <Notifications  position="top-center"/>
         <App />
       </ModalsProvider>
 

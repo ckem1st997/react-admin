@@ -20,7 +20,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '@elastic/eui/dist/eui_theme_light.min.css';
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 import { CreateContext, ThemeToggeContext } from './default/Context';
+import { Notifications } from '@mantine/notifications';
 // import dotenv from 'dotenv';
 
 
@@ -48,6 +50,7 @@ function App() {
 
       <CreateContext.Provider value={{ isCreate, setIsCreate }}>
         <RouterProvider router={router} />
+      
         <EuiProvider colorMode='light' cache={cache}>
         </EuiProvider>
       </CreateContext.Provider>

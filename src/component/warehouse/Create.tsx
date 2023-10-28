@@ -4,6 +4,7 @@ import { CreateContext } from '../../default/Context';
 import { WareHouse } from '../../model/model';
 import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
 import { Button, Group, TextInput, NumberInput, Box } from '@mantine/core';
+import { MessageHelper } from '../../hepler/MessageHelper';
 
 
 type Inputs = {
@@ -47,7 +48,7 @@ export default function () {
 
 
     const formCreate = (
-        <Box component="form" maw={400} mx="auto" onSubmit={form.onSubmit(() => { })}>
+        <Box component="form" maw={400} mx="auto" onSubmit={form.onSubmit((e) => {     console.log(e) })}>
             <TextInput label="Tên kho:" placeholder="Tên kho..." withAsterisk {...form.getInputProps('name')} />
             <TextInput
                 label="Mã kho: "

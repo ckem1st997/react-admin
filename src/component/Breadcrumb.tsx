@@ -13,6 +13,8 @@ import { SelectListItem } from '../model/model';
 import { isNullOrEmpty } from '../hepler/StringHelper';
 import { CreateContext } from '../default/Context';
 import { Group } from '@mantine/core';
+import { MessageHelper } from '../hepler/MessageHelper';
+import { ToastifyHelper } from '../hepler/ToastifyHelper';
 
 
 
@@ -40,6 +42,7 @@ export default () => {
         }
         else
             setIgnoreBreadcrumbs(false);
+
     }, [location.pathname]);
 
     function Breadcrumbs() {
@@ -91,7 +94,7 @@ export default () => {
         <Group>
             {/* {renderBreadcrumbs()} */}
             <EuiHeaderBreadcrumbs
-            className='brecrum-header-layout'
+                className='brecrum-header-layout'
                 aria-label="Header breadcrumbs example"
                 breadcrumbs={Breadcrumbs()}
             />
