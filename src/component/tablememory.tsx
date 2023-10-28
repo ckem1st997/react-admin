@@ -43,6 +43,7 @@ import { ToastifyHelper } from '../hepler/ToastifyHelper';
 import { json } from 'stream/consumers';
 import Create from './warehouse/Create';
 import { CreateContext } from '../default/Context';
+import { modals } from '@mantine/modals';
 
 
 
@@ -410,7 +411,19 @@ export default () => {
             Share
         </EuiContextMenuItem>,
     ];
-    //
+    //mantine
+
+
+    const openModal = () => modals.openConfirmModal({
+        title: 'Please confirm your action',
+        children: (
+            <Create></Create>
+        )
+       // labels: { confirm: 'Confirm', cancel: 'Cancel' },
+        // onCancel: () => console.log('Cancel'),
+        // onConfirm: () => console.log('Confirmed'),
+    });
+
     return (
         <>
             {/* <EuiFlexGroup responsive={true} justifyContent='flexEnd' gutterSize="xs" alignItems="center">
@@ -489,7 +502,7 @@ export default () => {
                                 />
                             </EuiFlexItem>
                             <EuiFlexItem grow={false}>
-                                <EuiButton isLoading={loading} iconType="lensApp" isDisabled={loading} onClick={onSearch}>Search</EuiButton>
+                                <EuiButton isLoading={loading} iconType="lensApp" isDisabled={loading} onClick={openModal}>Search</EuiButton>
                             </EuiFlexItem>
                         </EuiFlexGroup>
                     </EuiFormRow>
@@ -518,9 +531,9 @@ export default () => {
                 onChange={onTableChange}
                 compressed={true}
             />
-            <CreateContext.Provider value={{ isCreate, setIsCreate }}>
+            {/* <CreateContext.Provider value={{ isCreate, setIsCreate }}>
                 <Create ></Create >
-            </CreateContext.Provider>
+            </CreateContext.Provider> */}
 
         </>
     );

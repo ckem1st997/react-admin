@@ -90,17 +90,9 @@ export default () => {
 
       </EuiHeaderSection>
       <EuiSpacer size='l' />
-      {/* <Contextmenu /> */}
-
       <EuiHeaderSection side="right">
         <EuiHeaderSectionItem>
-          {/* <EuiSwitch
-            label="Malware protection"
-            checked={checked}
-            onChange={(e) => onChange(e)}
-          /> */}
           {search}
-          {/* <Search_Menu></Search_Menu> */}
         </EuiHeaderSectionItem>
         <EuiHeaderSectionItem>
           <HeaderSpacesMenu />

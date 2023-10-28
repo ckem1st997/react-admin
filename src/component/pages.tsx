@@ -12,6 +12,14 @@ import {
   EuiProgress,
   EuiSwitch,
   EuiSwitchEvent,
+  EuiHeaderSection,
+  EuiHeaderSectionItem,
+  EuiSpacer,
+  EuiHeaderSectionItemButton,
+  EuiIcon,
+  EuiSelectableMessage,
+  EuiSelectableTemplateSitewide,
+  EuiImage,
 } from '@elastic/eui';
 import Breadcrumbs from './Header';
 import EuiSideNav from './EuiSideNav';
@@ -20,6 +28,8 @@ import Header from './Header';
 import Breadcrumb from './Breadcrumb';
 import axios from 'axios';
 import { CreateContext } from '../default/Context';
+import { useDisclosure } from '@mantine/hooks';
+import { AppShell, Group, Burger, Skeleton } from '@mantine/core';
 
 
 
@@ -35,6 +45,9 @@ export const Pages = () => {
 
   // const { keycloak, initialized } = useKeycloak();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
 
   function decodeToken(str: string) {
@@ -121,31 +134,97 @@ export const Pages = () => {
     }
   }
 
+
+  // matine
+  const [opened, { toggle }] = useDisclosure();
+  const search = (
+    <EuiSelectableTemplateSitewide
+      options={[]}
+      searchProps={{
+        compressed: true,
+      }}
+      popoverButton={
+        <EuiHeaderSectionItemButton flush='left' aria-label="Sitewide search">
+          <EuiIcon type="search" size="m" />
+        </EuiHeaderSectionItemButton>
+      }
+      emptyMessage={
+        <EuiSelectableMessage style={{ minHeight: 300 }}>
+          Danh sách kết quả tìm kiếm...
+          <Link to="/">Trang chủ</Link>
+        </EuiSelectableMessage>
+      }
+    />
+  );
+  const renderLogo = () => (
+    <EuiImage
+      margin='s'
+      size="s"
+      alt="" // Because this image is sufficiently described by its caption, there is no need to repeat it via alt text
+      src="https://hanoicomputercdn.com/media/lib/09-08-2023/logo-hacom-since-2001.png"
+    />
+  );
+
+
   return (
+
     <>
-      {/* <EuiProgress className={navigation.state !== "loading" ? '' : 'hidden-block'} size="xs" color="accent" /> */}
-      {/* <EuiProgress size="xs" color="accent" /> */}
-      <Header></Header>
-      <EuiPageTemplate paddingSize='m' restrictWidth={true}>
-        <EuiPageTemplate.Sidebar sticky={true}>
-          <EuiSideNav></EuiSideNav>
-        </EuiPageTemplate.Sidebar>
-        <EuiPageTemplate.Header paddingSize='xs'>
+
+      <AppShell
+        header={{ height: 60 }}
+        navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+        padding="md"
+      >
+        <AppShell.Header>
+          <Group h="100%" px="md">
+            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            <EuiHeaderSection>
+              <EuiHeaderSectionItem>{renderLogo()}</EuiHeaderSectionItem>
+            </EuiHeaderSection>
+            <EuiHeaderSection >
+              <EuiHeaderSectionItem>
+              </EuiHeaderSectionItem>
+            </EuiHeaderSection>
+            <EuiSpacer size='l' />
+            <EuiHeaderSection side="right">
+              <EuiHeaderSectionItem>
+                {search}
+              </EuiHeaderSectionItem>
+            </EuiHeaderSection>
+          </Group>
+        </AppShell.Header>
+        <AppShell.Navbar p="md">
+          <EuiSideNav />
+        </AppShell.Navbar>
+        <AppShell.Main>
           <Breadcrumb ></Breadcrumb>
-        </EuiPageTemplate.Header>
-
-        <EuiPageTemplate.Section>
+          <EuiSpacer size='l' />
           <Outlet />
-        </EuiPageTemplate.Section>
-      </EuiPageTemplate>
-
+        </AppShell.Main>
+      </AppShell>
     </>
-
 
   );
 };
 
+{/* <>
+<EuiProgress className={navigation.state !== "loading" ? '' : 'hidden-block'} size="xs" color="accent" />
+ <EuiProgress size="xs" color="accent" />
+<Header></Header>
+<EuiPageTemplate paddingSize='m' restrictWidth={true}>
+  <EuiPageTemplate.Sidebar sticky={true}>
+    <EuiSideNav></EuiSideNav>
+  </EuiPageTemplate.Sidebar>
+  <EuiPageTemplate.Header paddingSize='xs'>
+    <Breadcrumb ></Breadcrumb>
+  </EuiPageTemplate.Header>
 
+  <EuiPageTemplate.Section>
+    <Outlet />
+  </EuiPageTemplate.Section>
+</EuiPageTemplate>
+
+</> */}
 // useEffect(() => {
 //   console.log(keycloak);
 //   const keycloakURL = 'http://localhost:8080/realms/test-auth/protocol/openid-connect/token';

@@ -19,7 +19,7 @@ import { ToastContainer } from 'react-toastify';
 //css
 import 'react-toastify/dist/ReactToastify.css';
 import '@elastic/eui/dist/eui_theme_light.min.css';
-
+import '@mantine/core/styles.css';
 import { CreateContext, ThemeToggeContext } from './default/Context';
 // import dotenv from 'dotenv';
 
@@ -39,6 +39,7 @@ cache.compat = true;
 
 function App() {
   const [isCreate, setIsCreate] = useState(false);
+  
   // const [theme, setTheme] = useState<EuiThemeColorMode>('light');
   return (
     <>

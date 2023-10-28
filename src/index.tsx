@@ -4,7 +4,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
-
+import { MantineProvider, createTheme } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals'
+const theme = createTheme({
+  /** Put your mantine theme override here */
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -24,7 +28,13 @@ root.render(
       pauseOnHover
       theme='light'
     />
-    <App />
+    <MantineProvider >
+      <ModalsProvider>
+        <App />
+      </ModalsProvider>
+
+    </MantineProvider>
+
   </React.StrictMode>
 );
 reportWebVitals();

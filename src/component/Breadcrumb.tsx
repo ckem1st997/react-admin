@@ -12,6 +12,7 @@ import { NavItem, sideNavData } from '../data/sideNavData';
 import { SelectListItem } from '../model/model';
 import { isNullOrEmpty } from '../hepler/StringHelper';
 import { CreateContext } from '../default/Context';
+import { Group } from '@mantine/core';
 
 
 
@@ -87,9 +88,10 @@ export default () => {
 
 
     return (
-        <>
+        <Group>
             {/* {renderBreadcrumbs()} */}
             <EuiHeaderBreadcrumbs
+            className='brecrum-header-layout'
                 aria-label="Header breadcrumbs example"
                 breadcrumbs={Breadcrumbs()}
             />
@@ -111,6 +113,6 @@ export default () => {
             <EuiButtonEmpty iconType="arrowLeft" flush="both" onClick={() => navigate(-1)}>
                 Quay lại
             </EuiButtonEmpty>
-        </>
+        </Group>
     );
 };

@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { EuiFieldText, EuiForm, EuiFormRow, EuiModal, EuiModalBody, EuiModalFooter, EuiModalHeader, EuiModalHeaderTitle, EuiSelect, EuiSpacer, EuiTextArea, EuiButton } from '@elastic/eui';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { CreateContext } from '../../default/Context';
 import { WareHouse } from '../../model/model';
+import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
+import { Button, Group, TextInput, NumberInput, Box } from '@mantine/core';
 
 
 type Inputs = {
@@ -14,94 +15,100 @@ type Inputs = {
 export default function () {
     // title
     const title = "Tạo mới kho !";
-    const { isCreate, setIsCreate } = useContext(CreateContext);
-
-    // Initialize React Hook Form
-    const { register, control, handleSubmit } = useForm<WareHouse>({
-        defaultValues: {
+    // const { isCreate, setIsCreate } = useContext(CreateContext);
+    let data: WareHouse = {
+        code: '',
+        name: '',
+        address: '',
+        description: '',
+        parentId: '',
+        path: '',
+        inactive: false,
+        id: ''
+    }
+    const form = useForm<WareHouse>({
+        initialValues: {
+            code: 'test',
+            name: '',
             address: '',
-        }
+            description: '',
+            parentId: '',
+            path: '',
+            inactive: true,
+            id: ''
+        },
+
+        validate: {
+            name: hasLength({ min: 2, max: 10 }, 'Tên phải chưa từ 2-10 kí tự !'),
+            code: hasLength({ min: 2, max: 10 }, 'Mã phải chưa từ 2-10 kí tự !'),
+        },
     });
-    // Form submit handler
-    const onSubmit: SubmitHandler<WareHouse> = data => console.log(data);
 
 
-    const closeModal = () => {
-        setIsCreate(false);
-    };
 
     const formCreate = (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <EuiFormRow label="Mã kho: ">
-                <Controller
-                    name="code"
-                    control={control}
-                    render={({ field }) => <EuiFieldText {...field} />}
-                />
-
-            </EuiFormRow>
-            <Controller
-                name="name"
-                control={control}
-                render={({ field }) =>
-                    <EuiSelect
-                        {...field}
-                        options={[
-                            { value: 'option_one', text: 'Option one' },
-                            { value: 'option_two', text: 'Option two' },
-                            { value: 'option_three', text: 'Option three' },
-                        ]}
-                    />}
+        <Box component="form" maw={400} mx="auto" onSubmit={form.onSubmit(() => { })}>
+            <TextInput label="Tên kho:" placeholder="Tên kho..." withAsterisk {...form.getInputProps('name')} />
+            <TextInput
+                label="Mã kho: "
+                placeholder="Mã kho..."
+                withAsterisk
+                mt="md"
+                {...form.getInputProps('code')}
             />
-            {/* <EuiFormRow label="Tên kho: ">
-                <EuiFieldText {...register("name")} />
-            </EuiFormRow>
-            <EuiFormRow label="Địa chỉ: ">
-                <EuiFieldText {...register("address")} />
-            </EuiFormRow>
-            <EuiFormRow label="Mô tả: ">
-                <EuiTextArea {...register("description")} />
-            </EuiFormRow>
-            <EuiFormRow label="Kho cha:">
-                <EuiSelect
-                    {...register("parentId")}
-                    options={[
-                        { value: 'option_one', text: 'Option one' },
-                        { value: 'option_two', text: 'Option two' },
-                        { value: 'option_three', text: 'Option three' },
-                    ]}
-                />
-            </EuiFormRow> */}
-            <EuiSpacer />
-            <input type="submit" />
-            <EuiButton size='s' onClick={closeModal}>Huỷ bỏ</EuiButton>
-            <EuiButton iconType="savedObjectsApp" size='s' type="submit" form="formId" fill>
-                Lưu
-            </EuiButton>
-        </form>
+            <TextInput
+                label="Địa chỉ: "
+                placeholder="Địa chỉ..."
+                withAsterisk
+                mt="md"
+                {...form.getInputProps('address')}
+            />
+            <TextInput
+                label="Mô tả:"
+                placeholder="Mô tả..."
+                withAsterisk
+                mt="md"
+                {...form.getInputProps('favoriteColor')}
+            />
+            <NumberInput
+                label="Your age"
+                placeholder="Your age"
+                withAsterisk
+                mt="md"
+                {...form.getInputProps('age')}
+            />
+
+            <Group justify="flex-end" mt="md">
+                <EuiButton size='s' >Huỷ bỏ</EuiButton>
+                <EuiButton iconType="savedObjectsApp" size='s' type="submit" fill>
+                    Lưu
+                </EuiButton>
+            </Group>
+        </Box>
 
 
 
     );
 
     let modal;
-    if (isCreate) {
-        modal = (
-            <EuiModal onClose={closeModal} initialFocus="[name=popswitch]">
-                <EuiModalHeader>
-                    <EuiModalHeaderTitle>{title}</EuiModalHeaderTitle>
-                </EuiModalHeader>
-                <EuiModalBody>{formCreate}</EuiModalBody>
-                <EuiModalFooter>
+    // if (isCreate) {
+    //     modal = (
+    //         <EuiModal onClose={closeModal} initialFocus="[name=popswitch]">
+    //             <EuiModalHeader>
+    //                 <EuiModalHeaderTitle>{title}</EuiModalHeaderTitle>
+    //             </EuiModalHeader>
+    //             <EuiModalBody>{formCreate}</EuiModalBody>
+    //             <EuiModalFooter>
 
-                </EuiModalFooter>
-            </EuiModal>
-        );
-    }
+    //             </EuiModalFooter>
+    //         </EuiModal>
+    //     );
+    // }
 
     return (
-        <div>
-            {modal}
-        </div>
+        <>
+          {formCreate}
+
+        </>
     );
 }
