@@ -126,7 +126,7 @@ export const Pages = () => {
       {/* <EuiProgress className={navigation.state !== "loading" ? '' : 'hidden-block'} size="xs" color="accent" /> */}
       {/* <EuiProgress size="xs" color="accent" /> */}
       <Header></Header>
-      <EuiPageTemplate paddingSize='m'>
+      <EuiPageTemplate paddingSize='m' restrictWidth={true}>
         <EuiPageTemplate.Sidebar sticky={true}>
           <EuiSideNav></EuiSideNav>
         </EuiPageTemplate.Sidebar>
@@ -134,7 +134,7 @@ export const Pages = () => {
           <Breadcrumb ></Breadcrumb>
         </EuiPageTemplate.Header>
 
-        <EuiPageTemplate.Section grow={false} >
+        <EuiPageTemplate.Section>
           <Outlet />
         </EuiPageTemplate.Section>
       </EuiPageTemplate>

@@ -1,122 +1,89 @@
-import React, { useContext, useEffect, useState } from 'react';
-import {
-    EuiButton,
-    EuiButtonEmpty,
-    EuiFieldText,
-    EuiForm,
-    EuiFormRow,
-    EuiModal,
-    EuiModalBody,
-    EuiModalFooter,
-    EuiModalHeader,
-    EuiModalHeaderTitle,
-    EuiRange,
-    EuiSwitch,
-    EuiSuperSelect,
-    EuiText,
-    useGeneratedHtmlId,
-    EuiSelect,
-    EuiSpacer,
-    EuiTextArea,
-} from '@elastic/eui';
+import React, { useContext } from 'react';
+import { EuiFieldText, EuiForm, EuiFormRow, EuiModal, EuiModalBody, EuiModalFooter, EuiModalHeader, EuiModalHeaderTitle, EuiSelect, EuiSpacer, EuiTextArea, EuiButton } from '@elastic/eui';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { CreateContext } from '../../default/Context';
+import { WareHouse } from '../../model/model';
+
+
+type Inputs = {
+    example: string,
+    exampleRequired: string,
+};
+
+
 export default function () {
     // title
-    const title = "Tạo mới kho !"
-    //
+    const title = "Tạo mới kho !";
     const { isCreate, setIsCreate } = useContext(CreateContext);
 
-    // #region state
+    // Initialize React Hook Form
+    const { register, control, handleSubmit } = useForm<WareHouse>({
+        defaultValues: {
+            address: '',
+        }
+    });
+    // Form submit handler
+    const onSubmit: SubmitHandler<WareHouse> = data => console.log(data);
 
-    const [isSwitchChecked, setIsSwitchChecked] = useState(true);
-    const modalFormId = useGeneratedHtmlId({ prefix: 'modalForm' });
-    const modalFormSwitchId = useGeneratedHtmlId({ prefix: 'modalFormSwitch' });
-    const onSwitchChange = () => setIsSwitchChecked((isSwitchChecked) => !isSwitchChecked);
+
     const closeModal = () => {
         setIsCreate(false);
     };
-    const [showErrors, setShowErrors] = useState(true);
-    //
-
-
-    //#endregiond
-    let errors;
-    if (showErrors) {
-        errors = [
-            "Here's an example of an error",
-            'You might have more than one error, so pass an array.',
-        ];
-    }
-
-    const onButtonClick = () => {
-        setShowErrors(!showErrors);
-    };
-
-    const button = (
-        <EuiButton fill color="danger" onClick={onButtonClick}>
-            Toggle errors
-        </EuiButton>
-    );
-    // useEffect(() => {
-    //     setIsCreate(false);
-    // }, [isModalVisible]);
-    const formSample = (
-        <EuiForm id={modalFormId} component="form">
-            <EuiFormRow>
-                <EuiSwitch
-                    id={modalFormSwitchId}
-                    name="popswitch"
-                    label="Cool modal form"
-                    checked={isSwitchChecked}
-                    onChange={onSwitchChange} />
-            </EuiFormRow>
-            <EuiFormRow label="A text field">
-                <EuiFieldText name="popfirst" />
-            </EuiFormRow>
-            <EuiFormRow label="Range" helpText="Some help text for the range">
-                <EuiRange min={0} max={100} value={50} name="poprange" />
-            </EuiFormRow>
-        </EuiForm>
-    );
 
     const formCreate = (
-        <>
-            <EuiForm isInvalid={showErrors} error={errors} component="form">
-                <EuiFormRow label="Tên kho: " isInvalid={showErrors}>
-                    <EuiFieldText name="first" isInvalid={showErrors} />
-                </EuiFormRow>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <EuiFormRow label="Mã kho: ">
+                <Controller
+                    name="code"
+                    control={control}
+                    render={({ field }) => <EuiFieldText {...field} />}
+                />
 
-                <EuiFormRow
-                    label="Validation with help text and errors"
-                    helpText="I am some friendly help text."
-                    isInvalid={showErrors}
-                    error={errors}
-                >
-                    <EuiFieldText name="text" isInvalid={showErrors} />
-                </EuiFormRow>
-
-                <EuiFormRow label="Text area" isInvalid={showErrors}>
-                    <EuiTextArea name="area" isInvalid={showErrors} />
-                </EuiFormRow>
-
-                <EuiFormRow label="Select" isInvalid={showErrors}>
+            </EuiFormRow>
+            <Controller
+                name="name"
+                control={control}
+                render={({ field }) =>
                     <EuiSelect
+                        {...field}
                         options={[
                             { value: 'option_one', text: 'Option one' },
                             { value: 'option_two', text: 'Option two' },
                             { value: 'option_three', text: 'Option three' },
                         ]}
-                        isInvalid={showErrors}
-                    />
-                </EuiFormRow>
+                    />}
+            />
+            {/* <EuiFormRow label="Tên kho: ">
+                <EuiFieldText {...register("name")} />
+            </EuiFormRow>
+            <EuiFormRow label="Địa chỉ: ">
+                <EuiFieldText {...register("address")} />
+            </EuiFormRow>
+            <EuiFormRow label="Mô tả: ">
+                <EuiTextArea {...register("description")} />
+            </EuiFormRow>
+            <EuiFormRow label="Kho cha:">
+                <EuiSelect
+                    {...register("parentId")}
+                    options={[
+                        { value: 'option_one', text: 'Option one' },
+                        { value: 'option_two', text: 'Option two' },
+                        { value: 'option_three', text: 'Option three' },
+                    ]}
+                />
+            </EuiFormRow> */}
+            <EuiSpacer />
+            <input type="submit" />
+            <EuiButton size='s' onClick={closeModal}>Huỷ bỏ</EuiButton>
+            <EuiButton iconType="savedObjectsApp" size='s' type="submit" form="formId" fill>
+                Lưu
+            </EuiButton>
+        </form>
 
-                <EuiSpacer />
 
-                {button}
-            </EuiForm>
-        </>
+
     );
-    // dùng https://github.com/AlexJPotter/fluentvalidation-ts
+
     let modal;
     if (isCreate) {
         modal = (
@@ -126,18 +93,15 @@ export default function () {
                 </EuiModalHeader>
                 <EuiModalBody>{formCreate}</EuiModalBody>
                 <EuiModalFooter>
-                    <EuiButton size='s' onClick={closeModal}>Huỷ bỏ</EuiButton>
-                    <EuiButton iconType="savedObjectsApp" size='s' type="submit" form={modalFormId} onClick={closeModal} fill>
-                        Lưu
-                    </EuiButton>
+
                 </EuiModalFooter>
             </EuiModal>
         );
     }
 
     return (
-        <>
+        <div>
             {modal}
-        </>
+        </div>
     );
 }
