@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import { MantineProvider, createTheme } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications';
+import { NavigationProgress } from '@mantine/nprogress';
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -18,7 +19,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode >
-    <ToastContainer
+    {/* <ToastContainer
       position="top-center"
       autoClose={3000}
       hideProgressBar={false}
@@ -29,10 +30,11 @@ root.render(
       draggable
       pauseOnHover
       theme='light'
-    />
+    /> */}
     <MantineProvider >
       <ModalsProvider >
-        <Notifications  position="top-center"/>
+      
+        <Notifications  position="top-center" autoClose={3000} />
         <App />
       </ModalsProvider>
 

@@ -5,6 +5,7 @@ import {
     EuiButtonEmpty,
     EuiHeaderBreadcrumbs,
     EuiHeaderLink,
+    EuiHorizontalRule,
     EuiIcon
 } from '@elastic/eui';
 import { Link, NavigateFunction, useLocation, useMatches, useNavigate } from 'react-router-dom';
@@ -91,15 +92,16 @@ export default () => {
 
 
     return (
-        <Group>
-            {/* {renderBreadcrumbs()} */}
-            <EuiHeaderBreadcrumbs
-                className='brecrum-header-layout'
-                aria-label="Header breadcrumbs example"
-                breadcrumbs={Breadcrumbs()}
-            />
+        <>
+            <Group>
+                {/* {renderBreadcrumbs()} */}
+                <EuiHeaderBreadcrumbs
+                    className='brecrum-header-layout'
+                    aria-label="Header breadcrumbs example"
+                    breadcrumbs={Breadcrumbs()}
+                />
 
-            {!isIgnoreBreadcrumbs &&
+                {/* {!isIgnoreBreadcrumbs &&
                 <>
                     <EuiButton iconType="home" color="primary" size='s' fill onClick={(e: any) => {
                         setIsCreate(true)
@@ -111,11 +113,15 @@ export default () => {
                         Chỉnh sửa
                     </EuiButton>
                 </>
-            }
+            } */}
 
-            <EuiButtonEmpty iconType="arrowLeft" flush="both" onClick={() => navigate(-1)}>
-                Quay lại
-            </EuiButtonEmpty>
-        </Group>
+                <EuiButtonEmpty iconType="arrowLeft" flush="both" onClick={() => navigate(-1)}>
+                    Quay lại
+                </EuiButtonEmpty>
+            </Group>
+            <EuiHorizontalRule className='EuiHorizontalRule_brecrum'  />
+
+        </>
+
     );
 };

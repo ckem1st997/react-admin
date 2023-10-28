@@ -30,6 +30,7 @@ import axios from 'axios';
 import { CreateContext } from '../default/Context';
 import { useDisclosure } from '@mantine/hooks';
 import { AppShell, Group, Burger, Skeleton } from '@mantine/core';
+import { nprogress, NavigationProgress } from '@mantine/nprogress';
 
 
 
@@ -46,6 +47,7 @@ export const Pages = () => {
   // const { keycloak, initialized } = useKeycloak();
 
   useEffect(() => {
+    nprogress.start()
     window.scrollTo(0, 0);
   }, [location]);
 
@@ -197,8 +199,9 @@ export const Pages = () => {
           <EuiSideNav />
         </AppShell.Navbar>
         <AppShell.Main>
+          
           <Breadcrumb ></Breadcrumb>
-          <EuiSpacer size='l' />
+
           <Outlet />
         </AppShell.Main>
       </AppShell>

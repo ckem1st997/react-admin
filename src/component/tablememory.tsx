@@ -32,6 +32,7 @@ import {
     useGeneratedHtmlId,
     EuiHorizontalRule,
     EuiModalHeaderTitle,
+    EuiText,
 } from '@elastic/eui';
 import { faker } from '@faker-js/faker';
 import { PaginationOptions, paginationBase } from '../extension/BaseTable';
@@ -46,7 +47,8 @@ import Create from './warehouse/Create';
 import { CreateContext } from '../default/Context';
 import { modals } from '@mantine/modals';
 import { MessageHelper } from '../hepler/MessageHelper';
-
+import { Menu, Button, rem, Text, Box, Group } from '@mantine/core';
+import { IconSettings, IconMessageCircle, IconPhoto, IconSearch, IconArrowsLeftRight, IconTrash, IconPlus, IconEdit, IconDotsVertical, IconChevronDown } from '@tabler/icons-react';
 
 
 
@@ -356,7 +358,7 @@ export default () => {
         setSelected1(selectedOptions);
     };
 
-    const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {  
+    const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
         const key = event.target.value;
         if (!isNullOrEmpty(key))
             setParamSearch({ ...paramSearch, keyWord: key })
@@ -432,34 +434,59 @@ export default () => {
 
     return (
         <>
-            {/* <EuiFlexGroup responsive={true} justifyContent='flexEnd' gutterSize="xs" alignItems="center">
-                <EuiFlexItem grow={false}>
-                    <EuiButton size="s" iconType="calendar">
-                        Last 15 min
-                    </EuiButton>
-                </EuiFlexItem>
-                <EuiFlexItem grow={false}>
-                    <EuiPopover
-                        id={splitButtonPopoverId}
-                        button={
-                            <EuiButtonIcon
-                                display="base"
-                                size="s"
-                                iconType="boxesVertical"
-                                aria-label="More"
-                                onClick={onButtonClick}
-                            />
-                        }
-                        isOpen={isPopoverOpen}
-                        closePopover={closePopover}
-                        panelPaddingSize="none"
-                        anchorPosition="downLeft"
-                    >
-                        <EuiContextMenuPanel size="s" items={items} />
-                    </EuiPopover>
-                </EuiFlexItem>
-            </EuiFlexGroup>
-            <EuiHorizontalRule /> */}
+            <Box style={{ overflow: 'hidden' }}>
+                <Box mx="auto">
+                    <Group wrap="nowrap" justify='flex-end'>
+                        <Button leftSection={<IconPlus size={14} />} color='blue' variant='outline'>Thêm mới</Button>
+                        <Button leftSection={<IconEdit size={14} />} color='orange' variant="outline">Chỉnh sửa</Button>
+                        <Button leftSection={<IconTrash size={14} />} color='red' variant="outline">Xóa (Đã chọn)</Button>
+                        <Menu shadow="md" trigger="hover" openDelay={100} closeDelay={200} >
+                            <Menu.Target>
+                                <Button rightSection={<IconChevronDown size={14} />} leftSection={<IconDotsVertical size={14} />} color='violet' variant='outline'>Thao tác khác</Button>
+                            </Menu.Target>
+
+                            <Menu.Dropdown>
+                                <Menu.Label>Application</Menu.Label>
+                                <Menu.Item leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} />}>
+                                    Settings
+                                </Menu.Item>
+                                <Menu.Item leftSection={<IconMessageCircle style={{ width: rem(14), height: rem(14) }} />}>
+                                    Messages
+                                </Menu.Item>
+                                <Menu.Item leftSection={<IconPhoto style={{ width: rem(14), height: rem(14) }} />}>
+                                    Gallery
+                                </Menu.Item>
+                                <Menu.Item
+                                    leftSection={<IconSearch style={{ width: rem(14), height: rem(14) }} />}
+                                    rightSection={
+                                        <Text size="xs" c="dimmed">
+                                            ⌘K
+                                        </Text>
+                                    }
+                                >
+                                    Search
+                                </Menu.Item>
+
+                                <Menu.Divider />
+
+                                <Menu.Label>Danger zone</Menu.Label>
+                                <Menu.Item
+                                    leftSection={<IconArrowsLeftRight style={{ width: rem(14), height: rem(14) }} />}
+                                >
+                                    Transfer my data
+                                </Menu.Item>
+                                <Menu.Item
+                                    color="red"
+                                    leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
+                                >
+                                    Delete my account
+                                </Menu.Item>
+                            </Menu.Dropdown>
+                        </Menu>
+                    </Group>
+                </Box>
+            </Box>
+
             {/* <EuiSpacer size="xs" /> */}
             <EuiFlexGroup alignItems="center">
                 <EuiFlexItem grow={3}>
@@ -505,6 +532,55 @@ export default () => {
                                     aria-label="An example of search with fullWidth"
                                     onChange={onChangeText}
                                     disabled={loading}
+                                    append={
+                                        <Menu trigger={undefined} shadow="md" width={500} openDelay={100} closeDelay={200000} >
+                                            <Menu.Target>
+                                                <IconChevronDown size={14} />
+
+                                            </Menu.Target>
+
+                                            <Menu.Dropdown >
+                                                <Menu.Label>Application</Menu.Label>
+                                                <Menu.Item >
+                                                    <EuiFlexItem grow={3}>
+                                                        <EuiFormRow label="Trạng thái: ">
+
+                                                            <EuiComboBox
+                                                                aria-label="Accessible screen reader label"
+                                                                placeholder="Chọn..."
+                                                                options={optionInactive}
+                                                                selectedOptions={selectedOptions}
+                                                                onChange={onChange}
+                                                                fullWidth={true}
+                                                                singleSelection={true}
+                                                                isDisabled={loading}
+                                                                isCaseSensitive
+
+                                                            />
+                                                        </EuiFormRow>
+                                                    </EuiFlexItem>
+                                                </Menu.Item>
+                                                <Menu.Item >
+                                                    <EuiFlexItem grow={3}>
+                                                        <EuiFormRow label="Tên: ">
+                                                            <EuiComboBox
+                                                                aria-label="Accessible screen reader label"
+                                                                placeholder="Chọn..."
+                                                                options={options}
+                                                                selectedOptions={selectedOptions1}
+                                                                onChange={onChange1}
+                                                                fullWidth={true}
+                                                                renderOption={renderOption}
+                                                                isDisabled={loading}
+
+                                                            />
+                                                        </EuiFormRow>
+
+                                                    </EuiFlexItem>
+                                                </Menu.Item>
+                                            </Menu.Dropdown>
+                                        </Menu>
+                                    }
                                 />
                             </EuiFlexItem>
                             <EuiFlexItem grow={false}>

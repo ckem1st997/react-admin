@@ -54,3 +54,7 @@ nav.header-fix{
 .brecrum-header-layout{
   margin-inline:0 !important;
 }
+
+.EuiHorizontalRule_brecrum{
+  margin-block:14px !important ;
+}

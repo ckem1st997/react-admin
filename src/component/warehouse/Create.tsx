@@ -1,10 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { EuiFieldText, EuiForm, EuiFormRow, EuiModal, EuiModalBody, EuiModalFooter, EuiModalHeader, EuiModalHeaderTitle, EuiSelect, EuiSpacer, EuiTextArea, EuiButton } from '@elastic/eui';
 import { CreateContext } from '../../default/Context';
 import { WareHouse } from '../../model/model';
 import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
-import { Button, Group, TextInput, NumberInput, Box } from '@mantine/core';
+import { Button, Group, TextInput, NumberInput, Box, LoadingOverlay } from '@mantine/core';
 import { MessageHelper } from '../../hepler/MessageHelper';
+import { useDisclosure } from '@mantine/hooks';
+import { Delay } from '../../hepler/FunctionHelper';
 
 
 type Inputs = {
@@ -45,10 +47,19 @@ export default function () {
         },
     });
 
+    //
+
+    const [visible, { toggle }] = useDisclosure(false);
+    useEffect(() => {
+    // Delay(2000);
+      //  toggle()
+    }, []);
+
 
 
     const formCreate = (
-        <Box component="form" maw={400} mx="auto" onSubmit={form.onSubmit((e) => {     console.log(e) })}>
+        <Box component="form" maw={400} mx="auto" onSubmit={form.onSubmit((e) => { console.log(e) })}>
+            <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
             <TextInput label="Tên kho:" placeholder="Tên kho..." withAsterisk {...form.getInputProps('name')} />
             <TextInput
                 label="Mã kho: "
@@ -108,7 +119,7 @@ export default function () {
 
     return (
         <>
-          {formCreate}
+            {formCreate}
 
         </>
     );
