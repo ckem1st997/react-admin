@@ -18,8 +18,14 @@ class Repository {
     try {
       var res = await this.axiosInstance.get<R>(url, config);
       if (res.status === 200)
-        return res.data;
-      throw new Error();
+        
+      switch (res.status) {
+        case 200:
+          return res.data;      
+        default:
+          break;
+      }
+      throw new Error('');
     } catch (error) {
       console.log(error)
     }
