@@ -21,18 +21,6 @@ export default function () {
     // title
     const title = "Tạo mới kho !";
     // const { isCreate, setIsCreate } = useContext(CreateContext);
-    let data: WareHouseDTOs = {
-        code: '',
-        name: '',
-        address: '',
-        description: '',
-        parentId: '',
-        path: '',
-        inactive: false,
-        id: '',
-        wareHouseDTOs: null,
-        onDelete: false
-    }
     const form = useForm<WareHouseDTOs>({
         initialValues: {
             code: '',

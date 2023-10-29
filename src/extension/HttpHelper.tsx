@@ -25,8 +25,14 @@ class Repository {
     }
   }
 
-  public async post<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
-    return await this.axiosInstance.post<T, R>(url, data, config);
+  public async post<T = any>(url: string, data?: any, config?: AxiosRequestConfig) {
+    await Delay(1000);
+    try {
+      var res = await this.axiosInstance.post<T>(url, data, config);
+      return res.data;
+    } catch (error: any) {
+      await this.HanderResponse(error)
+    }
   }
 
   private async HanderResponse(res: AxiosError) {

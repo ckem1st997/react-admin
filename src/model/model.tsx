@@ -29,7 +29,10 @@ export interface MessageResponse<T> {
   redirectUrl: string;
   errors: { [key: string]: string[] };
 }
-
+export interface Login {
+  username: string;
+  password: string;
+}
 
 export interface WareHouseDTOs {
   code: string;
