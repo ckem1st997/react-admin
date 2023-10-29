@@ -321,7 +321,10 @@ export default () => {
                 urlSearch = urlSearch + `&Active=` + inActive;
             let callapi = await repository.get<MessageResponse<WareHouseDTOs[]>>(urlSearch);
             if (isNullOrUndefined(callapi) || isNullOrUndefined(callapi.data) || isNullOrUndefinedArry(callapi.data.data))
+            {
                 setMessage(noItemsFoundMsg);
+                setTotal(0)
+            }
             else {
                 setUsers(callapi.data.data);
                 setPagination({ ...pagination, totalItemCount: callapi.data.totalCount });
@@ -487,7 +490,7 @@ export default () => {
                                 onChange={onChangeText}
                                 disabled={loading}
                                 append={
-                                    <Menu trigger='click' closeOnClickOutside={false} shadow="md" width={800} openDelay={100} closeDelay={300} >
+                                    <Menu trigger='hover' closeOnClickOutside={false} shadow="md" width={500} openDelay={100} closeDelay={300} >
                                         <Menu.Target>
                                             <Tooltip label="Hiển thị tùy chọn tìm kiếm">
                                                 <IconChevronDown className='Menu_IconChevronDown_Search' width={35} size={20} />

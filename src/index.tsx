@@ -31,7 +31,7 @@ root.render(
       pauseOnHover
       theme='light'
     /> */}
-    <MantineProvider defaultColorScheme="dark">
+    <MantineProvider>
       <ModalsProvider >
       
         <Notifications  position="top-center" autoClose={3000} />

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { FormEvent, useContext, useEffect, useState } from 'react';
 import { EuiFieldText, EuiForm, EuiFormRow, EuiModal, EuiModalBody, EuiModalFooter, EuiModalHeader, EuiModalHeaderTitle, EuiSelect, EuiSpacer, EuiTextArea, EuiButton } from '@elastic/eui';
 import { CreateContext } from '../../default/Context';
 import { MessageResponse, WareHouse, WareHouseDTOs } from '../../model/model';
@@ -55,7 +55,7 @@ export default function () {
     });
 
     //
-
+    const repository = new Repository("http://localhost:5005/api/v1");
     const [visible, { toggle }] = useDisclosure(true);
     useEffect(() => {
         callApiGetData()
@@ -63,7 +63,6 @@ export default function () {
     // call api
 
     const callApiGetData = async () => {
-        const repository = new Repository("http://localhost:5005/api/v1");
         let urlCreate = `/WareHouses/create`;
         let callapi = await repository.get<MessageResponse<WareHouseDTOs>>(urlCreate);
         if (!isNullOrUndefined(callapi) && !isNullOrUndefined(callapi.data) && !isNullOrUndefined(callapi.data.data)) {
@@ -73,11 +72,11 @@ export default function () {
             let callapigetall = await repository.get<MessageResponse<WareHouseDTOs[]>>(urlAll);
             if (!isNullOrUndefined(callapigetall) && !isNullOrUndefined(callapigetall.data) && !isNullOrUndefinedArry(callapigetall.data.data)) {
                 const dataApiAll = callapigetall.data.data;
-                let dataarry:ComboboxItem[]=[]
+                let dataarry: ComboboxItem[] = []
                 for (let index = 0; index < dataApiAll.length; index++) {
                     const element = dataApiAll[index];
-                    const elementp:ComboboxItem={
-                        label:'['+element.code+']' +element.name,
+                    const elementp: ComboboxItem = {
+                        label: '[' + element.code + ']' + element.name,
                         value: element.id
                     }
                     dataarry.push(elementp)
@@ -94,21 +93,40 @@ export default function () {
         onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
     });
 
-    const [search, setSearch] = useState('');
-    const [value, setValue] = useState<string[]>([]);
     const [dataDrop, setDataDrop] = useState<ComboboxItem[]>([]);
-    const handleValueSelect = (val: string) =>
-        setValue((current) =>
-            current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
-        );
 
-    const handleValueRemove = (val: string) =>
-        setValue((current) => current.filter((v) => v !== val));
+    //
 
-//
+    const apiCreate = async (e: FormEvent) => {
+        e.preventDefault();
+        console.log(form.values)
+        let urlCreate = `/WareHouses/create`;
+        let callapi = await repository.get<MessageResponse<WareHouseDTOs>>(urlCreate);
+        if (!isNullOrUndefined(callapi) && !isNullOrUndefined(callapi.data) && !isNullOrUndefined(callapi.data.data)) {
+            const dataApi = callapi.data.data;
+            form.setValues(dataApi);
+            let urlAll = `/WareHouses/get-all`;
+            let callapigetall = await repository.get<MessageResponse<WareHouseDTOs[]>>(urlAll);
+            if (!isNullOrUndefined(callapigetall) && !isNullOrUndefined(callapigetall.data) && !isNullOrUndefinedArry(callapigetall.data.data)) {
+                const dataApiAll = callapigetall.data.data;
+                let dataarry: ComboboxItem[] = []
+                for (let index = 0; index < dataApiAll.length; index++) {
+                    const element = dataApiAll[index];
+                    const elementp: ComboboxItem = {
+                        label: '[' + element.code + ']' + element.name,
+                        value: element.id
+                    }
+                    dataarry.push(elementp)
+                }
+                setDataDrop(dataarry)
+            }
+            toggle()
+        }
+    }
+
 
     const formCreate = (
-        <Box  component="form" maw={400} mx="auto" onSubmit={form.onSubmit((e) => { console.log(e) })}>
+        <Box component="form" maw={400} mx="auto" onSubmit={apiCreate}>
             <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
             <TextInput label="Tên kho:" placeholder="Tên kho..." withAsterisk {...form.getInputProps('name')} />
             <TextInput
