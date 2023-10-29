@@ -3,10 +3,10 @@ import { Delay } from '../hepler/FunctionHelper';
 import { isNullOrEmpty } from '../hepler/StringHelper';
 import { start } from 'repl';
 import { MessageHelper } from '../hepler/MessageHelper';
+import { json, useNavigate } from 'react-router-dom';
 
 class Repository {
   private axiosInstance: AxiosInstance;
-
   constructor(baseURL?: string) {
     if (isNullOrEmpty(baseURL))
       throw Error("Lỗi base url env !");
@@ -15,14 +15,13 @@ class Repository {
     });
   }
 
-  public async get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig) {
+  public async get<T = any>(url: string, config?: AxiosRequestConfig) {
     await Delay(1000);
     try {
       var res = await this.axiosInstance.get<T>(url, config);
       return res.data;
-
     } catch (error: any) {
-      this.HanderResponse(error)
+      await this.HanderResponse(error)
     }
   }
 
@@ -30,17 +29,22 @@ class Repository {
     return await this.axiosInstance.post<T, R>(url, data, config);
   }
 
-  private HanderResponse(res: AxiosError) {
+  private async HanderResponse(res: AxiosError) {
+    const currentURL = window.location.pathname;
     switch (res.response?.status) {
       case 401:
-        throw new Response("Bạn chưa đăng nhập !", { status: res.response?.status });
+        MessageHelper.Fails('Xin vui lòng đăng nhập lại !');
+        await Delay(500);
+        window.location.href = '/auth/login?callback=' + currentURL;
+        break;
       case 404:
         throw new Response("Trang web không tồn tại !", { status: res.response?.status });
       case 403:
         MessageHelper.Fails('Bạn không có quyền thực hiện chức năng này !');
         break;
       case 500:
-        throw new Response("Có lỗi xảy ra, xin vui lòng thử lại !", { status: res.response?.status });
+        MessageHelper.Fails('Có lỗi xảy ra ở máy chủ, xin vui lòng thử lại ! !');
+        break;
       default:
         break
     }
@@ -48,6 +52,9 @@ class Repository {
 }
 
 export default Repository;
+
+
+
 
 
 

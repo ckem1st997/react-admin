@@ -24,6 +24,7 @@ import '@mantine/notifications/styles.css';
 import { CreateContext, ThemeToggeContext } from './default/Context';
 import { Notifications } from '@mantine/notifications';
 import { NavigationProgress, nprogress } from '@mantine/nprogress';
+import { Pages } from './component/pages';
 // import dotenv from 'dotenv';
 
 
@@ -43,7 +44,7 @@ cache.compat = true;
 function App() {
   const [isCreate, setIsCreate] = useState(false);
   // useEffect(() => {
-    
+
   //   window.scrollTo(0, 0);
   // }, []);
   // nprogress.start()
@@ -55,7 +56,7 @@ function App() {
       {/* <NavigationProgress /> */}
       <CreateContext.Provider value={{ isCreate, setIsCreate }}>
         <RouterProvider router={router} />
-    
+
         <EuiProvider colorMode='light' cache={cache}>
         </EuiProvider>
       </CreateContext.Provider>

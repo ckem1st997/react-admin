@@ -49,6 +49,7 @@ import { modals } from '@mantine/modals';
 import { MessageHelper } from '../hepler/MessageHelper';
 import { Menu, Button, rem, Text, Box, Group, Divider, Tooltip, Title } from '@mantine/core';
 import { IconSettings, IconMessageCircle, IconPhoto, IconSearch, IconArrowsLeftRight, IconTrash, IconPlus, IconEdit, IconDotsVertical, IconChevronDown } from '@tabler/icons-react';
+import callApi from '../extension/apiiiiii';
 
 
 
@@ -313,6 +314,7 @@ export default () => {
         setUsers([]);
         setError(undefined);//get-list?KeySearch=1&Active=true&Skip=1&Take=1
         const repository = new Repository("http://localhost:5005/api/v1");
+       // await callApi("http://localhost:5005/api/v1"+`/WareHouses/get-list?Skip=${(index * (size ?? 0))}&Take=${size}`,undefined)
         try {
             let urlSearch = `/WareHouses/get-list?Skip=${(index * (size ?? 0))}&Take=${size}`;
             if (!isNullOrEmpty(keyWord))
@@ -320,7 +322,6 @@ export default () => {
             if (!isNullOrUndefined(inActive))
                 urlSearch = urlSearch + `&Active=` + inActive;
             let callapi = await repository.get<MessageResponse<WareHouseDTOs[]>>(urlSearch);
-            console.log(callapi)
             if (isNullOrUndefined(callapi) || isNullOrUndefinedArry(callapi?.data)) {
 
                 setMessage(noItemsFoundMsg);

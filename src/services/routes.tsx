@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {
   createBrowserRouter,
+  json,
   Link,
   RouterProvider,
 } from "react-router-dom";
@@ -17,6 +18,8 @@ import { SelectListItem } from "../model/model";
 import Tableexample from "../component/tableexample";
 import Tablememory from "../component/tablememory";
 import ResponseHander from "../default/baseResponseHander";
+import { LayputAuth } from "../component/login/_layoutAuth";
+import { AuthenticationTitle } from "../component/login/_login";
 
 
 const router = createBrowserRouter([
@@ -24,6 +27,7 @@ const router = createBrowserRouter([
     // path: "/",
     element: <Pages />,
     errorElement: <ResponseHander />,
+
     children: [
       {
         path: "/",
@@ -149,7 +153,22 @@ const router = createBrowserRouter([
       {
         path: "grid/:id",
         element: <Details />,
-      }
+      },
+     
+    ],
+ 
+   
+  },
+  {
+    path: "auth",
+    element: <LayputAuth />, // Define your Auth layout component here
+    children: [
+      {
+        path: "login",
+        element: <AuthenticationTitle />, // Create a Login page component
+      },
+     
+      // Add more authentication-related routes here
     ],
   },
 ]);

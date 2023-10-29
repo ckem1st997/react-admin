@@ -44,14 +44,14 @@ export const sideNavData: NavItem[] = [
         ],
     },
     {
-        label: 'Blogs',
+        label: 'Login',
         icontype: 'logoAppSearch',
-        path: '/blogs',
+     //   path: '/blogs',
         items: [
             {
-                label: '404 viewer',
+                label: 'Login',
                 icontype: 'logoVulnerabilityManagement',
-                path: '/432432432',
+                path: '/auth/login',
             },
         ],
     },
