@@ -16,13 +16,14 @@ import _details from "../component/_details";
 import { SelectListItem } from "../model/model";
 import Tableexample from "../component/tableexample";
 import Tablememory from "../component/tablememory";
+import ResponseHander from "../default/baseResponseHander";
 
 
 const router = createBrowserRouter([
   {
     // path: "/",
     element: <Pages />,
-    errorElement: <_404 />,
+    errorElement: <ResponseHander />,
     children: [
       {
         path: "/",

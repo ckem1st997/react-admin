@@ -65,22 +65,24 @@ export default function () {
     const callApiGetData = async () => {
         let urlCreate = `/WareHouses/create`;
         let callapi = await repository.get<MessageResponse<WareHouseDTOs>>(urlCreate);
-        if (!isNullOrUndefined(callapi) && !isNullOrUndefined(callapi.data) && !isNullOrUndefined(callapi.data.data)) {
-            const dataApi = callapi.data.data;
-            form.setValues(dataApi);
+        if (!isNullOrUndefined(callapi) && !isNullOrUndefined(callapi?.data)) {
+            const dataApi = callapi?.data;
+            if (dataApi != null && !isNullOrUndefined(dataApi))
+                form.setValues(dataApi);
             let urlAll = `/WareHouses/get-all`;
             let callapigetall = await repository.get<MessageResponse<WareHouseDTOs[]>>(urlAll);
-            if (!isNullOrUndefined(callapigetall) && !isNullOrUndefined(callapigetall.data) && !isNullOrUndefinedArry(callapigetall.data.data)) {
-                const dataApiAll = callapigetall.data.data;
-                let dataarry: ComboboxItem[] = []
-                for (let index = 0; index < dataApiAll.length; index++) {
-                    const element = dataApiAll[index];
-                    const elementp: ComboboxItem = {
-                        label: '[' + element.code + ']' + element.name,
-                        value: element.id
+            if (!isNullOrUndefined(callapigetall) && !isNullOrUndefinedArry(callapigetall?.data)) {
+                const dataApiAll = callapigetall?.data;
+                let dataarry: ComboboxItem[] = [];
+                if (dataApiAll !== undefined)
+                    for (let index = 0; index < dataApiAll.length; index++) {
+                        const element = dataApiAll[index];
+                        const elementp: ComboboxItem = {
+                            label: '[' + element.code + ']' + element.name,
+                            value: element.id
+                        }
+                        dataarry.push(elementp)
                     }
-                    dataarry.push(elementp)
-                }
                 setDataDrop(dataarry)
             }
             toggle()
@@ -102,22 +104,24 @@ export default function () {
         console.log(form.values)
         let urlCreate = `/WareHouses/create`;
         let callapi = await repository.get<MessageResponse<WareHouseDTOs>>(urlCreate);
-        if (!isNullOrUndefined(callapi) && !isNullOrUndefined(callapi.data) && !isNullOrUndefined(callapi.data.data)) {
-            const dataApi = callapi.data.data;
-            form.setValues(dataApi);
+        if (!isNullOrUndefined(callapi) && !isNullOrUndefined(callapi?.data)) {
+            const dataApi = callapi?.data;
+            if (dataApi != null && !isNullOrUndefined(dataApi))
+                form.setValues(dataApi);
             let urlAll = `/WareHouses/get-all`;
             let callapigetall = await repository.get<MessageResponse<WareHouseDTOs[]>>(urlAll);
-            if (!isNullOrUndefined(callapigetall) && !isNullOrUndefined(callapigetall.data) && !isNullOrUndefinedArry(callapigetall.data.data)) {
-                const dataApiAll = callapigetall.data.data;
-                let dataarry: ComboboxItem[] = []
-                for (let index = 0; index < dataApiAll.length; index++) {
-                    const element = dataApiAll[index];
-                    const elementp: ComboboxItem = {
-                        label: '[' + element.code + ']' + element.name,
-                        value: element.id
+            if (!isNullOrUndefined(callapigetall) && !isNullOrUndefinedArry(callapigetall?.data)) {
+                const dataApiAll = callapigetall?.data;
+                let dataarry: ComboboxItem[] = [];
+                if (dataApiAll !== undefined)
+                    for (let index = 0; index < dataApiAll.length; index++) {
+                        const element = dataApiAll[index];
+                        const elementp: ComboboxItem = {
+                            label: '[' + element.code + ']' + element.name,
+                            value: element.id
+                        }
+                        dataarry.push(elementp)
                     }
-                    dataarry.push(elementp)
-                }
                 setDataDrop(dataarry)
             }
             toggle()

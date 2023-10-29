@@ -1,6 +1,8 @@
-import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
 import { Delay } from '../hepler/FunctionHelper';
 import { isNullOrEmpty } from '../hepler/StringHelper';
+import { start } from 'repl';
+import { MessageHelper } from '../hepler/MessageHelper';
 
 class Repository {
   private axiosInstance: AxiosInstance;
@@ -13,31 +15,35 @@ class Repository {
     });
   }
 
-  public async get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
+  public async get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig) {
     await Delay(1000);
     try {
-      var res = await this.axiosInstance.get<R>(url, config);
-      if (res.status === 200)
-        
-      switch (res.status) {
-        case 200:
-          return res.data;      
-        default:
-          break;
-      }
-      throw new Error('');
-    } catch (error) {
-      console.log(error)
+      var res = await this.axiosInstance.get<T>(url, config);
+      return res.data;
+
+    } catch (error: any) {
+      this.HanderResponse(error)
     }
-    return undefined;
   }
 
   public async post<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
     return await this.axiosInstance.post<T, R>(url, data, config);
   }
 
-  private HanderResponse() {
-
+  private HanderResponse(res: AxiosError) {
+    switch (res.response?.status) {
+      case 401:
+        throw new Response("Bạn chưa đăng nhập !", { status: res.response?.status });
+      case 404:
+        throw new Response("Trang web không tồn tại !", { status: res.response?.status });
+      case 403:
+        MessageHelper.Fails('Bạn không có quyền thực hiện chức năng này !');
+        break;
+      case 500:
+        throw new Response("Có lỗi xảy ra, xin vui lòng thử lại !", { status: res.response?.status });
+      default:
+        break
+    }
   }
 }
 

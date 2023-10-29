@@ -320,17 +320,18 @@ export default () => {
             if (!isNullOrUndefined(inActive))
                 urlSearch = urlSearch + `&Active=` + inActive;
             let callapi = await repository.get<MessageResponse<WareHouseDTOs[]>>(urlSearch);
-            if (isNullOrUndefined(callapi) || isNullOrUndefined(callapi.data) || isNullOrUndefinedArry(callapi.data.data))
-            {
+            console.log(callapi)
+            if (isNullOrUndefined(callapi) || isNullOrUndefinedArry(callapi?.data)) {
+
                 setMessage(noItemsFoundMsg);
                 setTotal(0)
             }
             else {
-                setUsers(callapi.data.data);
-                setPagination({ ...pagination, totalItemCount: callapi.data.totalCount });
-                setTotal(callapi.data.totalCount)
+                setUsers(callapi?.data ?? []);
+                setPagination({ ...pagination, totalItemCount: callapi?.totalCount ?? 0 });
+                setTotal(callapi?.totalCount ?? 0)
             }
-            return callapi.data;
+            return callapi?.data;
         } catch (error: any) {
             setError('Có lỗi xảy ra khi tải dữ liệu !');
             return null;
