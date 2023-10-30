@@ -15,10 +15,13 @@ import {
 import classes from './AuthenticationTitle.module.css';
 import Repository from '../../extension/HttpHelper';
 import { isNullOrEmpty, isNullOrUndefined, isNullOrUndefinedArry } from '../../hepler/StringHelper';
-import { Login, MessageResponse, WareHouseDTOs } from '../../model/model';
-import { useDisclosure } from '@mantine/hooks';
+import { Login, MessageResponse, UserData, WareHouseDTOs } from '../../model/model';
+import { useDisclosure, useLocalStorage } from '@mantine/hooks';
 import { hasLength, useForm } from '@mantine/form';
 import { FormEvent, useState } from 'react';
+import { IAuthProvider } from '../../extension/IAuthProvider';
+import { MessageHelper } from '../../hepler/MessageHelper';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 
 
@@ -35,21 +38,27 @@ export function AuthenticationTitle() {
             password: hasLength({ min: 2, max: 100 }, 'Mật khẩu phải chưa từ 2-10 kí tự !'),
         },
     });
+    const navigate = useNavigate();
 
     const [visible, { toggle }] = useDisclosure(false);
-    const [visible1,setvisible1] = useState(false);
+    const [visible1, setvisible1] = useState(false);
     const repository = new Repository("http://localhost:50001/api/v1");
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const callbackParam = queryParams.get('callback');
+    const [value, setValue] = useLocalStorage({ key: 'token', defaultValue: '' });
 
     const login = async (e: FormEvent) => {
         e.preventDefault();
         setvisible1(true)
         const data = form.values;
-        let urlCreate = `/AuthorizeMaster/login`;
-        let callapi = await repository.post<MessageResponse<any>>(urlCreate, data);
-        if (!isNullOrUndefined(callapi) && !isNullOrUndefined(callapi?.data)) {
-            console.log(callapi)
-            setvisible1(false)
+        const resLogin = await IAuthProvider.signin(data);
+        setvisible1(false);
+        if (resLogin !== undefined && !isNullOrEmpty(resLogin.data.jwt)) {
+            setValue(resLogin.data.jwt)
+            navigate(callbackParam??'/')
         }
+
     };
     return (
         <Box component="form" maw={400} mx="auto" onSubmit={login}>

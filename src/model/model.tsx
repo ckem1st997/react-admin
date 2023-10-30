@@ -77,3 +77,38 @@ export interface WareHouse extends BaseEntity {
   path: string;
   inactive: boolean;
 }
+
+
+export interface LoginModel {
+  username: string;
+  password: string;
+}
+
+
+
+export interface AuthProvider {
+  //  isAuthenticated: boolean;
+  username: null | string;
+  signin(login: Login): Promise<MessageResponse<UserData>|undefined>;
+  signout(): Promise<boolean>;
+  isAuthenticated(): boolean;
+}
+
+export interface UserData {
+  jwt: string;
+  user: {
+    userName: string;
+    password: string;
+    inActive: boolean;
+    role: string;
+    roleNumber: number;
+    read: boolean;
+    create: boolean;
+    edit: boolean;
+    delete: boolean;
+    warehouseId: string;
+    listWarehouseId: string;
+    onDelete: boolean;
+    id: string;
+  };
+}

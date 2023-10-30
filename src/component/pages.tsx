@@ -31,25 +31,43 @@ import { CreateContext } from '../default/Context';
 import { useDisclosure } from '@mantine/hooks';
 import { AppShell, Group, Burger, Skeleton } from '@mantine/core';
 import { nprogress, NavigationProgress } from '@mantine/nprogress';
-
+import { IAuthProvider } from '../extension/IAuthProvider';
 
 
 //context 
 
 
 export const Pages = () => {
+
+
+
+
+
+  //
   const location = useLocation();
   const [progress, setProgress] = useState(true);
   const navigation = useNavigation();
   const navigate = useNavigate();
+  //#region  auth
+  const listRouterIgnore = ["/unit/grid"];
+  const isAuthenticated = IAuthProvider.isAuthenticated();
 
+
+
+
+  //#endregion
 
   // const { keycloak, initialized } = useKeycloak();
 
   useEffect(() => {
     nprogress.start()
     window.scrollTo(0, 0);
-  }, [location]);
+    if (!listRouterIgnore.includes(location.pathname) && isAuthenticated === false) {
+      navigate("/auth/login?callback=" + location.pathname)
+    }
+    else
+      console.log(" check auth " + location.pathname)
+  }, [location.pathname]);
 
 
   // matine
@@ -114,9 +132,8 @@ export const Pages = () => {
           <EuiSideNav />
         </AppShell.Navbar>
         <AppShell.Main>
-          
-          <Breadcrumb ></Breadcrumb>
 
+          <Breadcrumb ></Breadcrumb>
           <Outlet />
         </AppShell.Main>
       </AppShell>

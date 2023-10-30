@@ -8,6 +8,7 @@ import { MantineProvider, createTheme } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications';
 import { NavigationProgress } from '@mantine/nprogress';
+import { ProvideAuth } from './extension/IAuthProvider';
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -33,8 +34,8 @@ root.render(
     /> */}
     <MantineProvider>
       <ModalsProvider >
-      
-        <Notifications  position="top-center" autoClose={3000} />
+
+        <Notifications position="top-center" autoClose={3000} />
         <App />
       </ModalsProvider>
 

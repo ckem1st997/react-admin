@@ -4,6 +4,7 @@ import {
   createBrowserRouter,
   json,
   Link,
+  redirect,
   RouterProvider,
 } from "react-router-dom";
 import Layout from "../component/Layout";
@@ -20,14 +21,18 @@ import Tablememory from "../component/tablememory";
 import ResponseHander from "../default/baseResponseHander";
 import { LayputAuth } from "../component/login/_layoutAuth";
 import { AuthenticationTitle } from "../component/login/_login";
-
+import { IAuthProvider, protectedLoader, useAuth } from "../extension/IAuthProvider";
 
 const router = createBrowserRouter([
   {
     // path: "/",
+    id: "root",
     element: <Pages />,
     errorElement: <ResponseHander />,
-
+    action: async ({ request }) => {
+      // if (auth)
+         return protectedLoader;
+    },
     children: [
       {
         path: "/",
@@ -154,10 +159,10 @@ const router = createBrowserRouter([
         path: "grid/:id",
         element: <Details />,
       },
-     
+
     ],
- 
-   
+
+
   },
   {
     path: "auth",
@@ -167,7 +172,7 @@ const router = createBrowserRouter([
         path: "login",
         element: <AuthenticationTitle />, // Create a Login page component
       },
-     
+
       // Add more authentication-related routes here
     ],
   },
